@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q版角色系統 (RO風格)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .panel {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .preview-area {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .avatar-preview {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            background: linear-gradient(180deg, #87CEEB 0%, #98FB98 100%);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        #avatarDisplay {
+            width: 200px;
+            height: 280px;
+            margin: 0 auto;
+        }
+        .controls {
+            flex: 2;
+            min-width: 300px;
+        }
+        .control-section {
+            margin-bottom: 16px;
+        }
+        .control-section h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .option {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+        .option:hover {
+            border-color: #667eea;
+        }
+        .option.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        .color-option {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 3px solid #e0e0e0;
+            cursor: pointer;
+        }
+        .color-option.selected {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.3);
+        }
+        .power-display {
+            background: linear-gradient(135deg, #f0f4ff, #fff5f8);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            margin-top: 16px;
+        }
+        .power-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .equipment-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+        }
+        .equip-item {
+            background: #f8f9fa;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .equip-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        .equip-item.equipped {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border-color: #28a745;
+        }
+        .equip-item .emoji {
+            font-size: 1.8rem;
+        }
+        .equip-item .name {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        .equip-item .power {
+            font-size: 0.7rem;
+            color: #e74c3c;
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 8px 16px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Q版角色系統 (RO風格)</h1>
+        
+        <div class="panel">
+            <div class="preview-area">
+                <div class="avatar-preview">
+                    <div id="avatarDisplay"></div>
+                    <div class="power-display">
+                        <div>⚔️ 戰鬥力</div>
+                        <div class="power-value" id="powerValue">10</div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <div class="control-section">
+                        <h3>🎨 膚色</h3>
+                        <div class="options" id="skinOptions"></div>
+                    </div>
+                    
+                    <div class="control-section">
+                        <h3>💇 髮型</h3>
+                        <div class="options" id="hairOptions"></div>
+                    </div>
+                    
+                    <div class="control-section">
+                        <h3>🎨 髮色</h3>
+                        <div class="options" id="hairColorOptions"></div>
+                    </div>
+                    
+                    <div class="control-section">
+                        <h3>👁️ 眼睛顏色</h3>
+                        <div class="options" id="eyeColorOptions"></div>
+                    </div>
+                    
+                    <div class="control-section">
+                        <h3>👄 表情</h3>
+                        <div class="options" id="mouthOptions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h2 style="margin-bottom:16px;">🛡️ 裝備</h2>
+            
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-slot="headwear">頭飾</button>
+                <button class="tab-btn" data-slot="weapon">武器</button>
+                <button class="tab-btn" data-slot="accessory">配件</button>
+            </div>
+            
+            <div class="equipment-grid" id="equipmentGrid"></div>
+        </div>
+    </div>
+
+    <script src="avatar-chibi.js"></script>
+    <script>
+        // 當前配置
+        let config = {
+            skin: 1,
+            hair: 1,
+            hairColor: 1,
+            eyeColor: 1,
+            mouth: 1,
+            equipment: {}
+        };
+        
+        // 裝備資料
+        const EQUIPMENT_DATA = {
+            headwear: [
+                { id: 'hw1', name: '學生帽', power: 10, emoji: '🎓' },
+                { id: 'hw2', name: '皇冠', power: 25, emoji: '👑' },
+                { id: 'hw3', name: '兔耳朵', power: 15, emoji: '🐰' },
+                { id: 'hw4', name: '魔法師帽', power: 30, emoji: '🧙' },
+                { id: 'hw5', name: '巫師帽', power: 50, emoji: '🎩' },
+            ],
+            weapon: [
+                { id: 'wp1', name: '木劍', power: 30, emoji: '🗡️' },
+                { id: 'wp2', name: '魔法杖', power: 50, emoji: '🪄' },
+                { id: 'wp3', name: '弓箭', power: 45, emoji: '🏹' },
+                { id: 'wp4', name: '戰鬥錘', power: 60, emoji: '🔨' },
+                { id: 'wp5', name: '傳說之劍', power: 100, emoji: '⚔️' },
+            ],
+            accessory: [
+                { id: 'ac1', name: '眼鏡', power: 5, emoji: '👓' },
+                { id: 'ac2', name: '項鍊', power: 12, emoji: '📿' },
+                { id: 'ac3', name: '手錶', power: 18, emoji: '⌚' },
+                { id: 'ac4', name: '魔法戒指', power: 25, emoji: '💍' },
+                { id: 'ac5', name: '翅膀', power: 40, emoji: '🪽' },
+            ]
+        };
+        
+        let currentSlot = 'headwear';
+        
+        // 初始化選項
+        function initOptions() {
+            // 膚色
+            const skinEl = document.getElementById('skinOptions');
+            CHIBI_CONFIG.skin.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'color-option' + (s.id === config.skin ? ' selected' : '');
+                div.style.background = s.color;
+                div.onclick = () => { config.skin = s.id; updateAll(); };
+                skinEl.appendChild(div);
+            });
+            
+            // 髮型
+            const hairEl = document.getElementById('hairOptions');
+            CHIBI_CONFIG.hair.forEach(h => {
+                const div = document.createElement('div');
+                div.className = 'option' + (h.id === config.hair ? ' selected' : '');
+                div.textContent = h.name;
+                div.onclick = () => { config.hair = h.id; updateAll(); };
+                hairEl.appendChild(div);
+            });
+            
+            // 髮色
+            const hairColorEl = document.getElementById('hairColorOptions');
+            CHIBI_CONFIG.hairColor.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'color-option' + (c.id === config.hairColor ? ' selected' : '');
+                div.style.background = c.color;
+                div.onclick = () => { config.hairColor = c.id; updateAll(); };
+                hairColorEl.appendChild(div);
+            });
+            
+            // 眼睛顏色
+            const eyeColorEl = document.getElementById('eyeColorOptions');
+            CHIBI_CONFIG.eyeColor.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'color-option' + (c.id === config.eyeColor ? ' selected' : '');
+                div.style.background = c.color;
+                div.onclick = () => { config.eyeColor = c.id; updateAll(); };
+                eyeColorEl.appendChild(div);
+            });
+            
+            // 表情
+            const mouthEl = document.getElementById('mouthOptions');
+            ['微笑', '大笑', '驚訝', '貓嘴'].forEach((name, i) => {
+                const div = document.createElement('div');
+                div.className = 'option' + (i+1 === config.mouth ? ' selected' : '');
+                div.textContent = name;
+                div.onclick = () => { config.mouth = i+1; updateAll(); };
+                mouthEl.appendChild(div);
+            });
+        }
+        
+        // 初始化裝備
+        function initEquipment() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentSlot = btn.dataset.slot;
+                    renderEquipment();
+                };
+            });
+            renderEquipment();
+        }
+        
+        function renderEquipment() {
+            const grid = document.getElementById('equipmentGrid');
+            const items = EQUIPMENT_DATA[currentSlot] || [];
+            
+            grid.innerHTML = `
+                <div class="equip-item ${!config.equipment[currentSlot] ? 'equipped' : ''}" onclick="unequip()">
+                    <div class="emoji">❌</div>
+                    <div class="name">不裝備</div>
+                </div>
+            ` + items.map(item => `
+                <div class="equip-item ${config.equipment[currentSlot] === item.id ? 'equipped' : ''}" 
+                     onclick="equip('${item.id}')">
+                    <div class="emoji">${item.emoji}</div>
+                    <div class="name">${item.name}</div>
+                    <div class="power">+${item.power} ⚔️</div>
+                </div>
+            `).join('');
+        }
+        
+        function equip(itemId) {
+            config.equipment[currentSlot] = itemId;
+            updateAll();
+        }
+        
+        function unequip() {
+            delete config.equipment[currentSlot];
+            updateAll();
+        }
+        
+        // 計算戰鬥力
+        function calculatePower() {
+            let power = 10; // 基礎
+            for (const slot in config.equipment) {
+                const items = EQUIPMENT_DATA[slot];
+                const item = items?.find(i => i.id === config.equipment[slot]);
+                if (item) power += item.power;
+            }
+            return power;
+        }
+        
+        // 更新所有顯示
+        function updateAll() {
+            // 更新選中狀態
+            document.querySelectorAll('#skinOptions .color-option').forEach((el, i) => {
+                el.classList.toggle('selected', i+1 === config.skin);
+            });
+            document.querySelectorAll('#hairOptions .option').forEach((el, i) => {
+                el.classList.toggle('selected', i+1 === config.hair);
+            });
+            document.querySelectorAll('#hairColorOptions .color-option').forEach((el, i) => {
+                el.classList.toggle('selected', i+1 === config.hairColor);
+            });
+            document.querySelectorAll('#eyeColorOptions .color-option').forEach((el, i) => {
+                el.classList.toggle('selected', i+1 === config.eyeColor);
+            });
+            document.querySelectorAll('#mouthOptions .option').forEach((el, i) => {
+                el.classList.toggle('selected', i+1 === config.mouth);
+            });
+            
+            // 渲染角色
+            document.getElementById('avatarDisplay').innerHTML = renderChibiAvatar(config);
+            
+            // 更新戰鬥力
+            document.getElementById('powerValue').textContent = calculatePower();
+            
+            // 更新裝備選中狀態
+            renderEquipment();
+        }
+        
+        // 初始化
+        initOptions();
+        initEquipment();
+        updateAll();
+    </script>
+</body>
+</html>
