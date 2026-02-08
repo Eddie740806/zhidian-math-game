@@ -1045,8 +1045,13 @@
                     if (currentUser.isGuest) {
                         showScreen('authScreen');
                     } else {
-                        // TODO: 顯示個人資料
-                        alert('已登入：' + currentUser.nickname);
+                        const action = confirm('目前登入：' + currentUser.nickname + '\n\n點「確定」登出，點「取消」留在此帳號');
+                        if (action) {
+                            // 登出
+                            localStorage.removeItem('mathGameUser');
+                            currentUser = { nickname: null, city: null, isGuest: true, bestScore: 0 };
+                            showScreen('authScreen');
+                        }
                     }
                 }
             });
