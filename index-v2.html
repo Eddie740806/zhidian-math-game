@@ -824,7 +824,11 @@
         <!-- ========== 遊戲畫面 ========== -->
         <div class="screen" id="gameScreen">
             <div class="header">
-                <h1>🧮 數學素養挑戰</h1>
+                <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+                    <button onclick="if(confirm('確定要離開？進度不會保存')){clearInterval(gameState.timer);showScreen('menuScreen');}" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.85rem;">← 返回</button>
+                    <h1 style="margin:0;">🧮 數學素養挑戰</h1>
+                    <div style="width:60px;"></div>
+                </div>
                 <div class="user-badge">
                     <span class="user-name" id="gameUserName">訪客</span>
                 </div>
@@ -900,8 +904,8 @@
 
         <!-- Footer -->
         <div class="footer" id="footer">
-            <a href="#" class="consultant-link" id="consultantLink">
-                📞 想了解更多？聯繫顧問
+            <a href="#" class="consultant-link" id="consultantLink" target="_blank">
+                👋 認識專屬顧問 <span id="repName">Jeffery</span>
             </a>
             <p class="copyright">© 2026 張可享製作 | 108課綱數學素養系統</p>
         </div>
@@ -932,6 +936,18 @@
         } catch (e) {
             console.log('Firebase 未設定，使用本地模式');
         }
+
+        
+        // ========== 業務名稱對照表 ==========
+        const REP_NAMES = {
+            'jeffery': 'Jeffery',
+            'finn': 'Finn',
+            'ashley': 'Ashley',
+            'victoria': 'Victoria',
+            'jonathan': 'Jonathan',
+            'max': 'Max',
+            'default': '顧問'
+        };
 
         // ========== 業務連結對照表 ==========
         const REP_LINKS = {
@@ -1413,6 +1429,7 @@
 
         // ========== 設定顧問連結 ==========
         $('consultantLink').href = REP_LINKS[repCode] || REP_LINKS['default'];
+        $('repName').textContent = REP_NAMES[repCode] || REP_NAMES['default'];
 
         // ========== 工具函數 ==========
         function shuffle(arr) {
