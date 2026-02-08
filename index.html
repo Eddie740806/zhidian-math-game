@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>支點教育 - 計算競速</title>
+    <title>支點教育 - 數學素養挑戰</title>
     <style>
         * {
             margin: 0;
@@ -12,83 +12,88 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
 
         .container {
             background: white;
             border-radius: 24px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 520px;
+            max-width: 480px;
             width: 100%;
             overflow: hidden;
         }
 
         .header {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 24px;
+            padding: 20px;
             text-align: center;
             color: white;
         }
 
         .header h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 4px;
         }
 
         .header .subtitle {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             opacity: 0.9;
         }
 
         .student-name {
             background: rgba(255,255,255,0.2);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 20px;
             display: inline-block;
-            margin-top: 12px;
+            margin-top: 10px;
             font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .start-screen, .game-screen, .result-screen {
+            display: none;
+        }
+
+        .start-screen.active, .game-screen.active, .result-screen.active {
+            display: block;
         }
 
         /* 開始畫面 */
-        .start-screen {
-            padding: 40px 24px;
-            text-align: center;
+        .start-content {
+            padding: 24px;
         }
 
-        .start-screen h2 {
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .start-screen p {
+        .start-content p {
             color: #666;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
 
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .input-group label {
             display: block;
             text-align: left;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #555;
             font-weight: 500;
+            font-size: 0.9rem;
         }
 
         .input-group input, .input-group select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 14px;
             border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 1rem;
             transition: border-color 0.3s;
         }
@@ -102,9 +107,9 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 16px 32px;
+            padding: 14px 28px;
             border-radius: 12px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
@@ -113,7 +118,7 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
         }
 
         .btn:disabled {
@@ -122,196 +127,269 @@
             transform: none;
         }
 
+        .grade-info {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f4f8 100%);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+            text-align: left;
+            border-left: 4px solid #667eea;
+        }
+
+        .grade-info h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .grade-info ul {
+            margin: 0;
+            padding-left: 18px;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .grade-info li {
+            margin-bottom: 3px;
+        }
+
         /* 遊戲畫面 */
-        .game-screen {
-            display: none;
-            padding: 24px;
+        .game-content {
+            padding: 20px;
         }
 
         .game-stats {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
+            margin-bottom: 16px;
+            gap: 8px;
         }
 
         .stat {
             text-align: center;
-            padding: 8px 12px;
-            background: #f5f5f5;
+            padding: 8px 10px;
+            background: #f8f9fa;
             border-radius: 10px;
+            flex: 1;
         }
 
         .stat-value {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             color: #333;
         }
 
         .stat-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #888;
+            margin-top: 2px;
         }
 
-        .lives {
-            font-size: 1.5rem;
+        .lives .stat-value {
+            font-size: 1.1rem;
         }
 
         .timer {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 8px 16px;
-            border-radius: 10px;
         }
 
         .timer.warning {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
             animation: pulse 0.5s infinite;
         }
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
         }
 
-        .question-area {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        .question-card {
+            background: linear-gradient(145deg, #f8f9ff 0%, #fff5f8 100%);
             border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-            min-height: 180px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #eee;
+        }
+
+        .question-header {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
         }
 
         .question-number {
-            font-size: 0.85rem;
-            color: #666;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .question-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .question-scene {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            text-align: center;
+            border: 2px dashed #e0e0e0;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scene-visual {
+            font-size: 1.6rem;
+            line-height: 1.8;
             margin-bottom: 8px;
         }
 
-        .question-context {
-            font-size: 1rem;
-            color: #555;
-            margin-bottom: 12px;
-            line-height: 1.6;
+        .scene-desc {
+            font-size: 0.85rem;
+            color: #666;
         }
 
-        .question-visual {
-            font-size: 1.8rem;
-            margin-bottom: 12px;
-        }
-
-        .question {
-            font-size: 1.3rem;
-            font-weight: bold;
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
             color: #333;
-            line-height: 1.5;
+            line-height: 1.6;
+            text-align: center;
         }
 
         .options {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         .option {
-            background: #f8f9fa;
-            border: 3px solid #e0e0e0;
+            background: white;
+            border: 2px solid #e8e8e8;
             border-radius: 12px;
-            padding: 16px;
-            font-size: 1.1rem;
-            font-weight: bold;
+            padding: 14px 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             text-align: center;
+            color: #333;
         }
 
         .option:hover {
             border-color: #667eea;
-            background: #f0f0ff;
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+
+        .option:active {
+            transform: translateY(0);
         }
 
         .option.correct {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
             border-color: #28a745;
-            color: #28a745;
+            color: #155724;
         }
 
         .option.wrong {
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
             border-color: #dc3545;
-            color: #dc3545;
+            color: #721c24;
         }
 
-        .combo {
+        .option.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .feedback {
             text-align: center;
-            margin-top: 16px;
-            font-size: 1rem;
-            color: #667eea;
+            margin-top: 12px;
+            font-size: 0.95rem;
             font-weight: bold;
             min-height: 24px;
         }
 
-        .combo.active {
-            animation: comboAnim 0.3s ease;
+        .feedback.correct {
+            color: #28a745;
         }
 
-        @keyframes comboAnim {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .feedback.wrong {
+            color: #dc3545;
         }
 
         /* 結果畫面 */
-        .result-screen {
-            display: none;
-            padding: 32px 24px;
+        .result-content {
+            padding: 24px;
             text-align: center;
         }
 
-        .result-screen h2 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
+        .result-score {
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 12px 0;
         }
 
-        .result-score {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #667eea;
-            margin: 16px 0;
+        .result-label {
+            color: #888;
+            font-size: 0.9rem;
         }
 
         .result-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin: 24px 0;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 20px 0;
         }
 
         .result-stat {
-            background: #f5f5f5;
-            padding: 16px;
+            background: #f8f9fa;
+            padding: 14px 20px;
             border-radius: 12px;
+            min-width: 70px;
         }
 
         .result-stat-value {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: #333;
         }
 
         .result-stat-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #888;
+            margin-top: 4px;
+        }
+
+        .result-message {
+            background: linear-gradient(135deg, #f0f4ff, #fff5f8);
+            border-radius: 12px;
+            padding: 14px;
+            margin: 16px 0;
+            font-size: 0.9rem;
+            color: #555;
         }
 
         .btn-group {
             display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 16px;
         }
 
         .btn-secondary {
@@ -330,58 +408,68 @@
             flex: 1;
         }
 
-        /* 錯題本 */
-        .wrong-answers {
-            margin-top: 24px;
+        /* 錯題回顧 */
+        .wrong-section {
+            margin-top: 20px;
             text-align: left;
-            max-height: 300px;
+        }
+
+        .wrong-title {
+            color: #dc3545;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wrong-list {
+            max-height: 250px;
             overflow-y: auto;
         }
 
-        .wrong-answers h3 {
-            color: #dc3545;
-            margin-bottom: 12px;
-            font-size: 1rem;
-        }
-
         .wrong-item {
-            background: #fff5f5;
+            background: #fff;
+            border: 1px solid #f0d0d0;
             border-left: 4px solid #dc3545;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            border-radius: 0 8px 8px 0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
         }
 
-        .wrong-item .question-text {
-            font-weight: bold;
+        .wrong-q {
+            font-weight: 600;
             color: #333;
-            margin-bottom: 4px;
-            font-size: 0.95rem;
-        }
-
-        .wrong-item .your-answer {
-            color: #dc3545;
-            font-size: 0.9rem;
-        }
-
-        .wrong-item .correct-answer {
-            color: #28a745;
-            font-size: 0.9rem;
-        }
-
-        .wrong-item .explanation {
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid #ffe0e0;
-            color: #666;
             font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .wrong-answers {
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .wrong-your {
+            color: #dc3545;
+        }
+
+        .wrong-correct {
+            color: #28a745;
+        }
+
+        .wrong-explain {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            color: #555;
             line-height: 1.5;
         }
 
         /* Footer */
         .footer {
             background: #f8f9fa;
-            padding: 20px;
+            padding: 16px;
             text-align: center;
             border-top: 1px solid #eee;
         }
@@ -389,104 +477,82 @@
         .consultant-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: #667eea;
             text-decoration: none;
             font-weight: 500;
-            padding: 12px 20px;
+            padding: 10px 16px;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
             transition: all 0.2s;
+            font-size: 0.9rem;
         }
 
         .consultant-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         }
 
-        /* 難度選擇樣式 */
-        .grade-info {
-            background: #f0f4ff;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
-            text-align: left;
+        .copyright {
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: #aaa;
         }
 
-        .grade-info h4 {
-            color: #667eea;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        .grade-info ul {
-            margin: 0;
-            padding-left: 20px;
-            color: #666;
-            font-size: 0.85rem;
-        }
-
-        .grade-info li {
-            margin-bottom: 4px;
-        }
-
+        /* Badge */
         .badge {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
             font-weight: bold;
-            margin-left: 8px;
-        }
-
-        .badge-new {
-            background: #ffeaa7;
-            color: #d68910;
+            margin-left: 6px;
+            vertical-align: middle;
         }
 
         .badge-108 {
-            background: #dfe6e9;
-            color: #636e72;
+            background: #e8f5e9;
+            color: #2e7d32;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- 開始畫面 -->
-        <div class="start-screen" id="startScreen">
+        <div class="start-screen active" id="startScreen">
             <div class="header">
                 <h1>🧮 支點教育</h1>
-                <div class="subtitle">數學素養競速挑戰</div>
+                <div class="subtitle">數學素養挑戰</div>
             </div>
-            <div style="padding: 24px;">
-                <p style="margin-bottom: 24px; color: #666;">
-                    結合生活情境的數學素養題 📚<br>
-                    培養邏輯思考，不只是計算！
+            <div class="start-content">
+                <p>
+                    📚 結合生活情境的數學題目<br>
+                    🧠 培養邏輯思考與解題能力
                     <span class="badge badge-108">108課綱</span>
                 </p>
                 
                 <div class="input-group">
-                    <label>👤 學員暱稱</label>
-                    <input type="text" id="studentName" placeholder="輸入你的名字（中英文皆可）">
+                    <label>👤 你的名字</label>
+                    <input type="text" id="studentName" placeholder="輸入姓名或暱稱">
                 </div>
 
                 <div class="input-group">
-                    <label>📚 選擇年級</label>
+                    <label>📖 選擇年級</label>
                     <select id="gradeSelect">
-                        <option value="1">一年級</option>
-                        <option value="2">二年級</option>
-                        <option value="3">三年級</option>
-                        <option value="4">四年級</option>
-                        <option value="5">五年級</option>
-                        <option value="6">六年級</option>
+                        <option value="1">一年級（加減法、數數）</option>
+                        <option value="2">二年級（乘法、找零）</option>
+                        <option value="3">三年級（除法、時間）</option>
+                        <option value="4">四年級（分數、面積）</option>
+                        <option value="5">五年級（小數、體積）</option>
+                        <option value="6">六年級（比例、圓）</option>
                     </select>
                 </div>
 
                 <div class="grade-info" id="gradeInfo">
                     <h4>📖 一年級學習重點</h4>
                     <ul>
-                        <li>20 以內的加減法應用</li>
+                        <li>20 以內加減法應用</li>
                         <li>生活中的數量比較</li>
                         <li>圖形規律與推理</li>
                     </ul>
@@ -500,12 +566,12 @@
         <div class="game-screen" id="gameScreen">
             <div class="header">
                 <h1>🧮 支點教育</h1>
-                <div class="student-name" id="displayName">小明</div>
+                <div class="student-name" id="displayName"></div>
             </div>
             
-            <div style="padding: 24px;">
+            <div class="game-content">
                 <div class="game-stats">
-                    <div class="stat timer" id="timer">
+                    <div class="stat timer" id="timerBox">
                         <div class="stat-value" id="timeLeft">15</div>
                         <div class="stat-label">秒</div>
                     </div>
@@ -513,64 +579,68 @@
                         <div class="stat-value" id="score">0</div>
                         <div class="stat-label">得分</div>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value lives" id="lives">❤️❤️❤️</div>
+                    <div class="stat lives">
+                        <div class="stat-value" id="lives">❤️❤️❤️</div>
                         <div class="stat-label">生命</div>
                     </div>
                 </div>
 
-                <div class="question-area">
-                    <div class="question-number" id="questionNumber">第 1 題 / 共 15 題</div>
-                    <div class="question-context" id="questionContext"></div>
-                    <div class="question-visual" id="questionVisual"></div>
-                    <div class="question" id="question">題目載入中...</div>
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number" id="questionNumber">第 1 題 / 共 12 題</span>
+                        <span class="question-tag" id="questionTag">生活應用</span>
+                    </div>
+                    
+                    <div class="question-scene" id="questionScene">
+                        <div class="scene-visual" id="sceneVisual"></div>
+                        <div class="scene-desc" id="sceneDesc"></div>
+                    </div>
+                    
+                    <div class="question-text" id="questionText"></div>
                 </div>
 
-                <div class="options" id="options">
-                    <button class="option">A</button>
-                    <button class="option">B</button>
-                    <button class="option">C</button>
-                    <button class="option">D</button>
-                </div>
-
-                <div class="combo" id="combo"></div>
+                <div class="options" id="options"></div>
+                
+                <div class="feedback" id="feedback"></div>
             </div>
         </div>
 
         <!-- 結果畫面 -->
         <div class="result-screen" id="resultScreen">
             <div class="header">
-                <h1>🎉 挑戰結束！</h1>
-                <div class="student-name" id="resultName">小明</div>
+                <h1>🎉 挑戰完成！</h1>
+                <div class="student-name" id="resultName"></div>
             </div>
             
-            <div style="padding: 24px;">
-                <div class="result-score" id="finalScore">1280</div>
-                <p style="color: #666;">分</p>
+            <div class="result-content">
+                <div class="result-label">最終得分</div>
+                <div class="result-score" id="finalScore">0</div>
 
                 <div class="result-stats">
                     <div class="result-stat">
-                        <div class="result-stat-value" id="correctCount">12</div>
+                        <div class="result-stat-value" id="correctCount">0</div>
                         <div class="result-stat-label">答對</div>
                     </div>
                     <div class="result-stat">
-                        <div class="result-stat-value" id="wrongCount">3</div>
+                        <div class="result-stat-value" id="wrongCount">0</div>
                         <div class="result-stat-label">答錯</div>
                     </div>
                     <div class="result-stat">
-                        <div class="result-stat-value" id="accuracy">80%</div>
+                        <div class="result-stat-value" id="accuracy">0%</div>
                         <div class="result-stat-label">正確率</div>
                     </div>
                 </div>
 
-                <div class="wrong-answers" id="wrongAnswers" style="display: none;">
-                    <h3>📝 錯題回顧與詳解</h3>
-                    <div id="wrongList"></div>
+                <div class="result-message" id="resultMessage"></div>
+
+                <div class="wrong-section" id="wrongSection" style="display: none;">
+                    <div class="wrong-title">📝 錯題回顧</div>
+                    <div class="wrong-list" id="wrongList"></div>
                 </div>
 
                 <div class="btn-group">
                     <button class="btn btn-secondary" id="homeBtn">🏠 回首頁</button>
-                    <button class="btn btn-primary" id="retryBtn">🔄 再玩一次</button>
+                    <button class="btn btn-primary" id="retryBtn">🔄 再挑戰</button>
                 </div>
             </div>
         </div>
@@ -578,1065 +648,978 @@
         <!-- Footer -->
         <div class="footer">
             <a href="#" class="consultant-link" id="consultantLink">
-                <span>📞</span>
-                <span>想了解更多？聯繫支點教育顧問</span>
+                📞 想了解更多？聯繫支點教育顧問
             </a>
-            <p style="margin-top: 12px; font-size: 0.75rem; color: #aaa;">
-                © 2026 支點教育 | 108課綱數學素養學習系統
-            </p>
+            <p class="copyright">© 2026 支點教育 | 108課綱數學素養系統</p>
         </div>
     </div>
 
     <script>
-        // ========== 素養題庫 ==========
+        // ========== 題庫 ==========
         const questionBank = {
-            // 一年級素養題庫
             1: {
                 name: "一年級",
-                info: ["20 以內的加減法應用", "生活中的數量比較", "圖形規律與推理"],
+                info: ["20 以內加減法應用", "生活中的數量比較", "圖形規律與推理"],
                 timeLimit: 20,
                 questions: [
                     {
-                        context: "小兔子摘蘋果 🐰",
-                        visual: "🍎🍎🍎🍎🍎🍎 + 🍎🍎🍎",
-                        q: "小兔子籃子裡有 6 顆蘋果，又摘了 3 顆。請問現在籃子裡有幾顆蘋果？",
-                        answer: "9 顆",
-                        options: ["8 顆", "9 顆", "10 顆", "7 顆"],
-                        explanation: "原本有 6 顆，又摘了 3 顆，就是 6 + 3 = 9 顆。我們可以用數的：6...7, 8, 9！"
+                        tag: "購物計算",
+                        scene: "🍎🍎🍎🍎🍎 ➕ 🍎🍎🍎",
+                        sceneDesc: "籃子裡的蘋果",
+                        q: "籃子裡有 5 顆蘋果，媽媽又放了 3 顆進去，現在有幾顆？",
+                        answer: "8 顆",
+                        options: ["7 顆", "8 顆", "9 顆", "6 顆"],
+                        explain: "5 + 3 = 8。把原本的 5 顆再加 3 顆，數數看：6、7、8！"
                     },
                     {
-                        context: "公車站的故事 🚌",
-                        visual: "👧👦👧👦👧 → 🚌 → 👧👦",
-                        q: "公車站有 5 個小朋友在等車，公車來了，上去 3 個人。還剩幾個人在等車？",
-                        answer: "2 人",
-                        options: ["2 人", "3 人", "8 人", "1 人"],
-                        explanation: "5 個小朋友走了 3 個，5 - 3 = 2，還剩 2 個人在等車。"
-                    },
-                    {
-                        context: "找規律 🔍",
-                        visual: "🔴🔵🔴🔵🔴❓",
-                        q: "觀察上面的規律，問號應該是什麼顏色？",
-                        answer: "🔵 藍色",
-                        options: ["🔴 紅色", "🔵 藍色", "🟡 黃色", "🟢 綠色"],
-                        explanation: "規律是「紅藍紅藍」交替出現，紅色後面是藍色，所以答案是 🔵！"
-                    },
-                    {
-                        context: "分糖果時間 🍬",
-                        visual: "🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬",
-                        q: "媽媽買了 12 顆糖果，小明吃了 5 顆，還剩幾顆？",
+                        tag: "分享問題",
+                        scene: "🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬\n      ↓ 吃掉 5 顆\n🍬🍬🍬🍬🍬🍬🍬",
+                        sceneDesc: "糖果變少了",
+                        q: "小明有 12 顆糖果，吃了 5 顆，還剩幾顆？",
                         answer: "7 顆",
                         options: ["6 顆", "7 顆", "8 顆", "5 顆"],
-                        explanation: "12 顆吃掉 5 顆，12 - 5 = 7 顆。可以用手指幫忙算喔！"
+                        explain: "12 - 5 = 7。從 12 往回數 5 個：11、10、9、8、7。"
                     },
                     {
-                        context: "誰比較多？🤔",
-                        visual: "小花：⭐⭐⭐⭐⭐⭐⭐⭐\n小草：⭐⭐⭐⭐⭐⭐",
-                        q: "小花有 8 顆星星貼紙，小草有 6 顆。小花比小草多幾顆？",
-                        answer: "多 2 顆",
-                        options: ["多 1 顆", "多 2 顆", "多 3 顆", "多 14 顆"],
-                        explanation: "比較多少要用減法：8 - 6 = 2，小花比小草多 2 顆。"
+                        tag: "找規律",
+                        scene: "🔴 🔵 🔴 🔵 🔴 ❓",
+                        sceneDesc: "下一個是什麼顏色？",
+                        q: "觀察規律，問號應該是什麼顏色的球？",
+                        answer: "藍色 🔵",
+                        options: ["紅色 🔴", "藍色 🔵", "黃色 🟡", "綠色 🟢"],
+                        explain: "規律是「紅藍紅藍」交替，紅色後面一定是藍色！"
                     },
                     {
-                        context: "排隊買冰淇淋 🍦",
-                        visual: "👤👤👤👤👤[小明]👤👤👤",
-                        q: "小明排隊買冰淇淋，他前面有 5 個人，後面有 3 個人。這一排總共有幾個人？",
+                        tag: "排隊問題",
+                        scene: "👦👧👦👧👦[我]👧👦👧",
+                        sceneDesc: "小明在排隊",
+                        q: "小明前面有 5 人，後面有 3 人，這排共有幾人？",
                         answer: "9 人",
                         options: ["8 人", "9 人", "10 人", "7 人"],
-                        explanation: "前面 5 人 + 小明自己 1 人 + 後面 3 人 = 5 + 1 + 3 = 9 人。別忘了數小明自己！"
+                        explain: "前面 5 人 + 小明自己 1 人 + 後面 3 人 = 9 人。別忘了數自己！"
                     },
                     {
-                        context: "動物園數數 🦁",
-                        visual: "🐘🐘🐘 + 🦒🦒🦒🦒🦒",
-                        q: "動物園裡有 3 隻大象和 5 隻長頸鹿。大象和長頸鹿一共有幾隻？",
-                        answer: "8 隻",
-                        options: ["7 隻", "8 隻", "9 隻", "2 隻"],
-                        explanation: "大象 3 隻加上長頸鹿 5 隻，3 + 5 = 8 隻動物。"
+                        tag: "比較多少",
+                        scene: "小花：⭐⭐⭐⭐⭐⭐⭐⭐\n小草：⭐⭐⭐⭐⭐",
+                        sceneDesc: "誰的星星比較多？",
+                        q: "小花有 8 顆星星，小草有 5 顆，小花比小草多幾顆？",
+                        answer: "多 3 顆",
+                        options: ["多 2 顆", "多 3 顆", "多 4 顆", "多 13 顆"],
+                        explain: "比較差距用減法：8 - 5 = 3，小花多 3 顆。"
                     },
                     {
-                        context: "找規律 🔍",
-                        visual: "2, 4, 6, 8, ❓",
-                        q: "觀察數字規律，問號應該填什麼？",
+                        tag: "數字規律",
+                        scene: "2 → 4 → 6 → 8 → ❓",
+                        sceneDesc: "數字接龍",
+                        q: "觀察規律，問號應該填什麼數字？",
                         answer: "10",
                         options: ["9", "10", "11", "12"],
-                        explanation: "這是「每次加 2」的規律：2→4→6→8→10。都是偶數喔！"
+                        explain: "每次都 +2：2、4、6、8、10。這些都是偶數喔！"
                     },
                     {
-                        context: "存錢筒 🐷",
-                        visual: "🪙🪙🪙🪙🪙🪙🪙 + 🪙🪙🪙🪙🪙",
-                        q: "小豬存錢筒裡有 7 個硬幣，爸爸又給了 5 個。現在有幾個硬幣？",
-                        answer: "12 個",
-                        options: ["11 個", "12 個", "13 個", "10 個"],
-                        explanation: "7 + 5 = 12。可以先湊成 10：7 + 3 = 10，還剩 2，10 + 2 = 12！"
+                        tag: "動物園",
+                        scene: "🐘🐘🐘 和 🦒🦒🦒🦒🦒",
+                        sceneDesc: "動物園裡的動物",
+                        q: "動物園有 3 隻大象和 5 隻長頸鹿，一共幾隻？",
+                        answer: "8 隻",
+                        options: ["7 隻", "8 隻", "9 隻", "2 隻"],
+                        explain: "3 + 5 = 8 隻。大象加長頸鹿，總共 8 隻動物。"
                     },
                     {
-                        context: "雞蛋不見了 🥚",
-                        visual: "🥚🥚🥚🥚🥚🥚🥚🥚🥚🥚 - 🍳🍳🍳🍳",
-                        q: "盒子裡有 10 顆雞蛋，媽媽煎蛋用了 4 顆。還剩幾顆？",
+                        tag: "雞蛋問題",
+                        scene: "🥚🥚🥚🥚🥚🥚🥚🥚🥚🥚\n        ↓ 煎蛋 🍳🍳🍳🍳",
+                        sceneDesc: "媽媽在煎蛋",
+                        q: "盒子有 10 顆蛋，煎了 4 顆，還剩幾顆？",
                         answer: "6 顆",
                         options: ["5 顆", "6 顆", "7 顆", "14 顆"],
-                        explanation: "10 - 4 = 6，還剩 6 顆雞蛋。"
+                        explain: "10 - 4 = 6。煎掉 4 顆，還有 6 顆在盒子裡。"
                     },
                     {
-                        context: "圖形配對 🎨",
-                        visual: "⬛⬜⬛⬜ 和 ⭕⭕⭕⭕",
-                        q: "上面有幾個黑色方塊？",
-                        answer: "2 個",
-                        options: ["1 個", "2 個", "3 個", "4 個"],
-                        explanation: "數一數黑色方塊 ⬛：第1個是黑、第2個是白、第3個是黑、第4個是白。黑色有 2 個！"
+                        tag: "存錢筒",
+                        scene: "🐷💰\n原本 7 個 ➕ 爸爸給 5 個",
+                        sceneDesc: "小豬撲滿",
+                        q: "存錢筒有 7 個硬幣，爸爸又給 5 個，現在有幾個？",
+                        answer: "12 個",
+                        options: ["11 個", "12 個", "13 個", "10 個"],
+                        explain: "7 + 5 = 12。可以先湊十：7 + 3 = 10，還剩 2，10 + 2 = 12。"
                     },
                     {
-                        context: "鳥兒飛走了 🐦",
-                        visual: "🌳 上有 🐦🐦🐦🐦🐦🐦🐦🐦 → 💨🐦🐦🐦",
-                        q: "樹上有 8 隻小鳥，飛走了 3 隻。樹上還有幾隻鳥？",
-                        answer: "5 隻",
-                        options: ["4 隻", "5 隻", "6 隻", "11 隻"],
-                        explanation: "8 隻飛走 3 隻，8 - 3 = 5 隻還在樹上。"
+                        tag: "公車問題",
+                        scene: "🚌\n下車 3 人 ⬇️  ⬆️ 上車 5 人",
+                        sceneDesc: "公車到站了",
+                        q: "公車上原本有 8 人，到站後下車 3 人、上車 5 人，現在幾人？",
+                        answer: "10 人",
+                        options: ["9 人", "10 人", "11 人", "6 人"],
+                        explain: "8 - 3 + 5 = 10。先下車變 5 人，再上車變 10 人。"
                     },
                     {
-                        context: "比一比 📏",
-                        visual: "鉛筆 A：▬▬▬▬▬\n鉛筆 B：▬▬▬",
-                        q: "鉛筆 A 長 5 格，鉛筆 B 長 3 格。A 比 B 長幾格？",
-                        answer: "長 2 格",
-                        options: ["長 1 格", "長 2 格", "長 3 格", "長 8 格"],
-                        explanation: "比較長短用減法：5 - 3 = 2，鉛筆 A 比 B 長 2 格。"
-                    },
-                    {
-                        context: "跳格子遊戲 🎮",
-                        visual: "1 → 3 → 5 → 7 → ❓",
-                        q: "按照規律跳格子，下一個要跳到哪裡？",
+                        tag: "跳格子",
+                        scene: "1 → 3 → 5 → 7 → ❓",
+                        sceneDesc: "跳跳跳",
+                        q: "按照規律，下一格是多少？",
                         answer: "9",
                         options: ["8", "9", "10", "11"],
-                        explanation: "每次都跳 2 格：1+2=3, 3+2=5, 5+2=7, 7+2=9。這些都是奇數！"
+                        explain: "每次 +2：1、3、5、7、9。這些都是奇數！"
                     },
                     {
-                        context: "分餅乾給好朋友 🍪",
-                        visual: "🍪🍪🍪🍪🍪🍪🍪🍪🍪",
-                        q: "小美有 9 片餅乾，她給了好朋友 4 片。小美還有幾片？",
+                        tag: "分餅乾",
+                        scene: "🍪🍪🍪🍪🍪🍪🍪🍪🍪\n     ↓ 給朋友 4 片",
+                        sceneDesc: "分享給好朋友",
+                        q: "小美有 9 片餅乾，給朋友 4 片，自己還有幾片？",
                         answer: "5 片",
                         options: ["4 片", "5 片", "6 片", "13 片"],
-                        explanation: "9 - 4 = 5，分給朋友後小美還有 5 片餅乾。"
+                        explain: "9 - 4 = 5。分享後自己還有 5 片餅乾。"
                     }
                 ]
             },
-            // 二年級素養題庫
             2: {
                 name: "二年級",
-                info: ["100 以內加減法應用", "乘法概念與九九乘法", "認識錢幣與付款"],
+                info: ["100 以內加減法", "乘法與九九乘法", "認識錢幣與找零"],
                 timeLimit: 18,
                 questions: [
                     {
-                        context: "便利商店購物 🏪",
-                        visual: "🍫 15元 + 🥤 20元",
-                        q: "小明買了一條巧克力 15 元和一瓶飲料 20 元，要付多少錢？",
+                        tag: "買東西",
+                        scene: "🍫 15元\n🥤 20元\n💰 付錢囉！",
+                        sceneDesc: "便利商店購物",
+                        q: "巧克力 15 元、飲料 20 元，一起買要多少錢？",
                         answer: "35 元",
                         options: ["30 元", "35 元", "40 元", "25 元"],
-                        explanation: "15 + 20 = 35 元。個位 5+0=5，十位 1+2=3，所以是 35 元。"
+                        explain: "15 + 20 = 35 元。個位 5+0=5，十位 1+2=3。"
                     },
                     {
-                        context: "找零錢 💰",
-                        visual: "給老闆 💵50元 → 買 🍦23元",
-                        q: "冰淇淋一支 23 元，小花給老闆 50 元，應該找回多少錢？",
+                        tag: "找零錢",
+                        scene: "🍦 23元\n💵 給老闆 50元\n💰 找錢...",
+                        sceneDesc: "買冰淇淋",
+                        q: "冰淇淋 23 元，給 50 元，要找回多少？",
                         answer: "27 元",
                         options: ["23 元", "27 元", "33 元", "17 元"],
-                        explanation: "50 - 23 = 27 元。可以這樣想：23 + ? = 50，23 + 27 = 50！"
+                        explain: "50 - 23 = 27 元。從 23 數到 50，中間差 27。"
                     },
                     {
-                        context: "雞蛋裝盒 🥚",
-                        visual: "📦📦📦📦📦（每盒 6 顆）",
-                        q: "一盒雞蛋有 6 顆，買 5 盒總共有幾顆雞蛋？",
+                        tag: "乘法應用",
+                        scene: "📦📦📦📦📦\n每盒 6 顆蛋",
+                        sceneDesc: "買雞蛋",
+                        q: "一盒 6 顆蛋，買 5 盒共有幾顆？",
                         answer: "30 顆",
                         options: ["25 顆", "30 顆", "35 顆", "11 顆"],
-                        explanation: "5 盒，每盒 6 顆，就是 5 × 6 = 30 顆。這就是乘法的意思！"
+                        explain: "5 × 6 = 30 顆。五六三十！"
                     },
                     {
-                        context: "教室座位 🪑",
-                        visual: "👤👤👤👤（4人）× 7排",
-                        q: "教室裡每排坐 4 個人，共有 7 排。教室裡有幾個學生？",
+                        tag: "座位排列",
+                        scene: "👤👤👤👤 ← 每排 4 人\n👤👤👤👤\n👤👤👤👤\n（共 7 排）",
+                        sceneDesc: "教室座位",
+                        q: "每排 4 人，共 7 排，教室有幾人？",
                         answer: "28 人",
                         options: ["24 人", "28 人", "32 人", "11 人"],
-                        explanation: "7 排 × 每排 4 人 = 7 × 4 = 28 人。七四二十八！"
+                        explain: "7 × 4 = 28。七四二十八！"
                     },
                     {
-                        context: "存零用錢 🐷",
-                        visual: "原本：💰45元 → 花掉：🍭18元",
-                        q: "小豬撲滿裡有 45 元，買糖果花了 18 元，還剩多少？",
+                        tag: "花錢記錄",
+                        scene: "🐷 存款：45元\n🍭 買糖：18元\n💰 還剩...",
+                        sceneDesc: "零用錢",
+                        q: "存了 45 元，買糖花 18 元，還剩多少？",
                         answer: "27 元",
                         options: ["23 元", "27 元", "33 元", "63 元"],
-                        explanation: "45 - 18 = 27 元。借位算法：15 - 8 = 7，3 - 1 = 2，答案是 27。"
+                        explain: "45 - 18 = 27。借位算：15 - 8 = 7，3 - 1 = 2。"
                     },
                     {
-                        context: "種花比賽 🌷",
-                        visual: "小明：🌷×8朵\n小華：🌷×8朵\n小美：🌷×8朵",
-                        q: "三個人各種了 8 朵花，總共種了幾朵？",
+                        tag: "乘法應用",
+                        scene: "🌷🌷🌷🌷🌷🌷🌷🌷 × 3人",
+                        sceneDesc: "種花比賽",
+                        q: "3 個人各種 8 朵花，共種幾朵？",
                         answer: "24 朵",
                         options: ["16 朵", "24 朵", "32 朵", "11 朵"],
-                        explanation: "3 個人 × 每人 8 朵 = 3 × 8 = 24 朵。三八二十四！"
+                        explain: "3 × 8 = 24 朵。三八二十四！"
                     },
                     {
-                        context: "遊樂園門票 🎢",
-                        visual: "👨‍👩‍👧‍👦 一家四口\n🎫 每張 45 元",
-                        q: "遊樂園門票每張 45 元，一家四口要付多少錢？",
-                        answer: "180 元",
-                        options: ["160 元", "180 元", "200 元", "150 元"],
-                        explanation: "4 × 45 = 180。可以拆成 4×40=160，4×5=20，160+20=180 元。"
-                    },
-                    {
-                        context: "圖書館借書 📚",
-                        visual: "原本：📚📚📚📚📚（5本）\n還了 2 本，又借 4 本",
-                        q: "小明本來借了 5 本書，還了 2 本，又借了 4 本。現在有幾本？",
-                        answer: "7 本",
-                        options: ["6 本", "7 本", "8 本", "9 本"],
-                        explanation: "先算還書：5 - 2 = 3 本，再算借書：3 + 4 = 7 本。"
-                    },
-                    {
-                        context: "比比看誰多 🎈",
-                        visual: "紅氣球：🎈×36 顆\n藍氣球：🎈×48 顆",
-                        q: "藍氣球比紅氣球多幾顆？",
-                        answer: "12 顆",
-                        options: ["10 顆", "12 顆", "14 顆", "84 顆"],
-                        explanation: "48 - 36 = 12 顆。比較多少就是用減法！"
-                    },
-                    {
-                        context: "排排坐吃果果 🍊",
-                        visual: "🍊🍊🍊🍊🍊🍊🍊🍊🍊（9個）\n平分給 3 個人",
-                        q: "9 個橘子平分給 3 個人，每人分到幾個？",
+                        tag: "平分問題",
+                        scene: "🍊🍊🍊🍊🍊🍊🍊🍊🍊\n     ÷ 3 個小朋友",
+                        sceneDesc: "分橘子",
+                        q: "9 個橘子平分給 3 人，每人幾個？",
                         answer: "3 個",
                         options: ["2 個", "3 個", "4 個", "6 個"],
-                        explanation: "9 ÷ 3 = 3 個。把 9 個分成 3 份，每份 3 個。這就是除法！"
+                        explain: "9 ÷ 3 = 3 個。把 9 個分成 3 份，每份 3 個。"
                     },
                     {
-                        context: "文具店買東西 ✏️",
-                        visual: "✏️ 8元/支 × 買 7 支",
-                        q: "鉛筆一支 8 元，買 7 支要多少錢？",
+                        tag: "文具購買",
+                        scene: "✏️ 8元/支\n🛒 買 7 支",
+                        sceneDesc: "買鉛筆",
+                        q: "鉛筆 8 元一支，買 7 支要多少錢？",
                         answer: "56 元",
                         options: ["48 元", "56 元", "64 元", "15 元"],
-                        explanation: "7 × 8 = 56 元。七八五十六！"
+                        explain: "7 × 8 = 56 元。七八五十六！"
                     },
                     {
-                        context: "運動會分組 🏃",
-                        visual: "👥 54 人要分成 6 組",
-                        q: "54 個學生要平均分成 6 組，每組幾人？",
+                        tag: "運動分組",
+                        scene: "👥👥👥👥👥👥\n54 人 ÷ 6 組",
+                        sceneDesc: "體育課分組",
+                        q: "54 人平分成 6 組，每組幾人？",
                         answer: "9 人",
                         options: ["7 人", "8 人", "9 人", "10 人"],
-                        explanation: "54 ÷ 6 = 9 人。想想看：6 × 9 = 54！"
+                        explain: "54 ÷ 6 = 9 人。六九五十四！"
                     },
                     {
-                        context: "農場收雞蛋 🐔",
-                        visual: "早上：🥚32顆\n下午：🥚28顆",
-                        q: "農場早上收了 32 顆蛋，下午收了 28 顆。一天共收幾顆？",
+                        tag: "收集數量",
+                        scene: "早上：🥚×32\n下午：🥚×28",
+                        sceneDesc: "農場收雞蛋",
+                        q: "早上收 32 顆蛋，下午收 28 顆，共收幾顆？",
                         answer: "60 顆",
                         options: ["50 顆", "56 顆", "60 顆", "64 顆"],
-                        explanation: "32 + 28 = 60 顆。個位 2+8=10 要進位！"
+                        explain: "32 + 28 = 60 顆。個位 2+8=10 要進位！"
                     },
                     {
-                        context: "貼紙收集 ⭐",
-                        visual: "一週 7 天，每天得 5 張",
-                        q: "小明每天可以得到 5 張貼紙，一週（7天）可以得到幾張？",
+                        tag: "比較問題",
+                        scene: "🎈紅：36 顆\n🎈藍：48 顆",
+                        sceneDesc: "數氣球",
+                        q: "紅氣球 36 顆，藍氣球 48 顆，藍比紅多幾顆？",
+                        answer: "12 顆",
+                        options: ["10 顆", "12 顆", "14 顆", "84 顆"],
+                        explain: "48 - 36 = 12 顆。比較多少就用減法！"
+                    },
+                    {
+                        tag: "貼紙收集",
+                        scene: "📅 一週 7 天\n⭐ 每天 5 張",
+                        sceneDesc: "集貼紙",
+                        q: "每天得 5 張貼紙，一週可得幾張？",
                         answer: "35 張",
                         options: ["30 張", "35 張", "40 張", "12 張"],
-                        explanation: "7 × 5 = 35 張。七五三十五！"
-                    },
-                    {
-                        context: "買水果 🍎",
-                        visual: "🍎 每顆 9 元\n💰 有 80 元",
-                        q: "蘋果每顆 9 元，小花有 80 元，最多可以買幾顆？",
-                        answer: "8 顆",
-                        options: ["7 顆", "8 顆", "9 顆", "10 顆"],
-                        explanation: "80 ÷ 9 = 8...8，可以買 8 顆，還剩 8 元。9 × 8 = 72，80 - 72 = 8。"
+                        explain: "7 × 5 = 35 張。七五三十五！"
                     }
                 ]
             },
-            // 三年級素養題庫
             3: {
                 name: "三年級",
-                info: ["三位數運算與應用", "時間計算", "長度與重量單位換算"],
+                info: ["三位數加減與乘除", "時間計算", "長度重量換算"],
                 timeLimit: 18,
                 questions: [
                     {
-                        context: "學校旅行 🚌",
-                        visual: "🚌 每車坐 45 人\n👥 全校 236 人",
-                        q: "學校有 236 位學生要去旅行，每輛車坐 45 人，至少需要幾輛車？",
+                        tag: "租車問題",
+                        scene: "🚌 每車 45 人\n👥 全校 236 人",
+                        sceneDesc: "校外教學租車",
+                        q: "236 人去旅行，每車坐 45 人，至少要幾輛車？",
                         answer: "6 輛",
                         options: ["5 輛", "6 輛", "7 輛", "4 輛"],
-                        explanation: "236 ÷ 45 = 5...11，5 輛只能載 225 人，還有 11 人，所以需要 6 輛車！"
+                        explain: "236 ÷ 45 = 5...11，5輛載225人，剩11人還要1輛，共6輛。"
                     },
                     {
-                        context: "看電影時間 🎬",
-                        visual: "開始：🕐 2:30\n片長：1小時45分鐘",
-                        q: "電影 2:30 開始，片長 1 小時 45 分鐘，幾點結束？",
+                        tag: "電影時間",
+                        scene: "🎬 開演：2:30\n⏱️ 片長：1小時45分",
+                        sceneDesc: "看電影",
+                        q: "電影 2:30 開始，片長 1 小時 45 分，幾點結束？",
                         answer: "4:15",
                         options: ["3:45", "4:00", "4:15", "4:30"],
-                        explanation: "2:30 + 1:45 = 3:75，但 75 分要換成 1 小時 15 分，所以是 4:15。"
+                        explain: "2:30 + 1:45，分鐘 30+45=75=1小時15分，答案 4:15。"
                     },
                     {
-                        context: "量身高 📏",
-                        visual: "小明：125 公分\n爸爸：1 公尺 78 公分",
-                        q: "爸爸身高 1 公尺 78 公分，小明 125 公分。爸爸比小明高多少？",
+                        tag: "身高比較",
+                        scene: "👨 爸爸：178 公分\n👦 小明：125 公分",
+                        sceneDesc: "量身高",
+                        q: "爸爸 178 公分，小明 125 公分，爸爸高多少？",
                         answer: "53 公分",
                         options: ["43 公分", "53 公分", "63 公分", "47 公分"],
-                        explanation: "1 公尺 = 100 公分，爸爸是 178 公分。178 - 125 = 53 公分。"
+                        explain: "178 - 125 = 53 公分。"
                     },
                     {
-                        context: "買文具 📝",
-                        visual: "📓 筆記本 35 元 × 8 本\n✏️ 鉛筆 12 元 × 6 支",
-                        q: "買 8 本筆記本（每本 35 元）和 6 支鉛筆（每支 12 元），共要多少錢？",
+                        tag: "購物計算",
+                        scene: "📓 35元 × 8本\n✏️ 12元 × 6支",
+                        sceneDesc: "買文具",
+                        q: "8 本筆記本（每本 35 元）和 6 支鉛筆（每支 12 元），共多少錢？",
                         answer: "352 元",
                         options: ["332 元", "342 元", "352 元", "362 元"],
-                        explanation: "筆記本：8 × 35 = 280 元，鉛筆：6 × 12 = 72 元，280 + 72 = 352 元。"
+                        explain: "35×8=280，12×6=72，280+72=352 元。"
                     },
                     {
-                        context: "水果攤秤重 ⚖️",
-                        visual: "🍊 橘子：2 公斤 400 公克\n🍎 蘋果：1 公斤 850 公克",
-                        q: "橘子和蘋果一共有多重？",
-                        answer: "4 公斤 250 公克",
-                        options: ["3 公斤 250 公克", "4 公斤 150 公克", "4 公斤 250 公克", "4 公斤 350 公克"],
-                        explanation: "公斤：2 + 1 = 3，公克：400 + 850 = 1250 = 1公斤250公克，總共 4 公斤 250 公克。"
+                        tag: "重量相加",
+                        scene: "🍊 2公斤400克\n🍎 1公斤850克",
+                        sceneDesc: "秤水果",
+                        q: "橘子和蘋果一共多重？",
+                        answer: "4 公斤 250 克",
+                        options: ["3公斤250克", "4公斤150克", "4公斤250克", "4公斤350克"],
+                        explain: "400+850=1250克=1公斤250克，2+1+1=4公斤250克。"
                     },
                     {
-                        context: "體育課跑步 🏃",
-                        visual: "操場一圈：200 公尺\n跑了 8 圈",
-                        q: "操場一圈 200 公尺，小明跑了 8 圈，共跑了多少公尺？",
+                        tag: "跑步距離",
+                        scene: "🏃 操場一圈：200 公尺\n🔄 跑了 8 圈",
+                        sceneDesc: "體育課",
+                        q: "操場一圈 200 公尺，跑 8 圈共多少公尺？",
                         answer: "1600 公尺",
                         options: ["1400 公尺", "1600 公尺", "1800 公尺", "2000 公尺"],
-                        explanation: "8 × 200 = 1600 公尺。這等於 1.6 公里喔！"
+                        explain: "8 × 200 = 1600 公尺 = 1.6 公里。"
                     },
                     {
-                        context: "圖書館借書期限 📅",
-                        visual: "借書日：3月15日\n借期：21天",
-                        q: "3 月 15 日借書，可以借 21 天，最晚要在幾月幾日還書？",
+                        tag: "借書期限",
+                        scene: "📅 借書：3月15日\n⏰ 可借：21天",
+                        sceneDesc: "圖書館借書",
+                        q: "3月15日借書，借期21天，最晚哪天還？",
                         answer: "4 月 5 日",
-                        options: ["4 月 3 日", "4 月 4 日", "4 月 5 日", "4 月 6 日"],
-                        explanation: "3月有31天，15+21=36，36-31=5，所以是 4 月 5 日。"
+                        options: ["4月3日", "4月4日", "4月5日", "4月6日"],
+                        explain: "3月有31天，15+21=36，36-31=5，4月5日。"
                     },
                     {
-                        context: "零食分享 🍬",
-                        visual: "🍬 糖果 72 顆\n平分給 8 個小朋友",
-                        q: "72 顆糖果平分給 8 個小朋友，每人分到幾顆？",
+                        tag: "平分問題",
+                        scene: "🍬 72 顆糖果\n÷ 8 個小朋友",
+                        sceneDesc: "分糖果",
+                        q: "72 顆糖果分給 8 人，每人幾顆？",
                         answer: "9 顆",
                         options: ["7 顆", "8 顆", "9 顆", "10 顆"],
-                        explanation: "72 ÷ 8 = 9 顆。八九七十二，所以 72 ÷ 8 = 9。"
+                        explain: "72 ÷ 8 = 9 顆。八九七十二！"
                     },
                     {
-                        context: "坐火車旅行 🚂",
-                        visual: "出發：🕘 9:20\n抵達：🕐 11:05",
-                        q: "火車 9:20 出發，11:05 到達。坐了多久？",
-                        answer: "1 小時 45 分鐘",
-                        options: ["1 小時 35 分鐘", "1 小時 45 分鐘", "1 小時 55 分鐘", "2 小時 15 分鐘"],
-                        explanation: "從 9:20 到 10:20 是 1 小時，10:20 到 11:05 是 45 分鐘，共 1 小時 45 分鐘。"
+                        tag: "火車旅行",
+                        scene: "🚂 出發：9:20\n🏁 抵達：11:05",
+                        sceneDesc: "坐火車",
+                        q: "9:20 出發，11:05 到達，坐了多久？",
+                        answer: "1 小時 45 分",
+                        options: ["1小時35分", "1小時45分", "1小時55分", "2小時15分"],
+                        explain: "9:20 到 10:20 是 1 小時，10:20 到 11:05 是 45 分。"
                     },
                     {
-                        context: "班費計算 💰",
-                        visual: "💰 班費共 1250 元\n支出：📚 456 元 + 🎨 328 元",
-                        q: "班費 1250 元，買書花 456 元、買美術用品 328 元，還剩多少？",
+                        tag: "班費計算",
+                        scene: "💰 班費：1250 元\n📚 買書：456 元\n🎨 美術：328 元",
+                        sceneDesc: "班級支出",
+                        q: "班費 1250 元，買書 456 元、美術 328 元，還剩多少？",
                         answer: "466 元",
                         options: ["456 元", "466 元", "476 元", "486 元"],
-                        explanation: "先算支出：456 + 328 = 784 元，再算剩餘：1250 - 784 = 466 元。"
+                        explain: "456+328=784，1250-784=466 元。"
                     },
                     {
-                        context: "蛋糕店 🎂",
-                        visual: "🎂 每個蛋糕切 8 片\n需要 56 片給客人",
-                        q: "每個蛋糕切成 8 片，要準備 56 片給客人，需要幾個蛋糕？",
+                        tag: "蛋糕切片",
+                        scene: "🎂 每個切 8 片\n🍽️ 需要 56 片",
+                        sceneDesc: "準備蛋糕",
+                        q: "每個蛋糕切 8 片，需要 56 片，要幾個蛋糕？",
                         answer: "7 個",
                         options: ["6 個", "7 個", "8 個", "9 個"],
-                        explanation: "56 ÷ 8 = 7 個蛋糕。八七五十六！"
+                        explain: "56 ÷ 8 = 7 個。八七五十六！"
                     },
                     {
-                        context: "水壺容量 🫗",
-                        visual: "大水壺：2 公升\n小杯子：250 毫升",
-                        q: "一個大水壺裝 2 公升的水，可以倒滿幾個 250 毫升的杯子？",
+                        tag: "倒水問題",
+                        scene: "🫗 大水壺：2 公升\n🥛 小杯子：250 毫升",
+                        sceneDesc: "裝水",
+                        q: "2 公升的水可以倒滿幾個 250 毫升的杯子？",
                         answer: "8 個",
                         options: ["6 個", "7 個", "8 個", "10 個"],
-                        explanation: "2 公升 = 2000 毫升，2000 ÷ 250 = 8 個杯子。"
-                    },
-                    {
-                        context: "計算周長 📐",
-                        visual: "長方形：長 12 公分、寬 8 公分",
-                        q: "一個長方形，長 12 公分、寬 8 公分，周長是多少？",
-                        answer: "40 公分",
-                        options: ["36 公分", "38 公分", "40 公分", "96 公分"],
-                        explanation: "周長 = (長 + 寬) × 2 = (12 + 8) × 2 = 20 × 2 = 40 公分。"
-                    },
-                    {
-                        context: "營養午餐 🍱",
-                        visual: "每份 65 元\n訂 32 份",
-                        q: "營養午餐每份 65 元，全班訂 32 份，要付多少錢？",
-                        answer: "2080 元",
-                        options: ["1950 元", "2080 元", "2180 元", "2000 元"],
-                        explanation: "32 × 65 = 32 × 60 + 32 × 5 = 1920 + 160 = 2080 元。"
-                    },
-                    {
-                        context: "閱讀挑戰 📖",
-                        visual: "📖 一本書 248 頁\n每天看 31 頁",
-                        q: "一本書有 248 頁，小明每天看 31 頁，幾天可以看完？",
-                        answer: "8 天",
-                        options: ["7 天", "8 天", "9 天", "10 天"],
-                        explanation: "248 ÷ 31 = 8 天剛好看完。31 × 8 = 248。"
+                        explain: "2公升=2000毫升，2000÷250=8 個。"
                     }
                 ]
             },
-            // 四年級素養題庫
             4: {
                 name: "四年級",
-                info: ["四則混合運算", "分數基本概念", "面積計算"],
+                info: ["四則混合運算", "分數基本概念", "面積與周長"],
                 timeLimit: 18,
                 questions: [
                     {
-                        context: "披薩派對 🍕",
-                        visual: "🍕 一個披薩切 8 片\n小明吃 3 片，小華吃 2 片",
-                        q: "一個披薩切成 8 等份，小明吃了 3 片，小華吃了 2 片。他們一共吃了這個披薩的幾分之幾？",
+                        tag: "披薩分享",
+                        scene: "🍕 切成 8 片\n小明吃 3 片 🧑\n小華吃 2 片 👧",
+                        sceneDesc: "分披薩",
+                        q: "披薩切 8 片，小明吃 3 片、小華吃 2 片，共吃了幾分之幾？",
                         answer: "8 分之 5",
-                        options: ["8 分之 4", "8 分之 5", "8 分之 6", "5 分之 8"],
-                        explanation: "小明 3/8 + 小華 2/8 = 5/8。同分母分數相加，分子相加就好！"
+                        options: ["8分之4", "8分之5", "8分之6", "5分之8"],
+                        explain: "3/8 + 2/8 = 5/8。同分母分數相加，分子相加。"
                     },
                     {
-                        context: "買飲料算算看 🧋",
-                        visual: "🧋 珍珠奶茶 55 元\n買 3 杯，給 200 元",
-                        q: "珍珠奶茶一杯 55 元，買 3 杯給老闆 200 元，找回多少？",
+                        tag: "購物找零",
+                        scene: "🧋 55元 × 3杯\n💵 付 200 元",
+                        sceneDesc: "買飲料",
+                        q: "奶茶 55 元，買 3 杯給 200 元，找回多少？",
                         answer: "35 元",
                         options: ["25 元", "30 元", "35 元", "45 元"],
-                        explanation: "先算花多少：55 × 3 = 165 元，再算找零：200 - 165 = 35 元。"
+                        explain: "55×3=165 元，200-165=35 元。"
                     },
                     {
-                        context: "教室地板 🏫",
-                        visual: "📐 長 9 公尺、寬 7 公尺",
-                        q: "教室的地板是長方形，長 9 公尺、寬 7 公尺，面積是多少？",
+                        tag: "面積計算",
+                        scene: "📐 長 9 公尺\n📐 寬 7 公尺",
+                        sceneDesc: "教室地板",
+                        q: "教室長 9 公尺、寬 7 公尺，面積是多少？",
                         answer: "63 平方公尺",
                         options: ["56 平方公尺", "63 平方公尺", "72 平方公尺", "32 平方公尺"],
-                        explanation: "長方形面積 = 長 × 寬 = 9 × 7 = 63 平方公尺。"
+                        explain: "面積 = 長 × 寬 = 9 × 7 = 63 平方公尺。"
                     },
                     {
-                        context: "先乘除後加減 🔢",
-                        visual: "算式：24 + 6 × 5 - 10",
-                        q: "24 + 6 × 5 - 10 = ?（記得先乘除後加減！）",
+                        tag: "運算順序",
+                        scene: "🔢 24 + 6 × 5 - 10",
+                        sceneDesc: "先乘除後加減",
+                        q: "24 + 6 × 5 - 10 = ？",
                         answer: "44",
                         options: ["40", "44", "80", "140"],
-                        explanation: "先算 6 × 5 = 30，再算 24 + 30 - 10 = 54 - 10 = 44。"
+                        explain: "先算 6×5=30，再算 24+30-10=44。"
                     },
                     {
-                        context: "蛋糕分享 🎂",
-                        visual: "🎂 一個蛋糕\n小明吃 1/4，小美吃 2/4",
-                        q: "一個蛋糕，小明吃了 1/4，小美吃了 2/4，還剩下幾分之幾？",
+                        tag: "分數減法",
+                        scene: "🎂 一個蛋糕\n吃掉：1/4 + 2/4",
+                        sceneDesc: "蛋糕剩多少",
+                        q: "小明吃 1/4、小美吃 2/4，蛋糕還剩幾分之幾？",
                         answer: "1/4",
                         options: ["1/4", "2/4", "3/4", "1/2"],
-                        explanation: "吃掉 1/4 + 2/4 = 3/4，剩下 4/4 - 3/4 = 1/4。"
+                        explain: "吃掉 1/4+2/4=3/4，剩下 4/4-3/4=1/4。"
                     },
                     {
-                        context: "括號優先 🔢",
-                        visual: "算式：(15 + 9) ÷ 6 × 2",
-                        q: "(15 + 9) ÷ 6 × 2 = ?（括號要先算！）",
+                        tag: "括號運算",
+                        scene: "🔢 (15 + 9) ÷ 6 × 2",
+                        sceneDesc: "括號先算",
+                        q: "(15 + 9) ÷ 6 × 2 = ？",
                         answer: "8",
                         options: ["6", "8", "12", "16"],
-                        explanation: "先算括號：15 + 9 = 24，再算 24 ÷ 6 = 4，最後 4 × 2 = 8。"
+                        explain: "括號先：15+9=24，再算 24÷6=4，4×2=8。"
                     },
                     {
-                        context: "果園種樹 🌳",
-                        visual: "📐 正方形果園\n每邊種 15 棵樹",
-                        q: "正方形果園四邊都種樹，每邊種 15 棵（四個角各算一棵），總共種幾棵？",
-                        answer: "56 棵",
-                        options: ["52 棵", "56 棵", "60 棵", "64 棵"],
-                        explanation: "每邊 15 棵，但角落會重複算。(15-1) × 4 = 14 × 4 = 56 棵。"
+                        tag: "周長計算",
+                        scene: "📐 正方形\n每邊 15 公尺",
+                        sceneDesc: "計算周長",
+                        q: "正方形每邊 15 公尺，周長是多少？",
+                        answer: "60 公尺",
+                        options: ["45 公尺", "60 公尺", "75 公尺", "225 公尺"],
+                        explain: "正方形周長 = 邊長 × 4 = 15 × 4 = 60 公尺。"
                     },
                     {
-                        context: "運動時間 ⏱️",
-                        visual: "🏃 跑步 1/3 小時\n🏊 游泳 2/6 小時",
-                        q: "小明跑步 1/3 小時，游泳 2/6 小時，哪個運動時間比較長？",
+                        tag: "等值分數",
+                        scene: "⏱️ 跑步 1/3 小時\n⏱️ 游泳 2/6 小時",
+                        sceneDesc: "運動時間",
+                        q: "跑步 1/3 小時和游泳 2/6 小時，哪個比較長？",
                         answer: "一樣長",
-                        options: ["跑步", "游泳", "一樣長", "無法比較"],
-                        explanation: "1/3 = 2/6，所以兩個時間一樣長！這叫等值分數。"
+                        options: ["跑步", "游泳", "一樣長", "無法比"],
+                        explain: "1/3 = 2/6，所以一樣長！這叫等值分數。"
                     },
                     {
-                        context: "停車場 🚗",
-                        visual: "📐 長 36 公尺、寬 25 公尺\n每格面積 9 平方公尺",
-                        q: "停車場長 36 公尺、寬 25 公尺，如果每個停車格 9 平方公尺，最多可以有幾格？",
+                        tag: "面積應用",
+                        scene: "📐 長 36 公尺、寬 25 公尺\n🚗 每格 9 平方公尺",
+                        sceneDesc: "停車場",
+                        q: "停車場 36×25 公尺，每格 9 平方公尺，最多幾格？",
                         answer: "100 格",
                         options: ["90 格", "100 格", "110 格", "120 格"],
-                        explanation: "總面積 36 × 25 = 900 平方公尺，900 ÷ 9 = 100 格。"
+                        explain: "36×25=900，900÷9=100 格。"
                     },
                     {
-                        context: "水果禮盒 🎁",
-                        visual: "🍎 蘋果 12 顆 × 45 元/顆\n🍊 橘子 8 顆 × 30 元/顆",
-                        q: "禮盒有 12 顆蘋果（每顆 45 元）和 8 顆橘子（每顆 30 元），這盒多少錢？",
+                        tag: "複合計算",
+                        scene: "🍎 12顆 × 45元\n🍊 8顆 × 30元",
+                        sceneDesc: "水果禮盒",
+                        q: "12 顆蘋果（45元/顆）和 8 顆橘子（30元/顆），共多少錢？",
                         answer: "780 元",
                         options: ["720 元", "750 元", "780 元", "810 元"],
-                        explanation: "蘋果：12 × 45 = 540 元，橘子：8 × 30 = 240 元，540 + 240 = 780 元。"
+                        explain: "12×45=540，8×30=240，540+240=780 元。"
                     },
                     {
-                        context: "巧克力分裝 🍫",
-                        visual: "🍫 一條切成 12 小格\n吃掉 5 格",
-                        q: "巧克力一條有 12 小格，吃了 5 格。吃掉的是全部的多少？（用最簡分數表示）",
-                        answer: "5/12",
-                        options: ["5/12", "5/7", "7/12", "1/2"],
-                        explanation: "吃了 5 格，全部 12 格，所以是 5/12。這已經是最簡分數了！"
-                    },
-                    {
-                        context: "運算順序 🔢",
-                        visual: "100 - 36 ÷ 4 + 8 × 3",
-                        q: "100 - 36 ÷ 4 + 8 × 3 = ?",
+                        tag: "運算順序",
+                        scene: "🔢 100 - 36 ÷ 4 + 8 × 3",
+                        sceneDesc: "混合運算",
+                        q: "100 - 36 ÷ 4 + 8 × 3 = ？",
                         answer: "115",
                         options: ["105", "115", "125", "91"],
-                        explanation: "先算除法和乘法：36÷4=9，8×3=24。再算：100 - 9 + 24 = 115。"
+                        explain: "36÷4=9，8×3=24，100-9+24=115。"
                     },
                     {
-                        context: "瓷磚地板 🏠",
-                        visual: "房間：長 6 公尺、寬 4 公尺\n瓷磚：每塊 50×50 公分",
-                        q: "房間長 6 公尺、寬 4 公尺，要用 50 公分 × 50 公分的瓷磚鋪地，需要幾塊？",
-                        answer: "96 塊",
-                        options: ["48 塊", "96 塊", "192 塊", "24 塊"],
-                        explanation: "長：6公尺=600公分÷50=12塊，寬：4公尺=400公分÷50=8塊，共 12×8=96 塊。"
-                    },
-                    {
-                        context: "比較大小 🔍",
-                        visual: "3/5 和 4/7",
+                        tag: "分數比較",
+                        scene: "🔢 3/5 vs 4/7\n哪個大？",
+                        sceneDesc: "比大小",
                         q: "3/5 和 4/7 哪個比較大？",
-                        answer: "3/5 比較大",
-                        options: ["3/5 比較大", "4/7 比較大", "一樣大", "無法比較"],
-                        explanation: "通分：3/5 = 21/35，4/7 = 20/35，21 > 20，所以 3/5 比較大。"
-                    },
-                    {
-                        context: "折扣計算 🛒",
-                        visual: "原價 450 元，打 8 折",
-                        q: "一件衣服原價 450 元，打 8 折要付多少錢？",
-                        answer: "360 元",
-                        options: ["350 元", "360 元", "370 元", "90 元"],
-                        explanation: "打 8 折 = 付 80% = 付 0.8 倍。450 × 0.8 = 360 元。或 450 × 8 ÷ 10 = 360。"
+                        answer: "3/5 較大",
+                        options: ["3/5 較大", "4/7 較大", "一樣大", "無法比"],
+                        explain: "通分：3/5=21/35，4/7=20/35，21>20。"
                     }
                 ]
             },
-            // 五年級素養題庫
             5: {
                 name: "五年級",
-                info: ["小數與分數運算", "體積與容積", "比率與百分比"],
+                info: ["小數運算", "體積與容積", "比率與百分比"],
                 timeLimit: 20,
                 questions: [
                     {
-                        context: "果汁調配 🧃",
-                        visual: "🍊 柳橙汁 0.75 公升\n🍋 檸檬汁 0.4 公升\n🌊 水 0.35 公升",
-                        q: "調配飲料用了 0.75 公升柳橙汁、0.4 公升檸檬汁和 0.35 公升的水，總共幾公升？",
+                        tag: "小數加法",
+                        scene: "🍊 0.75 公升\n🍋 0.4 公升\n💧 0.35 公升",
+                        sceneDesc: "調果汁",
+                        q: "柳橙汁 0.75L、檸檬汁 0.4L、水 0.35L，共幾公升？",
                         answer: "1.5 公升",
                         options: ["1.4 公升", "1.5 公升", "1.6 公升", "1.05 公升"],
-                        explanation: "0.75 + 0.4 + 0.35 = 1.5 公升。小數點對齊後相加！"
+                        explain: "0.75+0.4+0.35=1.5 公升。小數點對齊相加。"
                     },
                     {
-                        context: "考試成績 📊",
-                        visual: "全班 40 人\n90分以上 12 人",
-                        q: "全班 40 人，90 分以上有 12 人，佔全班的百分之多少？",
+                        tag: "百分比",
+                        scene: "👥 全班 40 人\n✨ 90分以上 12 人",
+                        sceneDesc: "考試成績",
+                        q: "40 人中 12 人 90 分以上，佔百分之多少？",
                         answer: "30%",
                         options: ["25%", "30%", "35%", "40%"],
-                        explanation: "12 ÷ 40 = 0.3 = 30%。也就是 12/40 = 3/10 = 30%。"
+                        explain: "12÷40=0.3=30%。"
                     },
                     {
-                        context: "水族箱容積 🐠",
-                        visual: "📦 長 60 公分、寬 30 公分、高 40 公分",
-                        q: "水族箱長 60 公分、寬 30 公分、高 40 公分，容積是多少公升？",
+                        tag: "體積計算",
+                        scene: "🐠 長 60cm 寬 30cm 高 40cm",
+                        sceneDesc: "水族箱",
+                        q: "水族箱 60×30×40 公分，容積是幾公升？",
                         answer: "72 公升",
                         options: ["64 公升", "72 公升", "80 公升", "720 公升"],
-                        explanation: "60 × 30 × 40 = 72000 立方公分 = 72 公升（1公升 = 1000立方公分）。"
+                        explain: "60×30×40=72000 立方公分=72 公升。"
                     },
                     {
-                        context: "打折後比較 🛍️",
-                        visual: "A店：原價 800，打 75 折\nB店：原價 900，減 250 元",
-                        q: "A 店原價 800 打 75 折，B 店原價 900 減 250 元。哪家比較便宜？",
-                        answer: "A 店（600元）",
-                        options: ["A 店（600元）", "B 店（650元）", "一樣貴", "A 店（750元）"],
-                        explanation: "A店：800 × 0.75 = 600元。B店：900 - 250 = 650元。A店便宜50元！"
+                        tag: "折扣比較",
+                        scene: "🏪 A店：800元 打75折\n🏪 B店：900元 減250元",
+                        sceneDesc: "比價",
+                        q: "A 店 800 元打 75 折，B 店 900 元減 250 元，哪家便宜？",
+                        answer: "A 店 600 元",
+                        options: ["A店 600元", "B店 650元", "一樣", "A店 750元"],
+                        explain: "A：800×0.75=600。B：900-250=650。A較便宜。"
                     },
                     {
-                        context: "蛋糕食譜 🎂",
-                        visual: "原食譜 4 人份\n麵粉 2/3 杯\n要做 6 人份",
-                        q: "食譜說 4 人份需要 2/3 杯麵粉，做 6 人份需要多少杯？",
-                        answer: "1 杯",
-                        options: ["3/4 杯", "5/6 杯", "1 杯", "1又1/3 杯"],
-                        explanation: "6人份是4人份的1.5倍，麵粉也要1.5倍：2/3 × 3/2 = 6/6 = 1 杯。"
+                        tag: "速度計算",
+                        scene: "🚗 ═══════════════ 🏁\n    120 公里  1.5 小時",
+                        sceneDesc: "開車旅行",
+                        q: "開車 120 公里花 1.5 小時，平均時速多少？",
+                        answer: "80 公里/時",
+                        options: ["60 公里/時", "70 公里/時", "80 公里/時", "90 公里/時"],
+                        explain: "速度=距離÷時間=120÷1.5=80 公里/時。"
                     },
                     {
-                        context: "游泳池水量 🏊",
-                        visual: "📦 長 25 公尺、寬 10 公尺、深 1.5 公尺",
-                        q: "游泳池長 25m、寬 10m、平均深 1.5m，可裝多少立方公尺的水？",
-                        answer: "375 立方公尺",
-                        options: ["325 立方公尺", "350 立方公尺", "375 立方公尺", "400 立方公尺"],
-                        explanation: "體積 = 長 × 寬 × 高 = 25 × 10 × 1.5 = 375 立方公尺。"
-                    },
-                    {
-                        context: "存錢利息 🏦",
-                        visual: "💰 存款 5000 元\n📈 年利率 2%",
-                        q: "存款 5000 元，年利率 2%，一年後利息是多少？",
-                        answer: "100 元",
-                        options: ["50 元", "100 元", "200 元", "1000 元"],
-                        explanation: "利息 = 本金 × 利率 = 5000 × 2% = 5000 × 0.02 = 100 元。"
-                    },
-                    {
-                        context: "速度計算 🚗",
-                        visual: "🚗 行駛 120 公里\n⏱️ 花了 1.5 小時",
-                        q: "汽車行駛 120 公里，花了 1.5 小時，平均時速是多少？",
-                        answer: "80 公里/小時",
-                        options: ["60 公里/小時", "70 公里/小時", "80 公里/小時", "90 公里/小時"],
-                        explanation: "速度 = 距離 ÷ 時間 = 120 ÷ 1.5 = 80 公里/小時。"
-                    },
-                    {
-                        context: "打工薪水 💵",
-                        visual: "⏱️ 工作 3.5 小時\n💰 時薪 176 元",
-                        q: "小明打工 3.5 小時，時薪 176 元，可以賺多少錢？",
-                        answer: "616 元",
-                        options: ["596 元", "606 元", "616 元", "626 元"],
-                        explanation: "3.5 × 176 = 616 元。或算 3×176=528，0.5×176=88，528+88=616。"
-                    },
-                    {
-                        context: "比例問題 ⚖️",
-                        visual: "果汁：水 = 2：5\n果汁用 300 毫升",
-                        q: "調飲料的果汁和水比例是 2：5，果汁用了 300 毫升，水要加多少？",
+                        tag: "比例問題",
+                        scene: "🍊 果汁：💧 水\n    2  ：  5",
+                        sceneDesc: "調飲料比例",
+                        q: "果汁:水=2:5，果汁 300 毫升，水要加多少？",
                         answer: "750 毫升",
                         options: ["600 毫升", "700 毫升", "750 毫升", "800 毫升"],
-                        explanation: "果汁:水 = 2:5 = 300:?，300÷2=150，150×5=750 毫升。"
+                        explain: "2:5=300:?，300÷2=150，150×5=750。"
                     },
                     {
-                        context: "分數除法 🔢",
-                        visual: "🍰 蛋糕 3/4 個\n分給 3 個人",
-                        q: "3/4 個蛋糕平分給 3 人，每人分到多少？",
+                        tag: "分數除法",
+                        scene: "🍰 3/4 個蛋糕\n÷ 3 個人",
+                        sceneDesc: "分蛋糕",
+                        q: "3/4 個蛋糕平分給 3 人，每人多少？",
                         answer: "1/4 個",
                         options: ["1/4 個", "1/3 個", "2/4 個", "3/4 個"],
-                        explanation: "3/4 ÷ 3 = 3/4 × 1/3 = 3/12 = 1/4 個。"
+                        explain: "3/4÷3=3/4×1/3=1/4。"
                     },
                     {
-                        context: "正方體積木 🧊",
-                        visual: "🧊 邊長 5 公分的正方體",
-                        q: "邊長 5 公分的正方體積木，體積是多少立方公分？",
+                        tag: "利息計算",
+                        scene: "💰 存款 5000 元\n📈 年利率 2%",
+                        sceneDesc: "銀行存款",
+                        q: "5000 元存一年，利率 2%，利息多少？",
+                        answer: "100 元",
+                        options: ["50 元", "100 元", "200 元", "1000 元"],
+                        explain: "利息=5000×2%=5000×0.02=100 元。"
+                    },
+                    {
+                        tag: "打工薪水",
+                        scene: "⏰ 工作 3.5 小時\n💵 時薪 176 元",
+                        sceneDesc: "計算薪水",
+                        q: "打工 3.5 小時，時薪 176 元，賺多少？",
+                        answer: "616 元",
+                        options: ["596 元", "606 元", "616 元", "626 元"],
+                        explain: "3.5×176=616 元。"
+                    },
+                    {
+                        tag: "體積計算",
+                        scene: "🧊 正方體\n邊長 5 公分",
+                        sceneDesc: "積木體積",
+                        q: "邊長 5 公分的正方體，體積是多少？",
                         answer: "125 立方公分",
                         options: ["100 立方公分", "125 立方公分", "150 立方公分", "25 立方公分"],
-                        explanation: "正方體體積 = 邊長³ = 5 × 5 × 5 = 125 立方公分。"
+                        explain: "正方體體積=邊長³=5×5×5=125。"
                     },
                     {
-                        context: "投籃命中率 🏀",
-                        visual: "🏀 投 25 球\n✅ 進 18 球",
-                        q: "籃球比賽投了 25 球，進了 18 球，命中率是多少？",
+                        tag: "命中率",
+                        scene: "🏀 投 25 球\n✅ 進 18 球",
+                        sceneDesc: "籃球比賽",
+                        q: "投 25 球進 18 球，命中率是多少？",
                         answer: "72%",
                         options: ["68%", "70%", "72%", "75%"],
-                        explanation: "命中率 = 18 ÷ 25 = 0.72 = 72%。"
+                        explain: "18÷25=0.72=72%。"
                     },
                     {
-                        context: "小數乘法 🔢",
-                        visual: "2.4 × 3.5 = ?",
-                        q: "2.4 × 3.5 等於多少？",
+                        tag: "小數乘法",
+                        scene: "🔢 2.4 × 3.5 = ?",
+                        sceneDesc: "計算題",
+                        q: "2.4 × 3.5 = ？",
                         answer: "8.4",
                         options: ["7.4", "8.0", "8.4", "8.9"],
-                        explanation: "2.4 × 3.5 = 24 × 35 ÷ 100 = 840 ÷ 100 = 8.4。"
-                    },
-                    {
-                        context: "人口密度 👥",
-                        visual: "🏙️ 面積 50 平方公里\n👥 人口 200000 人",
-                        q: "某城市面積 50 平方公里，人口 20 萬人，人口密度是多少？",
-                        answer: "4000 人/平方公里",
-                        options: ["2000 人/平方公里", "4000 人/平方公里", "10000 人/平方公里", "400 人/平方公里"],
-                        explanation: "人口密度 = 人口 ÷ 面積 = 200000 ÷ 50 = 4000 人/平方公里。"
+                        explain: "24×35=840，小數共2位，答案 8.4。"
                     }
                 ]
             },
-            // 六年級素養題庫
             6: {
                 name: "六年級",
-                info: ["圓周長與面積", "比與比值應用", "統計與機率初步"],
+                info: ["圓周長與面積", "比與比值", "統計圖表與機率"],
                 timeLimit: 20,
                 questions: [
                     {
-                        context: "披薩大小比較 🍕",
-                        visual: "🍕 A：直徑 24 公分\n🍕 B：直徑 18 公分",
-                        q: "大披薩直徑 24 公分，小披薩直徑 18 公分。大披薩面積是小披薩的幾倍？（可用計算機）",
+                        tag: "圓面積比",
+                        scene: "🍕 大：直徑 24cm\n🍕 小：直徑 18cm",
+                        sceneDesc: "比較披薩大小",
+                        q: "大披薩（直徑24cm）是小披薩（直徑18cm）的幾倍？",
                         answer: "約 1.78 倍",
-                        options: ["約 1.33 倍", "約 1.5 倍", "約 1.78 倍", "約 2 倍"],
-                        explanation: "面積比 = (24/2)²:(18/2)² = 144:81 = 16:9 ≈ 1.78 倍。直徑比的平方！"
+                        options: ["約1.33倍", "約1.5倍", "約1.78倍", "約2倍"],
+                        explain: "面積比=(24/2)²:(18/2)²=144:81≈1.78 倍。"
                     },
                     {
-                        context: "腳踏車輪子 🚲",
-                        visual: "🚲 輪子直徑 70 公分\n🔄 轉了 100 圈",
-                        q: "腳踏車輪子直徑 70 公分，轉 100 圈可以走多遠？（π 取 3.14）",
+                        tag: "圓周長",
+                        scene: "🚲 輪子直徑 70cm\n🔄 轉 100 圈",
+                        sceneDesc: "騎腳踏車",
+                        q: "輪子直徑 70cm，轉 100 圈走多遠？（π=3.14）",
                         answer: "約 220 公尺",
-                        options: ["約 200 公尺", "約 210 公尺", "約 220 公尺", "約 230 公尺"],
-                        explanation: "一圈 = 周長 = π × 直徑 = 3.14 × 70 = 219.8 公分。100圈 = 21980 公分 ≈ 220 公尺。"
+                        options: ["約200公尺", "約210公尺", "約220公尺", "約230公尺"],
+                        explain: "周長=3.14×70=219.8cm，100圈≈220公尺。"
                     },
                     {
-                        context: "營養成分比例 🥗",
-                        visual: "每 100g 含：\n蛋白質 12g、脂肪 8g、碳水 30g",
-                        q: "某食品每 100g 含蛋白質 12g、脂肪 8g、碳水化合物 30g。蛋白質佔營養成分的百分比最接近？",
-                        answer: "24%",
-                        options: ["12%", "20%", "24%", "30%"],
-                        explanation: "營養總量 = 12+8+30 = 50g，蛋白質佔 12÷50 = 0.24 = 24%。"
-                    },
-                    {
-                        context: "圓形花圃 🌷",
-                        visual: "⭕ 半徑 3 公尺的圓形\n🌷 每平方公尺種 5 株",
-                        q: "圓形花圃半徑 3 公尺，每平方公尺種 5 株花，約需要幾株？（π 取 3.14）",
-                        answer: "約 141 株",
-                        options: ["約 94 株", "約 127 株", "約 141 株", "約 157 株"],
-                        explanation: "面積 = π × 3² = 3.14 × 9 = 28.26 平方公尺。28.26 × 5 ≈ 141 株。"
-                    },
-                    {
-                        context: "比例尺地圖 🗺️",
-                        visual: "📏 比例尺 1:25000\n地圖上距離 8 公分",
-                        q: "地圖比例尺 1:25000，圖上 8 公分代表實際多少公里？",
-                        answer: "2 公里",
-                        options: ["0.2 公里", "2 公里", "20 公里", "200 公里"],
-                        explanation: "實際 = 8 × 25000 = 200000 公分 = 2000 公尺 = 2 公里。"
-                    },
-                    {
-                        context: "抽獎機率 🎰",
-                        visual: "🎰 10 張獎券\n🎁 3 張有獎",
-                        q: "箱子裡有 10 張獎券，其中 3 張有獎。抽一張中獎的機率是多少？",
-                        answer: "30%",
-                        options: ["3%", "10%", "30%", "70%"],
-                        explanation: "機率 = 有獎張數 ÷ 總張數 = 3 ÷ 10 = 0.3 = 30%。"
-                    },
-                    {
-                        context: "圓周長計算 ⭕",
-                        visual: "⭕ 直徑 14 公分",
-                        q: "圓的直徑是 14 公分，周長是多少？（π 取 22/7）",
-                        answer: "44 公分",
-                        options: ["42 公分", "44 公分", "46 公分", "48 公分"],
-                        explanation: "周長 = π × 直徑 = 22/7 × 14 = 22 × 2 = 44 公分。"
-                    },
-                    {
-                        context: "成本與售價 💰",
-                        visual: "📦 成本 800 元\n📈 加價 25%",
-                        q: "商品成本 800 元，加價 25% 出售，售價是多少？",
-                        answer: "1000 元",
-                        options: ["900 元", "950 元", "1000 元", "1025 元"],
-                        explanation: "售價 = 成本 × (1 + 25%) = 800 × 1.25 = 1000 元。"
-                    },
-                    {
-                        context: "平均數計算 📊",
-                        visual: "五次考試：85, 92, 78, 88, 97",
-                        q: "小明五次考試成績是 85, 92, 78, 88, 97 分，平均是幾分？",
-                        answer: "88 分",
-                        options: ["86 分", "87 分", "88 分", "89 分"],
-                        explanation: "平均 = (85+92+78+88+97) ÷ 5 = 440 ÷ 5 = 88 分。"
-                    },
-                    {
-                        context: "扇形面積 🥧",
-                        visual: "⭕ 半徑 6 公分\n📐 圓心角 60°",
-                        q: "扇形半徑 6 公分，圓心角 60°，面積是多少？（π 取 3.14）",
-                        answer: "約 18.84 平方公分",
-                        options: ["約 12.56 平方公分", "約 18.84 平方公分", "約 25.12 平方公分", "約 37.68 平方公分"],
-                        explanation: "扇形 = 圓面積 × (角度/360°) = 3.14×36×(60/360) = 113.04×(1/6) ≈ 18.84。"
-                    },
-                    {
-                        context: "速率問題 🚂",
-                        visual: "🚂 甲車時速 80 km\n🚂 乙車時速 60 km\n相距 280 km 相向而行",
-                        q: "甲乙兩車相距 280 公里，相向而行，甲時速 80km、乙時速 60km，幾小時後相遇？",
-                        answer: "2 小時",
-                        options: ["1.5 小時", "2 小時", "2.5 小時", "3 小時"],
-                        explanation: "相向速度 = 80 + 60 = 140 km/h，時間 = 280 ÷ 140 = 2 小時。"
-                    },
-                    {
-                        context: "比值計算 ⚖️",
-                        visual: "男生：女生 = 5：3\n全班 40 人",
-                        q: "班上男女比是 5:3，全班 40 人，男生有幾人？",
+                        tag: "比值應用",
+                        scene: "👦 男生：👧 女生\n   5  ：  3\n全班 40 人",
+                        sceneDesc: "班級人數",
+                        q: "男女比 5:3，全班 40 人，男生有幾人？",
                         answer: "25 人",
                         options: ["20 人", "24 人", "25 人", "30 人"],
-                        explanation: "比值總份數 = 5+3 = 8，每份 40÷8 = 5 人，男生 = 5×5 = 25 人。"
+                        explain: "5+3=8份，40÷8=5，男生=5×5=25人。"
                     },
                     {
-                        context: "柱體體積 📦",
-                        visual: "📦 底面積 45 平方公分\n高 12 公分",
-                        q: "柱體底面積 45 平方公分，高 12 公分，體積是多少？",
+                        tag: "圓面積",
+                        scene: "⭕ 半徑 3 公尺\n🌷 每平方公尺種 5 株",
+                        sceneDesc: "圓形花圃",
+                        q: "半徑 3m 的圓花圃，每平方公尺種 5 株，約需幾株？",
+                        answer: "約 141 株",
+                        options: ["約94株", "約127株", "約141株", "約157株"],
+                        explain: "面積=3.14×9=28.26，28.26×5≈141株。"
+                    },
+                    {
+                        tag: "比例尺",
+                        scene: "🗺️ 比例尺 1:25000\n📏 地圖上 8 公分",
+                        sceneDesc: "看地圖",
+                        q: "比例尺 1:25000，圖上 8cm 代表實際幾公里？",
+                        answer: "2 公里",
+                        options: ["0.2 公里", "2 公里", "20 公里", "200 公里"],
+                        explain: "8×25000=200000cm=2000m=2km。"
+                    },
+                    {
+                        tag: "機率問題",
+                        scene: "🎰 10 張獎券\n🎁 3 張有獎",
+                        sceneDesc: "抽獎",
+                        q: "10 張券有 3 張有獎，抽一張中獎機率是？",
+                        answer: "30%",
+                        options: ["3%", "10%", "30%", "70%"],
+                        explain: "機率=3÷10=0.3=30%。"
+                    },
+                    {
+                        tag: "圓周長",
+                        scene: "⭕ 直徑 14 公分\n（π = 22/7）",
+                        sceneDesc: "計算周長",
+                        q: "直徑 14cm 的圓，周長是多少？",
+                        answer: "44 公分",
+                        options: ["42 公分", "44 公分", "46 公分", "48 公分"],
+                        explain: "周長=22/7×14=44 公分。"
+                    },
+                    {
+                        tag: "售價計算",
+                        scene: "📦 成本 800 元\n📈 加價 25%",
+                        sceneDesc: "計算售價",
+                        q: "成本 800 元，加價 25% 出售，售價多少？",
+                        answer: "1000 元",
+                        options: ["900 元", "950 元", "1000 元", "1025 元"],
+                        explain: "售價=800×(1+25%)=800×1.25=1000元。"
+                    },
+                    {
+                        tag: "平均數",
+                        scene: "📊 85, 92, 78, 88, 97",
+                        sceneDesc: "五次考試成績",
+                        q: "五次成績 85、92、78、88、97，平均幾分？",
+                        answer: "88 分",
+                        options: ["86 分", "87 分", "88 分", "89 分"],
+                        explain: "(85+92+78+88+97)÷5=440÷5=88分。"
+                    },
+                    {
+                        tag: "相遇問題",
+                        scene: "🚂 ← 80km/h  60km/h →🚂\n      相距 280 公里",
+                        sceneDesc: "兩車相向",
+                        q: "甲乙相距 280km，甲時速 80、乙 60，幾小時相遇？",
+                        answer: "2 小時",
+                        options: ["1.5 小時", "2 小時", "2.5 小時", "3 小時"],
+                        explain: "相向速度=80+60=140，280÷140=2小時。"
+                    },
+                    {
+                        tag: "柱體體積",
+                        scene: "📦 底面積 45 cm²\n📏 高 12 cm",
+                        sceneDesc: "計算體積",
+                        q: "底面積 45 平方公分、高 12 公分，體積是？",
                         answer: "540 立方公分",
                         options: ["480 立方公分", "510 立方公分", "540 立方公分", "570 立方公分"],
-                        explanation: "柱體體積 = 底面積 × 高 = 45 × 12 = 540 立方公分。"
+                        explain: "柱體體積=底面積×高=45×12=540。"
                     },
                     {
-                        context: "折扣比較 🛒",
-                        visual: "原價 1200 元\nA方案：打 7 折\nB方案：先減 200，再打 8 折",
-                        q: "原價 1200 元，A 方案打 7 折，B 方案先減 200 再打 8 折。哪個划算？",
-                        answer: "B 方案（800元）",
-                        options: ["A 方案（840元）", "B 方案（800元）", "一樣", "A 方案（800元）"],
-                        explanation: "A：1200×0.7=840元。B：(1200-200)×0.8=1000×0.8=800元。B划算！"
-                    },
-                    {
-                        context: "機率問題 🎲",
-                        visual: "🎲 擲兩顆骰子",
-                        q: "擲兩顆骰子，點數和等於 7 的機率是多少？",
-                        answer: "1/6",
-                        options: ["1/6", "1/9", "1/12", "7/36"],
-                        explanation: "和=7的組合：(1,6)(2,5)(3,4)(4,3)(5,2)(6,1)共6種。總共36種，機率=6/36=1/6。"
+                        tag: "折扣比較",
+                        scene: "👔 原價 1200 元\n🅰️ 打 7 折\n🅱️ 先減 200 再打 8 折",
+                        sceneDesc: "買衣服",
+                        q: "原價 1200，A 打7折、B 先減200再打8折，哪個划算？",
+                        answer: "B 方案 800 元",
+                        options: ["A方案840元", "B方案800元", "一樣", "A方案800元"],
+                        explain: "A：1200×0.7=840。B：(1200-200)×0.8=800。"
                     }
                 ]
             }
         };
 
         // ========== 遊戲狀態 ==========
-        let gameState = {
-            studentName: "",
+        let state = {
+            name: "",
             grade: 1,
-            currentQuestion: 0,
+            qIndex: 0,
             score: 0,
             lives: 3,
             combo: 0,
-            maxCombo: 0,
-            correctCount: 0,
-            wrongCount: 0,
-            wrongAnswers: [],
+            correct: 0,
+            wrong: 0,
+            wrongList: [],
             questions: [],
             timeLeft: 15,
-            timerInterval: null,
-            totalQuestions: 15
+            timer: null,
+            totalQ: 12
         };
 
-        // ========== DOM 元素 ==========
-        const startScreen = document.getElementById('startScreen');
-        const gameScreen = document.getElementById('gameScreen');
-        const resultScreen = document.getElementById('resultScreen');
-        const studentNameInput = document.getElementById('studentName');
-        const gradeSelect = document.getElementById('gradeSelect');
-        const gradeInfo = document.getElementById('gradeInfo');
-        const startBtn = document.getElementById('startBtn');
+        // ========== DOM ==========
+        const $ = id => document.getElementById(id);
+        const screens = {
+            start: $('startScreen'),
+            game: $('gameScreen'),
+            result: $('resultScreen')
+        };
 
-        // ========== 事件監聽 ==========
-        studentNameInput.addEventListener('input', checkStartCondition);
-        gradeSelect.addEventListener('change', () => {
-            updateGradeInfo();
-            checkStartCondition();
-        });
-        startBtn.addEventListener('click', startGame);
-        document.getElementById('homeBtn').addEventListener('click', goHome);
-        document.getElementById('retryBtn').addEventListener('click', retryGame);
+        // ========== 工具函數 ==========
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
 
-        // ========== 函數 ==========
-        function checkStartCondition() {
-            startBtn.disabled = studentNameInput.value.trim() === '';
+        function showScreen(name) {
+            Object.values(screens).forEach(s => s.classList.remove('active'));
+            screens[name].classList.add('active');
         }
 
         function updateGradeInfo() {
-            const grade = parseInt(gradeSelect.value);
-            const info = questionBank[grade].info;
-            gradeInfo.innerHTML = `
-                <h4>📖 ${questionBank[grade].name}學習重點</h4>
-                <ul>
-                    ${info.map(item => `<li>${item}</li>`).join('')}
-                </ul>
+            const g = parseInt($('gradeSelect').value);
+            const info = questionBank[g].info;
+            $('gradeInfo').innerHTML = `
+                <h4>📖 ${questionBank[g].name}學習重點</h4>
+                <ul>${info.map(i => `<li>${i}</li>`).join('')}</ul>
             `;
         }
 
-        function shuffleArray(array) {
-            const newArray = [...array];
-            for (let i = newArray.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-            }
-            return newArray;
-        }
-
+        // ========== 遊戲邏輯 ==========
         function startGame() {
-            const grade = parseInt(gradeSelect.value);
-            const bank = questionBank[grade];
+            const g = parseInt($('gradeSelect').value);
+            const bank = questionBank[g];
             
-            gameState = {
-                studentName: studentNameInput.value.trim(),
-                grade: grade,
-                currentQuestion: 0,
+            state = {
+                name: $('studentName').value.trim(),
+                grade: g,
+                qIndex: 0,
                 score: 0,
                 lives: 3,
                 combo: 0,
-                maxCombo: 0,
-                correctCount: 0,
-                wrongCount: 0,
-                wrongAnswers: [],
-                questions: shuffleArray(bank.questions).slice(0, 15),
+                correct: 0,
+                wrong: 0,
+                wrongList: [],
+                questions: shuffle(bank.questions).slice(0, 12),
                 timeLeft: bank.timeLimit,
-                timerInterval: null,
-                totalQuestions: 15
+                timer: null,
+                totalQ: 12
             };
 
-            startScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
-            resultScreen.style.display = 'none';
-
-            document.getElementById('displayName').textContent = gameState.studentName;
+            $('displayName').textContent = state.name;
+            showScreen('game');
             loadQuestion();
         }
 
         function loadQuestion() {
-            if (gameState.currentQuestion >= gameState.questions.length || gameState.lives <= 0) {
+            if (state.qIndex >= state.questions.length || state.lives <= 0) {
                 endGame();
                 return;
             }
 
-            const q = gameState.questions[gameState.currentQuestion];
-            const bank = questionBank[gameState.grade];
-            
-            document.getElementById('questionNumber').textContent = 
-                `第 ${gameState.currentQuestion + 1} 題 / 共 ${gameState.totalQuestions} 題`;
-            
-            document.getElementById('questionContext').textContent = q.context || '';
-            document.getElementById('questionVisual').textContent = q.visual || '';
-            document.getElementById('question').textContent = q.q;
+            const q = state.questions[state.qIndex];
+            const bank = questionBank[state.grade];
 
-            const optionsContainer = document.getElementById('options');
-            const shuffledOptions = shuffleArray([...q.options]);
-            optionsContainer.innerHTML = shuffledOptions.map(opt => 
-                `<button class="option" onclick="selectAnswer(this, '${opt}')">${opt}</button>`
+            $('questionNumber').textContent = `第 ${state.qIndex + 1} 題 / 共 ${state.totalQ} 題`;
+            $('questionTag').textContent = q.tag;
+            $('sceneVisual').innerHTML = q.scene.replace(/\n/g, '<br>');
+            $('sceneDesc').textContent = q.sceneDesc;
+            $('questionText').textContent = q.q;
+
+            const opts = shuffle([...q.options]);
+            $('options').innerHTML = opts.map(o => 
+                `<button class="option" data-answer="${o}">${o}</button>`
             ).join('');
 
+            document.querySelectorAll('.option').forEach(btn => {
+                btn.addEventListener('click', () => handleAnswer(btn, q));
+            });
+
+            $('feedback').textContent = '';
+            $('feedback').className = 'feedback';
+
             updateStats();
-
-            gameState.timeLeft = bank.timeLimit;
-            updateTimerDisplay();
-            if (gameState.timerInterval) clearInterval(gameState.timerInterval);
-            gameState.timerInterval = setInterval(tick, 1000);
+            startTimer(bank.timeLimit);
         }
 
-        function tick() {
-            gameState.timeLeft--;
-            updateTimerDisplay();
-            
-            if (gameState.timeLeft <= 0) {
-                clearInterval(gameState.timerInterval);
-                handleTimeout();
-            }
-        }
+        function startTimer(seconds) {
+            clearInterval(state.timer);
+            state.timeLeft = seconds;
+            $('timeLeft').textContent = state.timeLeft;
+            $('timerBox').classList.remove('warning');
 
-        function updateTimerDisplay() {
-            const timerEl = document.getElementById('timer');
-            document.getElementById('timeLeft').textContent = gameState.timeLeft;
-            
-            if (gameState.timeLeft <= 5) {
-                timerEl.classList.add('warning');
-            } else {
-                timerEl.classList.remove('warning');
-            }
+            state.timer = setInterval(() => {
+                state.timeLeft--;
+                $('timeLeft').textContent = state.timeLeft;
+
+                if (state.timeLeft <= 5) {
+                    $('timerBox').classList.add('warning');
+                }
+
+                if (state.timeLeft <= 0) {
+                    clearInterval(state.timer);
+                    handleTimeout();
+                }
+            }, 1000);
         }
 
         function handleTimeout() {
-            const q = gameState.questions[gameState.currentQuestion];
-            
-            gameState.wrongAnswers.push({
-                context: q.context,
-                question: q.q,
-                yourAnswer: "⏰ 時間到",
-                correctAnswer: q.answer,
-                explanation: q.explanation
-            });
-            
-            gameState.lives--;
-            gameState.wrongCount++;
-            gameState.combo = 0;
+            const q = state.questions[state.qIndex];
             
             document.querySelectorAll('.option').forEach(btn => {
-                if (btn.textContent === q.answer) {
+                btn.classList.add('disabled');
+                if (btn.dataset.answer === q.answer) {
                     btn.classList.add('correct');
                 }
             });
-            
+
+            state.lives--;
+            state.wrong++;
+            state.combo = 0;
+            state.wrongList.push({
+                q: q.q,
+                tag: q.tag,
+                yours: '⏰ 時間到',
+                correct: q.answer,
+                explain: q.explain
+            });
+
+            $('feedback').textContent = `⏰ 時間到！正確答案：${q.answer}`;
+            $('feedback').className = 'feedback wrong';
+
             updateStats();
-            
-            setTimeout(() => {
-                gameState.currentQuestion++;
-                loadQuestion();
-            }, 1500);
+            setTimeout(nextQuestion, 2000);
         }
 
-        function selectAnswer(element, answer) {
-            clearInterval(gameState.timerInterval);
-            
-            const q = gameState.questions[gameState.currentQuestion];
+        function handleAnswer(btn, q) {
+            clearInterval(state.timer);
+            const answer = btn.dataset.answer;
             const isCorrect = answer === q.answer;
-            
-            document.querySelectorAll('.option').forEach(btn => {
-                btn.style.pointerEvents = 'none';
-                if (btn.textContent === q.answer) {
-                    btn.classList.add('correct');
+
+            document.querySelectorAll('.option').forEach(b => {
+                b.classList.add('disabled');
+                if (b.dataset.answer === q.answer) {
+                    b.classList.add('correct');
                 }
             });
-            
+
             if (isCorrect) {
-                element.classList.add('correct');
-                gameState.combo++;
-                if (gameState.combo > gameState.maxCombo) {
-                    gameState.maxCombo = gameState.combo;
-                }
-                gameState.correctCount++;
-                
-                const baseScore = 100;
-                const timeBonus = gameState.timeLeft * 5;
-                const comboBonus = Math.min(gameState.combo * 15, 75);
-                gameState.score += baseScore + timeBonus + comboBonus;
-                
-                const comboEl = document.getElementById('combo');
-                if (gameState.combo >= 2) {
-                    comboEl.textContent = `🔥 ${gameState.combo} 連擊！+${comboBonus} 獎勵分`;
-                    comboEl.classList.add('active');
-                    setTimeout(() => comboEl.classList.remove('active'), 300);
+                btn.classList.add('correct');
+                state.combo++;
+                state.correct++;
+
+                const base = 100;
+                const timeBonus = state.timeLeft * 5;
+                const comboBonus = Math.min(state.combo * 15, 60);
+                state.score += base + timeBonus + comboBonus;
+
+                if (state.combo >= 2) {
+                    $('feedback').textContent = `🔥 ${state.combo} 連擊！+${comboBonus} 獎勵`;
                 } else {
-                    comboEl.textContent = '✨ 答對了！';
+                    $('feedback').textContent = '✅ 答對了！';
                 }
+                $('feedback').className = 'feedback correct';
             } else {
-                element.classList.add('wrong');
-                gameState.lives--;
-                gameState.wrongCount++;
-                gameState.combo = 0;
-                
-                gameState.wrongAnswers.push({
-                    context: q.context,
-                    question: q.q,
-                    yourAnswer: answer,
-                    correctAnswer: q.answer,
-                    explanation: q.explanation
+                btn.classList.add('wrong');
+                state.lives--;
+                state.wrong++;
+                state.combo = 0;
+
+                state.wrongList.push({
+                    q: q.q,
+                    tag: q.tag,
+                    yours: answer,
+                    correct: q.answer,
+                    explain: q.explain
                 });
-                
-                document.getElementById('combo').textContent = '';
+
+                $('feedback').textContent = `❌ 正確答案：${q.answer}`;
+                $('feedback').className = 'feedback wrong';
             }
-            
+
             updateStats();
-            
-            setTimeout(() => {
-                gameState.currentQuestion++;
-                loadQuestion();
-            }, 1500);
+            setTimeout(nextQuestion, 1800);
+        }
+
+        function nextQuestion() {
+            state.qIndex++;
+            loadQuestion();
         }
 
         function updateStats() {
-            document.getElementById('score').textContent = gameState.score;
-            document.getElementById('lives').textContent = '❤️'.repeat(gameState.lives) + '🖤'.repeat(3 - gameState.lives);
+            $('score').textContent = state.score;
+            $('lives').textContent = '❤️'.repeat(state.lives) + '🖤'.repeat(3 - state.lives);
         }
 
         function endGame() {
-            clearInterval(gameState.timerInterval);
-            
-            gameScreen.style.display = 'none';
-            resultScreen.style.display = 'block';
-            
-            document.getElementById('resultName').textContent = gameState.studentName;
-            document.getElementById('finalScore').textContent = gameState.score;
-            document.getElementById('correctCount').textContent = gameState.correctCount;
-            document.getElementById('wrongCount').textContent = gameState.wrongCount;
-            
-            const total = gameState.correctCount + gameState.wrongCount;
-            const accuracy = total > 0 ? Math.round((gameState.correctCount / total) * 100) : 0;
-            document.getElementById('accuracy').textContent = accuracy + '%';
-            
-            const wrongAnswersDiv = document.getElementById('wrongAnswers');
-            const wrongListDiv = document.getElementById('wrongList');
-            
-            if (gameState.wrongAnswers.length > 0) {
-                wrongAnswersDiv.style.display = 'block';
-                wrongListDiv.innerHTML = gameState.wrongAnswers.map(w => `
+            clearInterval(state.timer);
+            showScreen('result');
+
+            $('resultName').textContent = state.name;
+            $('finalScore').textContent = state.score;
+            $('correctCount').textContent = state.correct;
+            $('wrongCount').textContent = state.wrong;
+
+            const total = state.correct + state.wrong;
+            const acc = total > 0 ? Math.round((state.correct / total) * 100) : 0;
+            $('accuracy').textContent = acc + '%';
+
+            // 結果訊息
+            let msg = '';
+            if (acc >= 90) msg = '🏆 太厲害了！數學小天才！';
+            else if (acc >= 70) msg = '👍 表現不錯！繼續加油！';
+            else if (acc >= 50) msg = '💪 還可以更好，多練習幾次！';
+            else msg = '📚 別灰心，多練習就會進步！';
+            $('resultMessage').textContent = msg;
+
+            // 錯題回顧
+            if (state.wrongList.length > 0) {
+                $('wrongSection').style.display = 'block';
+                $('wrongList').innerHTML = state.wrongList.map(w => `
                     <div class="wrong-item">
-                        <div class="question-text">【${w.context}】${w.question}</div>
-                        <div class="your-answer">❌ 你的答案：${w.yourAnswer}</div>
-                        <div class="correct-answer">✅ 正確答案：${w.correctAnswer}</div>
-                        <div class="explanation">💡 詳解：${w.explanation}</div>
+                        <div class="wrong-q">【${w.tag}】${w.q}</div>
+                        <div class="wrong-answers">
+                            <span class="wrong-your">你的答案：${w.yours}</span><br>
+                            <span class="wrong-correct">正確答案：${w.correct}</span>
+                        </div>
+                        <div class="wrong-explain">💡 ${w.explain}</div>
                     </div>
                 `).join('');
             } else {
-                wrongAnswersDiv.style.display = 'none';
+                $('wrongSection').style.display = 'none';
             }
         }
 
         function goHome() {
-            resultScreen.style.display = 'none';
-            startScreen.style.display = 'block';
+            showScreen('start');
         }
 
-        function retryGame() {
-            resultScreen.style.display = 'none';
+        function retry() {
             startGame();
         }
+
+        // ========== 初始化 ==========
+        $('studentName').addEventListener('input', () => {
+            $('startBtn').disabled = $('studentName').value.trim() === '';
+        });
+
+        $('gradeSelect').addEventListener('change', updateGradeInfo);
+        $('startBtn').addEventListener('click', startGame);
+        $('homeBtn').addEventListener('click', goHome);
+        $('retryBtn').addEventListener('click', retry);
 
         updateGradeInfo();
     </script>
