@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎮 紙娃娃系統 Demo</title>
+  <link rel="stylesheet" href="avatar.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      font-size: 2em;
+      margin-bottom: 30px;
+    }
+    .main-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .main-panel { grid-template-columns: 1fr; }
+    }
+    .preview-card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .avatar-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+      background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 100%);
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+    .controls {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .control-group {
+      margin-bottom: 20px;
+    }
+    .control-group label {
+      display: block;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .option-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .option-btn {
+      padding: 8px 16px;
+      border: 2px solid #E0E0E0;
+      border-radius: 20px;
+      background: white;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .option-btn:hover {
+      border-color: #667eea;
+      transform: scale(1.05);
+    }
+    .option-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: transparent;
+    }
+    .color-btn {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 3px solid #E0E0E0;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .color-btn:hover, .color-btn.active {
+      transform: scale(1.15);
+      border-color: #333;
+    }
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #F5F5F5;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+    h3 {
+      color: #333;
+      margin: 0 0 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .equipment-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .equipment-slot {
+      aspect-ratio: 1;
+      background: #F5F5F5;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .equipment-slot:hover {
+      background: #E3F2FD;
+      border-color: #2196F3;
+    }
+    .equipment-slot.active {
+      background: #E8F5E9;
+      border-color: #4CAF50;
+    }
+    .equipment-slot svg {
+      width: 50px;
+      height: 50px;
+    }
+    .random-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s;
+      margin-top: 20px;
+    }
+    .random-btn:hover {
+      transform: scale(1.02);
+    }
+    .section-title {
+      font-size: 14px;
+      color: #666;
+      margin: 20px 0 10px 0;
+      border-bottom: 1px solid #EEE;
+      padding-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 紙娃娃系統 Demo</h1>
+    
+    <div class="main-panel">
+      <!-- 預覽區 -->
+      <div class="preview-card">
+        <div class="avatar-display" id="avatarDisplay">
+          <!-- Avatar 會渲染在這裡 -->
+        </div>
+        <div class="stats-bar">
+          <div class="stat">⚡ 能力值: <span id="totalPower">0</span></div>
+        </div>
+      </div>
+      
+      <!-- 控制區 -->
+      <div class="controls">
+        <h3>👤 外觀設定</h3>
+        
+        <!-- 膚色 -->
+        <div class="control-group">
+          <label>膚色</label>
+          <div class="option-buttons" id="skinOptions">
+            <button class="color-btn" data-skin="1" style="background: #FFE4C4" title="淺膚色"></button>
+            <button class="color-btn" data-skin="2" style="background: #F5D5B8" title="自然膚色"></button>
+            <button class="color-btn" data-skin="3" style="background: #DEB887" title="小麥色"></button>
+            <button class="color-btn" data-skin="4" style="background: #C68642" title="健康膚色"></button>
+            <button class="color-btn" data-skin="5" style="background: #8D5524" title="深膚色"></button>
+          </div>
+        </div>
+        
+        <!-- 髮型 -->
+        <div class="control-group">
+          <label>髮型</label>
+          <div class="option-buttons" id="hairOptions">
+            <button class="option-btn" data-hair="1">短髮</button>
+            <button class="option-btn" data-hair="2">中長髮</button>
+            <button class="option-btn" data-hair="3">長髮</button>
+            <button class="option-btn" data-hair="4">馬尾</button>
+            <button class="option-btn" data-hair="5">雙馬尾</button>
+            <button class="option-btn" data-hair="6">刺蝟頭</button>
+            <button class="option-btn" data-hair="7">捲髮</button>
+            <button class="option-btn" data-hair="8">鮑伯頭</button>
+          </div>
+        </div>
+        
+        <!-- 髮色 -->
+        <div class="control-group">
+          <label>髮色</label>
+          <div class="option-buttons" id="hairColorOptions">
+            <button class="color-btn" data-haircolor="1" style="background: #2C1810" title="黑色"></button>
+            <button class="color-btn" data-haircolor="2" style="background: #4A3728" title="深棕"></button>
+            <button class="color-btn" data-haircolor="3" style="background: #8B4513" title="棕色"></button>
+            <button class="color-btn" data-haircolor="4" style="background: #DAA520" title="金色"></button>
+            <button class="color-btn" data-haircolor="5" style="background: #CD853F" title="淺棕"></button>
+            <button class="color-btn" data-haircolor="6" style="background: #FF6B6B" title="粉紅"></button>
+          </div>
+        </div>
+        
+        <!-- 眼睛 -->
+        <div class="control-group">
+          <label>眼睛</label>
+          <div class="option-buttons" id="eyeOptions">
+            <button class="option-btn" data-eyes="1">圓眼 👀</button>
+            <button class="option-btn" data-eyes="2">橢圓眼</button>
+            <button class="option-btn" data-eyes="3">開心眼 😊</button>
+            <button class="option-btn" data-eyes="4">星星眼 ⭐</button>
+          </div>
+        </div>
+        
+        <!-- 嘴巴 -->
+        <div class="control-group">
+          <label>嘴巴</label>
+          <div class="option-buttons" id="mouthOptions">
+            <button class="option-btn" data-mouth="1">微笑 😊</button>
+            <button class="option-btn" data-mouth="2">大笑 😄</button>
+            <button class="option-btn" data-mouth="3">驚訝 😮</button>
+            <button class="option-btn" data-mouth="4">貓嘴 :3</button>
+          </div>
+        </div>
+        
+        <div class="section-title">🎒 裝備</div>
+        
+        <!-- 裝備選擇 -->
+        <div class="control-group">
+          <label>頭飾</label>
+          <div class="equipment-grid" id="headwearGrid"></div>
+        </div>
+        
+        <div class="control-group">
+          <label>上衣</label>
+          <div class="equipment-grid" id="topGrid"></div>
+        </div>
+        
+        <div class="control-group">
+          <label>褲子/裙子</label>
+          <div class="equipment-grid" id="bottomGrid"></div>
+        </div>
+        
+        <div class="control-group">
+          <label>鞋子</label>
+          <div class="equipment-grid" id="shoesGrid"></div>
+        </div>
+        
+        <div class="control-group">
+          <label>配件</label>
+          <div class="equipment-grid" id="accessoryGrid"></div>
+        </div>
+        
+        <button class="random-btn" onclick="randomize()">🎲 隨機角色</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="equipment.js"></script>
+  <script src="avatar-renderer.js"></script>
+  <script>
+    // 當前設定
+    let currentConfig = {
+      skin: 1,
+      hair: 1,
+      hairColor: 1,
+      eyes: 1,
+      mouth: 1,
+      equipment: {}
+    };
+    
+    // 更新顯示
+    function updateAvatar() {
+      const display = document.getElementById('avatarDisplay');
+      display.innerHTML = renderAvatar(currentConfig, { width: 250, height: 350, animated: true });
+      
+      // 計算能力值
+      const ids = Object.values(currentConfig.equipment).filter(Boolean);
+      const power = calculateTotalPower(ids);
+      document.getElementById('totalPower').textContent = power;
+    }
+    
+    // 設置選項按鈕點擊
+    function setupOptionButtons() {
+      // 膚色
+      document.querySelectorAll('[data-skin]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentConfig.skin = parseInt(btn.dataset.skin);
+          updateActive('[data-skin]', btn);
+          updateAvatar();
+        });
+      });
+      
+      // 髮型
+      document.querySelectorAll('[data-hair]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentConfig.hair = parseInt(btn.dataset.hair);
+          updateActive('[data-hair]', btn);
+          updateAvatar();
+        });
+      });
+      
+      // 髮色
+      document.querySelectorAll('[data-haircolor]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentConfig.hairColor = parseInt(btn.dataset.haircolor);
+          updateActive('[data-haircolor]', btn);
+          updateAvatar();
+        });
+      });
+      
+      // 眼睛
+      document.querySelectorAll('[data-eyes]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentConfig.eyes = parseInt(btn.dataset.eyes);
+          updateActive('[data-eyes]', btn);
+          updateAvatar();
+        });
+      });
+      
+      // 嘴巴
+      document.querySelectorAll('[data-mouth]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentConfig.mouth = parseInt(btn.dataset.mouth);
+          updateActive('[data-mouth]', btn);
+          updateAvatar();
+        });
+      });
+    }
+    
+    // 更新 active 狀態
+    function updateActive(selector, activeBtn) {
+      document.querySelectorAll(selector).forEach(b => b.classList.remove('active'));
+      activeBtn.classList.add('active');
+    }
+    
+    // 生成裝備格子
+    function setupEquipmentGrid() {
+      const categories = ['headwear', 'top', 'bottom', 'shoes', 'accessory'];
+      const gridIds = ['headwearGrid', 'topGrid', 'bottomGrid', 'shoesGrid', 'accessoryGrid'];
+      
+      categories.forEach((cat, i) => {
+        const grid = document.getElementById(gridIds[i]);
+        if (!grid) return;
+        
+        // 添加「無」選項
+        const noneSlot = document.createElement('div');
+        noneSlot.className = 'equipment-slot active';
+        noneSlot.innerHTML = '❌';
+        noneSlot.title = '不穿戴';
+        noneSlot.addEventListener('click', () => {
+          currentConfig.equipment[cat] = null;
+          grid.querySelectorAll('.equipment-slot').forEach(s => s.classList.remove('active'));
+          noneSlot.classList.add('active');
+          updateAvatar();
+        });
+        grid.appendChild(noneSlot);
+        
+        // 添加裝備選項
+        EQUIPMENT[cat].forEach(item => {
+          const slot = document.createElement('div');
+          slot.className = 'equipment-slot';
+          slot.title = `${item.name} (⚡${item.power})`;
+          
+          // 創建預覽 SVG
+          slot.innerHTML = `<svg viewBox="0 0 200 280">${item.svg}</svg>`;
+          
+          slot.addEventListener('click', () => {
+            currentConfig.equipment[cat] = item.id;
+            grid.querySelectorAll('.equipment-slot').forEach(s => s.classList.remove('active'));
+            slot.classList.add('active');
+            updateAvatar();
+          });
+          
+          grid.appendChild(slot);
+        });
+      });
+    }
+    
+    // 隨機化
+    function randomize() {
+      currentConfig = randomAvatarConfig();
+      
+      // 隨機裝備
+      const categories = ['headwear', 'top', 'bottom', 'shoes', 'accessory'];
+      categories.forEach(cat => {
+        if (Math.random() > 0.3) {
+          const items = EQUIPMENT[cat];
+          currentConfig.equipment[cat] = items[Math.floor(Math.random() * items.length)].id;
+        }
+      });
+      
+      // 更新 UI
+      updateAllActiveStates();
+      updateAvatar();
+    }
+    
+    // 更新所有按鈕狀態
+    function updateAllActiveStates() {
+      // 膚色
+      document.querySelectorAll('[data-skin]').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.skin) === currentConfig.skin);
+      });
+      
+      // 髮型
+      document.querySelectorAll('[data-hair]').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.hair) === currentConfig.hair);
+      });
+      
+      // 髮色
+      document.querySelectorAll('[data-haircolor]').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.haircolor) === currentConfig.hairColor);
+      });
+      
+      // 眼睛
+      document.querySelectorAll('[data-eyes]').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.eyes) === currentConfig.eyes);
+      });
+      
+      // 嘴巴
+      document.querySelectorAll('[data-mouth]').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.mouth) === currentConfig.mouth);
+      });
+      
+      // 裝備
+      const gridIds = ['headwearGrid', 'topGrid', 'bottomGrid', 'shoesGrid', 'accessoryGrid'];
+      const categories = ['headwear', 'top', 'bottom', 'shoes', 'accessory'];
+      
+      categories.forEach((cat, i) => {
+        const grid = document.getElementById(gridIds[i]);
+        if (!grid) return;
+        
+        const slots = grid.querySelectorAll('.equipment-slot');
+        const equipped = currentConfig.equipment[cat];
+        
+        slots.forEach((slot, j) => {
+          if (j === 0) {
+            slot.classList.toggle('active', !equipped);
+          } else {
+            const item = EQUIPMENT[cat][j - 1];
+            slot.classList.toggle('active', item && item.id === equipped);
+          }
+        });
+      });
+    }
+    
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      setupOptionButtons();
+      setupEquipmentGrid();
+      
+      // 設置初始 active 狀態
+      document.querySelector('[data-skin="1"]').classList.add('active');
+      document.querySelector('[data-hair="1"]').classList.add('active');
+      document.querySelector('[data-haircolor="1"]').classList.add('active');
+      document.querySelector('[data-eyes="1"]').classList.add('active');
+      document.querySelector('[data-mouth="1"]').classList.add('active');
+      
+      updateAvatar();
+    });
+  </script>
+</body>
+</html>

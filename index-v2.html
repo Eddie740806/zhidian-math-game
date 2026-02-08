@@ -610,6 +610,82 @@
             font-weight: bold;
             font-size: 0.95rem;
         }
+    
+        .shop-tab {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: white;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .shop-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        .shop-item {
+            background: white;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .shop-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        .shop-item.owned {
+            background: #f0fff0;
+            border-color: #28a745;
+        }
+        .shop-item .item-emoji {
+            font-size: 2rem;
+            margin-bottom: 4px;
+        }
+        .shop-item .item-name {
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #333;
+        }
+        .shop-item .item-power {
+            font-size: 0.75rem;
+            color: #e74c3c;
+            margin: 4px 0;
+        }
+        .shop-item .item-price {
+            font-size: 0.8rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .shop-item .buy-btn {
+            margin-top: 8px;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .shop-item .buy-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .equipped-slot {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+        .equipped-slot .slot-emoji {
+            font-size: 1.5rem;
+        }
+
     </style>
 </head>
 <body>
@@ -836,6 +912,82 @@
         </div>
 
         
+        
+        <!-- ========== 裝扮畫面 ========== -->
+        <div class="screen" id="avatarScreen">
+            <div class="header">
+                <h1>👔 我的裝扮</h1>
+                <div class="subtitle">打造專屬角色！</div>
+            </div>
+            <div class="content">
+                <!-- 角色預覽 -->
+                <div style="text-align:center;padding:20px;background:linear-gradient(135deg,#f0f4ff,#fff5f8);border-radius:16px;margin-bottom:16px;">
+                    <div style="font-size:4rem;" id="avatarPreview">👤</div>
+                    <div style="font-size:1.5rem;font-weight:bold;color:#e74c3c;margin-top:8px;">
+                        ⚔️ <span id="avatarPower">10</span> 戰鬥力
+                    </div>
+                </div>
+                
+                <!-- 已裝備 -->
+                <div style="margin-bottom:16px;">
+                    <h3 style="font-size:0.9rem;color:#666;margin-bottom:8px;">已裝備</h3>
+                    <div id="equippedList" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+                        <!-- 動態生成 -->
+                    </div>
+                </div>
+                
+                <!-- 角色外觀設定 -->
+                <div style="margin-bottom:16px;">
+                    <h3 style="font-size:0.9rem;color:#666;margin-bottom:8px;">基礎外觀</h3>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;" id="avatarOptions">
+                        <!-- 動態生成 -->
+                    </div>
+                </div>
+                
+                <button class="btn" id="saveAvatarBtn">💾 儲存角色</button>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item" data-nav="home"><div class="nav-icon">🏠</div><div>首頁</div></div>
+                <div class="nav-item active" data-nav="avatar"><div class="nav-icon">👔</div><div>裝扮</div></div>
+                <div class="nav-item" data-nav="shop"><div class="nav-icon">🛒</div><div>商店</div></div>
+                <div class="nav-item" data-nav="leaderboard"><div class="nav-icon">🏆</div><div>排行榜</div></div>
+                <div class="nav-item" data-nav="profile"><div class="nav-icon">👤</div><div>我的</div></div>
+            </div>
+        </div>
+
+        <!-- ========== 商店畫面 ========== -->
+        <div class="screen" id="shopScreen">
+            <div class="header">
+                <h1>🛒 裝備商店</h1>
+                <div style="background:rgba(255,255,255,0.2);padding:6px 14px;border-radius:20px;margin-top:8px;">
+                    💰 <span id="shopPoints">0</span> 積分
+                </div>
+            </div>
+            <div class="content">
+                <!-- 分類標籤 -->
+                <div style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:8px;">
+                    <button class="shop-tab active" data-slot="headwear">頭飾</button>
+                    <button class="shop-tab" data-slot="top">上衣</button>
+                    <button class="shop-tab" data-slot="bottom">褲子</button>
+                    <button class="shop-tab" data-slot="shoes">鞋子</button>
+                    <button class="shop-tab" data-slot="weapon">武器</button>
+                    <button class="shop-tab" data-slot="accessory">配件</button>
+                </div>
+                
+                <!-- 商品列表 -->
+                <div id="shopItems" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+                    <!-- 動態生成 -->
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item" data-nav="home"><div class="nav-icon">🏠</div><div>首頁</div></div>
+                <div class="nav-item" data-nav="avatar"><div class="nav-icon">👔</div><div>裝扮</div></div>
+                <div class="nav-item active" data-nav="shop"><div class="nav-icon">🛒</div><div>商店</div></div>
+                <div class="nav-item" data-nav="leaderboard"><div class="nav-icon">🏆</div><div>排行榜</div></div>
+                <div class="nav-item" data-nav="profile"><div class="nav-icon">👤</div><div>我的</div></div>
+            </div>
+        </div>
+
         <!-- ========== 個人資料畫面 ========== -->
         <div class="screen" id="profileScreen">
             <div class="header">
@@ -1033,6 +1185,202 @@
         };
 
         
+        
+        // ========== 裝備資料庫 ==========
+const EQUIPMENT = {
+    // 頭飾
+    headwear: [
+        { id: 'hw1', name: '學生帽', price: 100, power: 10, emoji: '🎓' },
+        { id: 'hw2', name: '皇冠', price: 300, power: 25, emoji: '👑' },
+        { id: 'hw3', name: '兔耳朵', price: 200, power: 15, emoji: '🐰' },
+        { id: 'hw4', name: '太陽帽', price: 150, power: 12, emoji: '🧢' },
+        { id: 'hw5', name: '魔法帽', price: 500, power: 50, emoji: '🎩' },
+    ],
+    
+    // 上衣
+    top: [
+        { id: 'tp1', name: '學生服', price: 150, power: 20, emoji: '👔' },
+        { id: 'tp2', name: '超人披風', price: 400, power: 40, emoji: '🦸' },
+        { id: 'tp3', name: '運動衣', price: 200, power: 25, emoji: '🎽' },
+        { id: 'tp4', name: '盔甲', price: 600, power: 60, emoji: '🛡️' },
+        { id: 'tp5', name: '魔法袍', price: 800, power: 80, emoji: '🧙' },
+    ],
+    
+    // 褲子
+    bottom: [
+        { id: 'bt1', name: '學生褲', price: 120, power: 15, emoji: '👖' },
+        { id: 'bt2', name: '運動褲', price: 180, power: 20, emoji: '🩳' },
+        { id: 'bt3', name: '牛仔褲', price: 250, power: 30, emoji: '👖' },
+        { id: 'bt4', name: '盔甲腿', price: 450, power: 45, emoji: '🦿' },
+        { id: 'bt5', name: '魔法裙', price: 550, power: 55, emoji: '👗' },
+    ],
+    
+    // 鞋子
+    shoes: [
+        { id: 'sh1', name: '布鞋', price: 80, power: 10, emoji: '👟' },
+        { id: 'sh2', name: '運動鞋', price: 150, power: 18, emoji: '👟' },
+        { id: 'sh3', name: '皮鞋', price: 200, power: 22, emoji: '👞' },
+        { id: 'sh4', name: '戰靴', price: 350, power: 35, emoji: '🥾' },
+        { id: 'sh5', name: '飛行鞋', price: 500, power: 50, emoji: '👠' },
+    ],
+    
+    // 武器
+    weapon: [
+        { id: 'wp1', name: '木劍', price: 200, power: 30, emoji: '🗡️' },
+        { id: 'wp2', name: '魔法杖', price: 400, power: 50, emoji: '🪄' },
+        { id: 'wp3', name: '弓箭', price: 350, power: 45, emoji: '🏹' },
+        { id: 'wp4', name: '雷神之錘', price: 700, power: 80, emoji: '🔨' },
+        { id: 'wp5', name: '傳說之劍', price: 1000, power: 100, emoji: '⚔️' },
+    ],
+    
+    // 配件
+    accessory: [
+        { id: 'ac1', name: '眼鏡', price: 50, power: 5, emoji: '👓' },
+        { id: 'ac2', name: '項鍊', price: 120, power: 12, emoji: '📿' },
+        { id: 'ac3', name: '手錶', price: 180, power: 18, emoji: '⌚' },
+        { id: 'ac4', name: '魔法戒指', price: 300, power: 25, emoji: '💍' },
+        { id: 'ac5', name: '翅膀', price: 600, power: 40, emoji: '🪽' },
+    ]
+};
+
+// 裝備部位中文名稱
+const SLOT_NAMES = {
+    headwear: '頭飾',
+    top: '上衣',
+    bottom: '褲子',
+    shoes: '鞋子',
+    weapon: '武器',
+    accessory: '配件'
+};
+
+// 計算總戰鬥力
+function calculateCombatPower(equippedItems) {
+    let totalPower = 10; // 基礎戰鬥力
+    
+    for (const slot in equippedItems) {
+        const itemId = equippedItems[slot];
+        if (itemId && EQUIPMENT[slot]) {
+            const item = EQUIPMENT[slot].find(i => i.id === itemId);
+            if (item) {
+                totalPower += item.power;
+            }
+        }
+    }
+    
+    return totalPower;
+}
+
+// 取得裝備資訊
+function getEquipmentById(slot, itemId) {
+    if (EQUIPMENT[slot]) {
+        return EQUIPMENT[slot].find(i => i.id === itemId);
+    }
+    return null;
+}
+
+        
+        // ========== 紙娃娃外觀選項 ==========
+
+const AVATAR_OPTIONS = {
+    // 膚色
+    skinTone: [
+        { id: 'skin1', name: '白皙', color: '#FFE4C4' },
+        { id: 'skin2', name: '自然', color: '#F5DEB3' },
+        { id: 'skin3', name: '小麥', color: '#DEB887' },
+        { id: 'skin4', name: '健康', color: '#D2B48C' },
+        { id: 'skin5', name: '古銅', color: '#BC8F8F' },
+    ],
+    
+    // 髮型
+    hairStyle: [
+        { id: 'hair1', name: '短髮', emoji: '💇' },
+        { id: 'hair2', name: '長髮', emoji: '💇‍♀️' },
+        { id: 'hair3', name: '馬尾', emoji: '👧' },
+        { id: 'hair4', name: '捲髮', emoji: '👨‍🦱' },
+        { id: 'hair5', name: '雙馬尾', emoji: '👩' },
+        { id: 'hair6', name: '平頭', emoji: '👦' },
+        { id: 'hair7', name: '爆炸頭', emoji: '🧑‍🦱' },
+        { id: 'hair8', name: '光頭', emoji: '🧑‍🦲' },
+    ],
+    
+    // 髮色
+    hairColor: [
+        { id: 'hc1', name: '黑色', color: '#1a1a1a' },
+        { id: 'hc2', name: '棕色', color: '#8B4513' },
+        { id: 'hc3', name: '金色', color: '#FFD700' },
+        { id: 'hc4', name: '紅色', color: '#DC143C' },
+        { id: 'hc5', name: '藍色', color: '#4169E1' },
+        { id: 'hc6', name: '紫色', color: '#9932CC' },
+    ],
+    
+    // 眼睛
+    eyes: [
+        { id: 'eye1', name: '圓眼', emoji: '👀' },
+        { id: 'eye2', name: '笑眼', emoji: '😊' },
+        { id: 'eye3', name: '酷眼', emoji: '😎' },
+        { id: 'eye4', name: '星星眼', emoji: '🤩' },
+    ],
+    
+    // 嘴巴/表情
+    mouth: [
+        { id: 'mouth1', name: '微笑', emoji: '😊' },
+        { id: 'mouth2', name: '開心', emoji: '😄' },
+        { id: 'mouth3', name: '酷酷', emoji: '😏' },
+        { id: 'mouth4', name: '驚訝', emoji: '😮' },
+    ]
+};
+
+// 預設角色（快速選擇）
+const PRESET_AVATARS = [
+    {
+        id: 'preset1',
+        name: '陽光男孩',
+        config: { skinTone: 'skin2', hairStyle: 'hair1', hairColor: 'hc1', eyes: 'eye1', mouth: 'mouth2' }
+    },
+    {
+        id: 'preset2', 
+        name: '可愛女孩',
+        config: { skinTone: 'skin1', hairStyle: 'hair3', hairColor: 'hc2', eyes: 'eye2', mouth: 'mouth1' }
+    },
+    {
+        id: 'preset3',
+        name: '酷酷少年',
+        config: { skinTone: 'skin3', hairStyle: 'hair4', hairColor: 'hc1', eyes: 'eye3', mouth: 'mouth3' }
+    },
+    {
+        id: 'preset4',
+        name: '夢幻少女',
+        config: { skinTone: 'skin1', hairStyle: 'hair5', hairColor: 'hc5', eyes: 'eye4', mouth: 'mouth1' }
+    },
+    {
+        id: 'preset5',
+        name: '運動達人',
+        config: { skinTone: 'skin4', hairStyle: 'hair6', hairColor: 'hc1', eyes: 'eye1', mouth: 'mouth2' }
+    }
+];
+
+// 渲染角色（簡化版，用 emoji 組合）
+function renderAvatarEmoji(avatarConfig, equippedItems) {
+    // 基礎角色用 emoji 表示
+    const hairEmoji = AVATAR_OPTIONS.hairStyle.find(h => h.id === avatarConfig?.hairStyle)?.emoji || '👤';
+    
+    // 裝備 emoji
+    let equipEmojis = '';
+    if (equippedItems) {
+        if (equippedItems.headwear) {
+            const item = EQUIPMENT.headwear.find(i => i.id === equippedItems.headwear);
+            if (item) equipEmojis += item.emoji;
+        }
+        if (equippedItems.weapon) {
+            const item = EQUIPMENT.weapon.find(i => i.id === equippedItems.weapon);
+            if (item) equipEmojis += item.emoji;
+        }
+    }
+    
+    return hairEmoji + (equipEmojis || '');
+}
+
+
         // ========== 年級積分倍率 ==========
         const GRADE_MULTIPLIER = {
             1: 1.0,
@@ -1140,6 +1488,23 @@
             item.addEventListener('click', () => {
                 const nav = item.dataset.nav;
                 if (nav === 'home') showScreen('menuScreen');
+                
+                else if (nav === 'avatar') {
+                    if (currentUser.isGuest) {
+                        alert('請先登入或註冊！');
+                        showScreen('authScreen');
+                    } else {
+                        showAvatarScreen();
+                    }
+                }
+                else if (nav === 'shop') {
+                    if (currentUser.isGuest) {
+                        alert('請先登入或註冊！');
+                        showScreen('authScreen');
+                    } else {
+                        showShopScreen('headwear');
+                    }
+                }
                 else if (nav === 'leaderboard') {
                     showScreen('leaderboardScreen');
                     loadLeaderboard();
@@ -1343,6 +1708,189 @@
         }
 
         
+        
+        // ========== 商店功能 ==========
+        let currentShopSlot = 'headwear';
+        
+        function showShopScreen(slot) {
+            currentShopSlot = slot;
+            showScreen('shopScreen');
+            updateShopDisplay();
+            
+            // 更新標籤狀態
+            document.querySelectorAll('.shop-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.slot === slot);
+            });
+        }
+        
+        function updateShopDisplay() {
+            $('shopPoints').textContent = currentUser.points || 0;
+            
+            const items = EQUIPMENT[currentShopSlot] || [];
+            const owned = currentUser.ownedItems || [];
+            
+            let html = '';
+            items.forEach(item => {
+                const isOwned = owned.includes(item.id);
+                const canBuy = (currentUser.points || 0) >= item.price;
+                
+                html += `
+                    <div class="shop-item ${isOwned ? 'owned' : ''}">
+                        <div class="item-emoji">${item.emoji}</div>
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-power">⚔️ +${item.power}</div>
+                        ${isOwned 
+                            ? '<div style="color:#28a745;font-size:0.8rem;">✅ 已擁有</div>'
+                            : `<div class="item-price">💰 ${item.price}</div>
+                               <button class="buy-btn" ${canBuy ? '' : 'disabled'} onclick="buyItem('${currentShopSlot}', '${item.id}')">
+                                   ${canBuy ? '購買' : '積分不足'}
+                               </button>`
+                        }
+                    </div>
+                `;
+            });
+            
+            $('shopItems').innerHTML = html;
+        }
+        
+        async function buyItem(slot, itemId) {
+            const item = EQUIPMENT[slot].find(i => i.id === itemId);
+            if (!item) return;
+            
+            if ((currentUser.points || 0) < item.price) {
+                alert('積分不足！');
+                return;
+            }
+            
+            // 扣積分
+            currentUser.points -= item.price;
+            // 加入擁有列表
+            if (!currentUser.ownedItems) currentUser.ownedItems = [];
+            currentUser.ownedItems.push(itemId);
+            
+            // 更新 Firebase
+            if (db && !currentUser.isGuest) {
+                try {
+                    await db.collection('users').doc(currentUser.nickname).update({
+                        points: currentUser.points,
+                        ownedItems: currentUser.ownedItems
+                    });
+                } catch(e) { console.error(e); }
+            }
+            
+            localStorage.setItem('mathGameUser', JSON.stringify(currentUser));
+            updateShopDisplay();
+            updatePointsDisplay();
+            
+            alert('🎉 購買成功！');
+        }
+        
+        // 商店標籤點擊
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('shop-tab')) {
+                showShopScreen(e.target.dataset.slot);
+            }
+        });
+        
+        // ========== 裝扮功能 ==========
+        function showAvatarScreen() {
+            showScreen('avatarScreen');
+            updateAvatarDisplay();
+        }
+        
+        function updateAvatarDisplay() {
+            const equipped = currentUser.equippedItems || {};
+            const owned = currentUser.ownedItems || [];
+            
+            // 計算戰鬥力
+            const power = calculateCombatPower(equipped);
+            currentUser.combatPower = power;
+            $('avatarPower').textContent = power;
+            
+            // 渲染角色預覽（簡化版用 emoji）
+            let avatarEmoji = '👤';
+            let equipEmojis = '';
+            
+            for (const slot in equipped) {
+                const itemId = equipped[slot];
+                if (itemId && EQUIPMENT[slot]) {
+                    const item = EQUIPMENT[slot].find(i => i.id === itemId);
+                    if (item) equipEmojis += item.emoji;
+                }
+            }
+            
+            $('avatarPreview').textContent = avatarEmoji + equipEmojis;
+            
+            // 顯示已裝備
+            let equippedHtml = '';
+            const slots = ['headwear', 'top', 'bottom', 'shoes', 'weapon', 'accessory'];
+            slots.forEach(slot => {
+                const itemId = equipped[slot];
+                let content = '—';
+                if (itemId && EQUIPMENT[slot]) {
+                    const item = EQUIPMENT[slot].find(i => i.id === itemId);
+                    if (item) content = item.emoji;
+                }
+                equippedHtml += `
+                    <div class="equipped-slot" onclick="showEquipOptions('${slot}')">
+                        <div class="slot-emoji">${content}</div>
+                        <div>${SLOT_NAMES[slot]}</div>
+                    </div>
+                `;
+            });
+            $('equippedList').innerHTML = equippedHtml;
+        }
+        
+        function showEquipOptions(slot) {
+            const owned = currentUser.ownedItems || [];
+            const items = EQUIPMENT[slot].filter(item => owned.includes(item.id));
+            
+            if (items.length === 0) {
+                alert('你還沒有這類裝備，去商店買吧！');
+                return;
+            }
+            
+            const options = items.map(item => item.name + ' (' + item.emoji + ')').join('\n');
+            const choice = prompt('選擇要裝備的（輸入名稱）：\n' + options + '\n\n輸入「卸下」可移除裝備');
+            
+            if (choice === '卸下') {
+                if (!currentUser.equippedItems) currentUser.equippedItems = {};
+                delete currentUser.equippedItems[slot];
+                saveEquipment();
+                return;
+            }
+            
+            const selected = items.find(item => item.name === choice || choice?.includes(item.name));
+            if (selected) {
+                if (!currentUser.equippedItems) currentUser.equippedItems = {};
+                currentUser.equippedItems[slot] = selected.id;
+                saveEquipment();
+            }
+        }
+        
+        async function saveEquipment() {
+            const power = calculateCombatPower(currentUser.equippedItems || {});
+            currentUser.combatPower = power;
+            
+            if (db && !currentUser.isGuest) {
+                try {
+                    await db.collection('users').doc(currentUser.nickname).update({
+                        equippedItems: currentUser.equippedItems,
+                        combatPower: power
+                    });
+                } catch(e) { console.error(e); }
+            }
+            
+            localStorage.setItem('mathGameUser', JSON.stringify(currentUser));
+            updateAvatarDisplay();
+            updatePointsDisplay();
+        }
+        
+        function updatePointsDisplay() {
+            if ($('displayPoints')) $('displayPoints').textContent = currentUser.points || 0;
+            if ($('displayPower')) $('displayPower').textContent = currentUser.combatPower || 10;
+        }
+
         // ========== 個人資料頁面 ==========
         function showProfileScreen() {
             $('profileNickname').value = currentUser.nickname;
