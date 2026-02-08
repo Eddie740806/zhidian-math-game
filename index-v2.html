@@ -821,6 +821,74 @@
             </div>
         </div>
 
+        
+        <!-- ========== 個人資料畫面 ========== -->
+        <div class="screen" id="profileScreen">
+            <div class="header">
+                <h1>👤 我的資料</h1>
+                <div class="subtitle">查看和編輯個人資訊</div>
+            </div>
+            <div class="content">
+                <div class="input-group">
+                    <label>👤 暱稱</label>
+                    <input type="text" id="profileNickname" disabled style="background:#f0f0f0;">
+                    <div class="hint">暱稱無法修改</div>
+                </div>
+                <div class="input-group">
+                    <label>📍 縣市</label>
+                    <select id="profileCity">
+                        <option value="">不填寫</option>
+                        <option value="台北市">台北市</option>
+                        <option value="新北市">新北市</option>
+                        <option value="桃園市">桃園市</option>
+                        <option value="台中市">台中市</option>
+                        <option value="台南市">台南市</option>
+                        <option value="高雄市">高雄市</option>
+                        <option value="基隆市">基隆市</option>
+                        <option value="新竹市">新竹市</option>
+                        <option value="新竹縣">新竹縣</option>
+                        <option value="苗栗縣">苗栗縣</option>
+                        <option value="彰化縣">彰化縣</option>
+                        <option value="南投縣">南投縣</option>
+                        <option value="雲林縣">雲林縣</option>
+                        <option value="嘉義市">嘉義市</option>
+                        <option value="嘉義縣">嘉義縣</option>
+                        <option value="屏東縣">屏東縣</option>
+                        <option value="宜蘭縣">宜蘭縣</option>
+                        <option value="花蓮縣">花蓮縣</option>
+                        <option value="台東縣">台東縣</option>
+                        <option value="澎湖縣">澎湖縣</option>
+                        <option value="金門縣">金門縣</option>
+                        <option value="連江縣">連江縣</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>🏆 最高分數</label>
+                    <input type="text" id="profileBestScore" disabled style="background:#f0f0f0;">
+                </div>
+                <button class="btn" id="saveProfileBtn">💾 儲存變更</button>
+                <button class="btn btn-secondary" id="logoutBtn" style="margin-top:12px;">🚪 登出</button>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item" data-nav="home">
+                    <div class="nav-icon">🏠</div>
+                    <div>首頁</div>
+                </div>
+                <div class="nav-item" data-nav="leaderboard">
+                    <div class="nav-icon">🏆</div>
+                    <div>排行榜</div>
+                </div>
+                <div class="nav-item" data-nav="notebook">
+                    <div class="nav-icon">📝</div>
+                    <div>錯題本</div>
+                </div>
+                <div class="nav-item active" data-nav="profile">
+                    <div class="nav-icon">👤</div>
+                    <div>我的</div>
+                </div>
+            </div>
+        </div>
+
         <!-- ========== 遊戲畫面 ========== -->
         <div class="screen" id="gameScreen">
             <div class="header">
@@ -1045,13 +1113,7 @@
                     if (currentUser.isGuest) {
                         showScreen('authScreen');
                     } else {
-                        const action = confirm('目前登入：' + currentUser.nickname + '\n\n點「確定」登出，點「取消」留在此帳號');
-                        if (action) {
-                            // 登出
-                            localStorage.removeItem('mathGameUser');
-                            currentUser = { nickname: null, city: null, isGuest: true, bestScore: 0 };
-                            showScreen('authScreen');
-                        }
+                        showProfileScreen();
                     }
                 }
             });
@@ -1240,6 +1302,42 @@
                 console.error(e);
             }
         }
+
+        
+        // ========== 個人資料頁面 ==========
+        function showProfileScreen() {
+            $('profileNickname').value = currentUser.nickname;
+            $('profileCity').value = currentUser.city || '';
+            $('profileBestScore').value = currentUser.bestScore + ' 分';
+            showScreen('profileScreen');
+        }
+
+        $('saveProfileBtn').addEventListener('click', async () => {
+            const newCity = $('profileCity').value;
+            
+            if (db) {
+                try {
+                    await db.collection('users').doc(currentUser.nickname).update({
+                        city: newCity
+                    });
+                } catch (e) {
+                    console.error('更新失敗:', e);
+                }
+            }
+            
+            currentUser.city = newCity;
+            localStorage.setItem('mathGameUser', JSON.stringify(currentUser));
+            updateUserDisplay();
+            alert('✅ 資料已更新！');
+        });
+
+        $('logoutBtn').addEventListener('click', () => {
+            if (confirm('確定要登出嗎？')) {
+                localStorage.removeItem('mathGameUser');
+                currentUser = { nickname: null, city: null, isGuest: true, bestScore: 0 };
+                showScreen('authScreen');
+            }
+        });
 
         // ========== 開始遊戲 ==========
         $('startGameBtn').addEventListener('click', startGame);
