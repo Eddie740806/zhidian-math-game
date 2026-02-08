@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支點教育 - 數學素養挑戰</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 480px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .header .subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .student-name {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .start-screen, .game-screen, .result-screen {
+            display: none;
+        }
+
+        .start-screen.active, .game-screen.active, .result-screen.active {
+            display: block;
+        }
+
+        /* 開始畫面 */
+        .start-content {
+            padding: 24px;
+        }
+
+        .start-content p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .grade-info {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f4f8 100%);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+            text-align: left;
+            border-left: 4px solid #667eea;
+        }
+
+        .grade-info h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .grade-info ul {
+            margin: 0;
+            padding-left: 18px;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .grade-info li {
+            margin-bottom: 3px;
+        }
+
+        /* 遊戲畫面 */
+        .game-content {
+            padding: 20px;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 8px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 8px 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .lives .stat-value {
+            font-size: 1.1rem;
+        }
+
+        .timer {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .timer.warning {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .question-card {
+            background: linear-gradient(145deg, #f8f9ff 0%, #fff5f8 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #eee;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .question-number {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .question-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .question-scene {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            text-align: center;
+            border: 2px dashed #e0e0e0;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scene-visual {
+            font-size: 1.6rem;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        .scene-desc {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 14px 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            color: #333;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+
+        .option:active {
+            transform: translateY(0);
+        }
+
+        .option.correct {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.wrong {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .option.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        .feedback.correct {
+            color: #28a745;
+        }
+
+        .feedback.wrong {
+            color: #dc3545;
+        }
+
+        /* 結果畫面 */
+        .result-content {
+            padding: 24px;
+            text-align: center;
+        }
+
+        .result-score {
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 12px 0;
+        }
+
+        .result-label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .result-stat {
+            background: #f8f9fa;
+            padding: 14px 20px;
+            border-radius: 12px;
+            min-width: 70px;
+        }
+
+        .result-stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .result-stat-label {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .result-message {
+            background: linear-gradient(135deg, #f0f4ff, #fff5f8);
+            border-radius: 12px;
+            padding: 14px;
+            margin: 16px 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-primary {
+            flex: 1;
+        }
+
+        /* 錯題回顧 */
+        .wrong-section {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .wrong-title {
+            color: #dc3545;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wrong-list {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .wrong-item {
+            background: #fff;
+            border: 1px solid #f0d0d0;
+            border-left: 4px solid #dc3545;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .wrong-q {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .wrong-answers {
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .wrong-your {
+            color: #dc3545;
+        }
+
+        .wrong-correct {
+            color: #28a745;
+        }
+
+        .wrong-explain {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 16px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .consultant-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 16px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .consultant-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+
+        .copyright {
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: #aaa;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .badge-108 {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 開始畫面 -->
+        <div class="start-screen active" id="startScreen">
+            <div class="header">
+                <h1>🧮 支點教育</h1>
+                <div class="subtitle">數學素養挑戰</div>
+            </div>
+            <div class="start-content">
+                <p>
+                    📚 結合生活情境的數學題目<br>
+                    🧠 培養邏輯思考與解題能力
+                    <span class="badge badge-108">108課綱</span>
+                </p>
+                
+                <div class="input-group">
+                    <label>👤 你的名字</label>
+                    <input type="text" id="studentName" placeholder="輸入姓名或暱稱">
+                </div>
+
+                <div class="input-group">
+                    <label>📖 選擇年級</label>
+                    <select id="gradeSelect">
+                        <option value="1">一年級（加減法、數數）</option>
+                        <option value="2">二年級（乘法、找零）</option>
+                        <option value="3">三年級（除法、時間）</option>
+                        <option value="4">四年級（分數、面積）</option>
+                        <option value="5">五年級（小數、體積）</option>
+                        <option value="6">六年級（比例、圓）</option>
+                    </select>
+                </div>
+
+                <div class="grade-info" id="gradeInfo">
+                    <h4>📖 一年級學習重點</h4>
+                    <ul>
+                        <li>20 以內加減法應用</li>
+                        <li>生活中的數量比較</li>
+                        <li>圖形規律與推理</li>
+                    </ul>
+                </div>
+
+                <button class="btn" id="startBtn" disabled>🚀 開始挑戰</button>
+            </div>
+        </div>
+
+        <!-- 遊戲畫面 -->
+        <div class="game-screen" id="gameScreen">
+            <div class="header">
+                <h1>🧮 支點教育</h1>
+                <div class="student-name" id="displayName"></div>
+            </div>
+            
+            <div class="game-content">
+                <div class="game-stats">
+                    <div class="stat timer" id="timerBox">
+                        <div class="stat-value" id="timeLeft">15</div>
+                        <div class="stat-label">秒</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="score">0</div>
+                        <div class="stat-label">得分</div>
+                    </div>
+                    <div class="stat lives">
+                        <div class="stat-value" id="lives">❤️❤️❤️</div>
+                        <div class="stat-label">生命</div>
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number" id="questionNumber">第 1 題 / 共 12 題</span>
+                        <span class="question-tag" id="questionTag">生活應用</span>
+                    </div>
+                    
+                    <div class="question-scene" id="questionScene">
+                        <div class="scene-visual" id="sceneVisual"></div>
+                        <div class="scene-desc" id="sceneDesc"></div>
+                    </div>
+                    
+                    <div class="question-text" id="questionText"></div>
+                </div>
+
+                <div class="options" id="options"></div>
+                
+                <div class="feedback" id="feedback"></div>
+            </div>
+        </div>
+
+        <!-- 結果畫面 -->
+        <div class="result-screen" id="resultScreen">
+            <div class="header">
+                <h1>🎉 挑戰完成！</h1>
+                <div class="student-name" id="resultName"></div>
+            </div>
+            
+            <div class="result-content">
+                <div class="result-label">最終得分</div>
+                <div class="result-score" id="finalScore">0</div>
+
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="correctCount">0</div>
+                        <div class="result-stat-label">答對</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="wrongCount">0</div>
+                        <div class="result-stat-label">答錯</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="accuracy">0%</div>
+                        <div class="result-stat-label">正確率</div>
+                    </div>
+                </div>
+
+                <div class="result-message" id="resultMessage"></div>
+
+                <div class="wrong-section" id="wrongSection" style="display: none;">
+                    <div class="wrong-title">📝 錯題回顧</div>
+                    <div class="wrong-list" id="wrongList"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="homeBtn">🏠 回首頁</button>
+                    <button class="btn btn-primary" id="retryBtn">🔄 再挑戰</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <a href="#" class="consultant-link" id="consultantLink">
+                📞 想了解更多？聯繫支點教育顧問
+            </a>
+            <p class="copyright">© 2026 支點教育 | 108課綱數學素養系統</p>
+        </div>
+    </div>
+
+    <script>
+        // ========== 題庫 ==========
+        const questionBank = {
+            1: {
+                name: "一年級",
+                info: ["20 以內加減法應用", "生活中的數量比較", "圖形規律與推理"],
+                timeLimit: 20,
+                questions: [
+                    // ===== 生活應用題 (50題) =====
+                    {
+                        tag: "購物計算",
+                        scene: "🍎🍎🍎🍎🍎 ➕ 🍎🍎🍎",
+                        sceneDesc: "籃子裡的蘋果",
+                        q: "籃子裡有 5 顆蘋果，媽媽又放了 3 顆進去，現在有幾顆？",
+                        answer: "8 顆",
+                        options: ["7 顆", "8 顆", "9 顆", "6 顆"],
+                        explain: "5 + 3 = 8。把原本的 5 顆再加 3 顆，數數看：6、7、8！"
+                    },
+                    {
+                        tag: "分享問題",
+                        scene: "🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬\n      ↓ 吃掉 5 顆\n🍬🍬🍬🍬🍬🍬🍬",
+                        sceneDesc: "糖果變少了",
+                        q: "小明有 12 顆糖果，吃了 5 顆，還剩幾顆？",
+                        answer: "7 顆",
+                        options: ["6 顆", "7 顆", "8 顆", "5 顆"],
+                        explain: "12 - 5 = 7。從 12 往回數 5 個：11、10、9、8、7。"
+                    },
+                    {
+                        tag: "找規律",
+                        scene: "🔴 🔵 🔴 🔵 🔴 ❓",
+                        sceneDesc: "下一個是什麼顏色？",
+                        q: "觀察規律，問號應該是什麼顏色的球？",
+                        answer: "藍色 🔵",
+                        options: ["紅色 🔴", "藍色 🔵", "黃色 🟡", "綠色 🟢"],
+                        explain: "規律是「紅藍紅藍」交替，紅色後面一定是藍色！"
+                    },
+                    {
+                        tag: "排隊問題",
+                        scene: "👦👧👦👧👦[我]👧👦👧",
+                        sceneDesc: "小明在排隊",
+                        q: "小明前面有 5 人，後面有 3 人，這排共有幾人？",
+                        answer: "9 人",
+                        options: ["8 人", "9 人", "10 人", "7 人"],
+                        explain: "前面 5 人 + 小明自己 1 人 + 後面 3 人 = 9 人。別忘了數自己！"
+                    },
+                    {
+                        tag: "比較多少",
+                        scene: "小花：⭐⭐⭐⭐⭐⭐⭐⭐\n小草：⭐⭐⭐⭐⭐",
+                        sceneDesc: "誰的星星比較多？",
+                        q: "小花有 8 顆星星，小草有 5 顆，小花比小草多幾顆？",
+                        answer: "多 3 顆",
+                        options: ["多 2 顆", "多 3 顆", "多 4 顆", "多 13 顆"],
+                        explain: "比較差距用減法：8 - 5 = 3，小花多 3 顆。"
+                    },
+                    {
+                        tag: "數字規律",
+                        scene: "2 → 4 → 6 → 8 → ❓",
+                        sceneDesc: "數字接龍",
+                        q: "觀察規律，問號應該填什麼數字？",
+                        answer: "10",
+                        options: ["9", "10", "11", "12"],
+                        explain: "每次都 +2：2、4、6、8、10。這些都是偶數喔！"
+                    },
+                    {
+                        tag: "動物園",
+                        scene: "🐘🐘🐘 和 🦒🦒🦒🦒🦒",
+                        sceneDesc: "動物園裡的動物",
+                        q: "動物園有 3 隻大象和 5 隻長頸鹿，一共幾隻？",
+                        answer: "8 隻",
+                        options: ["7 隻", "8 隻", "9 隻", "2 隻"],
+                        explain: "3 + 5 = 8 隻。大象加長頸鹿，總共 8 隻動物。"
+                    },
+                    {
+                        tag: "雞蛋問題",
+                        scene: "🥚🥚🥚🥚🥚🥚🥚🥚🥚🥚\n        ↓ 煎蛋 🍳🍳🍳🍳",
+                        sceneDesc: "媽媽在煎蛋",
+                        q: "盒子有 10 顆蛋，煎了 4 顆，還剩幾顆？",
+                        answer: "6 顆",
+                        options: ["5 顆", "6 顆", "7 顆", "14 顆"],
+                        explain: "10 - 4 = 6。煎掉 4 顆，還有 6 顆在盒子裡。"
+                    },
+                    {
+                        tag: "存錢筒",
+                        scene: "🐷💰\n原本 7 個 ➕ 爸爸給 5 個",
+                        sceneDesc: "小豬撲滿",
+                        q: "存錢筒有 7 個硬幣，爸爸又給 5 個，現在有幾個？",
+                        answer: "12 個",
+                        options: ["11 個", "12 個", "13 個", "10 個"],
+                        explain: "7 + 5 = 12。可以先湊十：7 + 3 = 10，還剩 2，10 + 2 = 12。"
+                    },
+                    {
+                        tag: "公車問題",
+                        scene: "🚌\n下車 3 人 ⬇️  ⬆️ 上車 5 人",
+                        sceneDesc: "公車到站了",
+                        q: "公車上原本有 8 人，到站後下車 3 人、上車 5 人，現在幾人？",
+                        answer: "10 人",
+                        options: ["9 人", "10 人", "11 人", "6 人"],
+                        explain: "8 - 3 + 5 = 10。先下車變 5 人，再上車變 10 人。"
+                    },
+                    {
+                        tag: "跳格子",
+                        scene: "1 → 3 → 5 → 7 → ❓",
+                        sceneDesc: "跳跳跳",
+                        q: "按照規律，下一格是多少？",
+                        answer: "9",
+                        options: ["8", "9", "10", "11"],
+                        explain: "每次 +2：1、3、5、7、9。這些都是奇數！"
+                    },
+                    {
+                        tag: "分餅乾",
+                        scene: "🍪🍪🍪🍪🍪🍪🍪🍪🍪\n     ↓ 給朋友 4 片",
+                        sceneDesc: "分享給好朋友",
+                        q: "小美有 9 片餅乾，給朋友 4 片，自己還有幾片？",
+                        answer: "5 片",
+                        options: ["4 片", "5 片", "6 片", "13 片"],
+                        explain: "9 - 4 = 5。分享後自己還有 5 片餅乾。"
+                    },
+                    {
+                        tag: "玩具車",
+                        scene: "🚗🚗🚗🚗 ➕ 🚗🚗🚗🚗🚗🚗",
+                        sceneDesc: "收集玩具車",
+                        q: "小華有 4 輛玩具車，生日又得到 6 輛，現在有幾輛？",
+                        answer: "10 輛",
+                        options: ["9 輛", "10 輛", "11 輛", "8 輛"],
+                        explain: "4 + 6 = 10 輛。剛好湊成 10！"
+                    },
+                    {
+                        tag: "氣球問題",
+                        scene: "🎈🎈🎈🎈🎈🎈🎈\n    💨 飛走 2 個",
+                        sceneDesc: "氣球飛走了",
+                        q: "小明有 7 個氣球，飛走了 2 個，還剩幾個？",
+                        answer: "5 個",
+                        options: ["4 個", "5 個", "6 個", "9 個"],
+                        explain: "7 - 2 = 5 個。還剩下 5 個氣球。"
+                    },
+                    {
+                        tag: "鉛筆問題",
+                        scene: "✏️✏️✏️✏️✏️✏️ ➕ ✏️✏️✏️✏️",
+                        sceneDesc: "鉛筆盒",
+                        q: "鉛筆盒有 6 支鉛筆，再放入 4 支，共有幾支？",
+                        answer: "10 支",
+                        options: ["9 支", "10 支", "11 支", "8 支"],
+                        explain: "6 + 4 = 10 支。湊十法：6 + 4 = 10。"
+                    },
+                    {
+                        tag: "小鳥問題",
+                        scene: "🌳\n🐦🐦🐦🐦🐦🐦🐦🐦 → 飛走🐦🐦🐦",
+                        sceneDesc: "樹上的小鳥",
+                        q: "樹上有 8 隻小鳥，飛走了 3 隻，還有幾隻？",
+                        answer: "5 隻",
+                        options: ["4 隻", "5 隻", "6 隻", "11 隻"],
+                        explain: "8 - 3 = 5 隻。還有 5 隻小鳥在樹上。"
+                    },
+                    {
+                        tag: "橘子問題",
+                        scene: "🍊🍊🍊🍊🍊🍊 ➕ 🍊🍊🍊🍊🍊🍊🍊",
+                        sceneDesc: "數橘子",
+                        q: "桌上有 6 顆橘子，又放了 7 顆，現在有幾顆？",
+                        answer: "13 顆",
+                        options: ["12 顆", "13 顆", "14 顆", "11 顆"],
+                        explain: "6 + 7 = 13。6 + 4 = 10，還剩 3，10 + 3 = 13。"
+                    },
+                    {
+                        tag: "數花朵",
+                        scene: "🌸🌸🌸🌸🌸\n🌸🌸🌸🌸🌸🌸🌸🌸",
+                        sceneDesc: "花園裡的花",
+                        q: "第一排有 5 朵花，第二排有 8 朵花，共有幾朵？",
+                        answer: "13 朵",
+                        options: ["12 朵", "13 朵", "14 朵", "11 朵"],
+                        explain: "5 + 8 = 13 朵。"
+                    },
+                    {
+                        tag: "魚缸問題",
+                        scene: "🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟\n       ↓ 撈走 4 條",
+                        sceneDesc: "魚缸裡的魚",
+                        q: "魚缸有 11 條魚，撈走 4 條，還剩幾條？",
+                        answer: "7 條",
+                        options: ["6 條", "7 條", "8 條", "15 條"],
+                        explain: "11 - 4 = 7 條。還有 7 條魚在魚缸裡。"
+                    },
+                    {
+                        tag: "積木問題",
+                        scene: "🧱🧱🧱🧱🧱🧱🧱🧱🧱\n    ➕ 🧱🧱🧱🧱",
+                        sceneDesc: "疊積木",
+                        q: "小明有 9 塊積木，再拿來 4 塊，共有幾塊？",
+                        answer: "13 塊",
+                        options: ["12 塊", "13 塊", "14 塊", "11 塊"],
+                        explain: "9 + 4 = 13。9 + 1 = 10，還剩 3，10 + 3 = 13。"
+                    },
+                    {
+                        tag: "草莓問題",
+                        scene: "🍓🍓🍓🍓🍓🍓🍓🍓🍓🍓🍓🍓🍓🍓\n        ↓ 吃掉 6 顆",
+                        sceneDesc: "好吃的草莓",
+                        q: "盤子有 14 顆草莓，吃了 6 顆，還剩幾顆？",
+                        answer: "8 顆",
+                        options: ["7 顆", "8 顆", "9 顆", "20 顆"],
+                        explain: "14 - 6 = 8 顆。"
+                    },
+                    {
+                        tag: "蠟筆問題",
+                        scene: "🖍️🖍️🖍️🖍️🖍️ ➕ 🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️",
+                        sceneDesc: "蠟筆盒",
+                        q: "蠟筆盒有 5 支蠟筆，再放入 8 支，共有幾支？",
+                        answer: "13 支",
+                        options: ["12 支", "13 支", "14 支", "11 支"],
+                        explain: "5 + 8 = 13 支。"
+                    },
+                    {
+                        tag: "貼紙問題",
+                        scene: "⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐\n         ↓ 用掉 7 張",
+                        sceneDesc: "貼紙收集",
+                        q: "小美有 15 張貼紙，用了 7 張，還剩幾張？",
+                        answer: "8 張",
+                        options: ["7 張", "8 張", "9 張", "22 張"],
+                        explain: "15 - 7 = 8 張。"
+                    },
+                    {
+                        tag: "形狀規律",
+                        scene: "⬛ ⬜ ⬛ ⬜ ⬛ ❓",
+                        sceneDesc: "黑白方塊",
+                        q: "觀察規律，問號應該是什麼顏色的方塊？",
+                        answer: "白色 ⬜",
+                        options: ["黑色 ⬛", "白色 ⬜", "紅色 🟥", "藍色 🟦"],
+                        explain: "規律是「黑白黑白」交替，黑色後面是白色！"
+                    },
+                    {
+                        tag: "比多少",
+                        scene: "🐶🐶🐶🐶🐶🐶🐶\n🐱🐱🐱🐱",
+                        sceneDesc: "貓和狗",
+                        q: "有 7 隻狗和 4 隻貓，狗比貓多幾隻？",
+                        answer: "多 3 隻",
+                        options: ["多 2 隻", "多 3 隻", "多 4 隻", "多 11 隻"],
+                        explain: "7 - 4 = 3，狗比貓多 3 隻。"
+                    },
+                    {
+                        tag: "書本問題",
+                        scene: "📚📚📚📚📚📚📚📚 ➕ 📚📚📚📚📚📚",
+                        sceneDesc: "書架上的書",
+                        q: "書架有 8 本書，又放了 6 本，現在有幾本？",
+                        answer: "14 本",
+                        options: ["13 本", "14 本", "15 本", "12 本"],
+                        explain: "8 + 6 = 14。8 + 2 = 10，還剩 4，10 + 4 = 14。"
+                    },
+                    {
+                        tag: "餅乾問題",
+                        scene: "🍪🍪🍪🍪🍪🍪🍪🍪🍪🍪🍪🍪🍪🍪🍪🍪\n          ↓ 吃掉 9 片",
+                        sceneDesc: "餅乾罐",
+                        q: "罐子有 16 片餅乾，吃了 9 片，還剩幾片？",
+                        answer: "7 片",
+                        options: ["6 片", "7 片", "8 片", "25 片"],
+                        explain: "16 - 9 = 7 片。"
+                    },
+                    {
+                        tag: "珠子問題",
+                        scene: "💎💎💎💎💎💎💎 ➕ 💎💎💎💎💎💎💎💎",
+                        sceneDesc: "串珠子",
+                        q: "小華有 7 顆珠子，再串上 8 顆，共有幾顆？",
+                        answer: "15 顆",
+                        options: ["14 顆", "15 顆", "16 顆", "13 顆"],
+                        explain: "7 + 8 = 15。7 + 3 = 10，還剩 5，10 + 5 = 15。"
+                    },
+                    {
+                        tag: "倒數規律",
+                        scene: "10 → 8 → 6 → 4 → ❓",
+                        sceneDesc: "倒數遊戲",
+                        q: "觀察規律，問號應該填什麼數字？",
+                        answer: "2",
+                        options: ["1", "2", "3", "0"],
+                        explain: "每次 -2：10、8、6、4、2。"
+                    },
+                    {
+                        tag: "巧克力問題",
+                        scene: "🍫🍫🍫🍫🍫🍫🍫🍫🍫🍫🍫🍫🍫🍫🍫🍫🍫\n           ↓ 給弟弟 8 顆",
+                        sceneDesc: "分巧克力",
+                        q: "姊姊有 17 顆巧克力，給弟弟 8 顆，還剩幾顆？",
+                        answer: "9 顆",
+                        options: ["8 顆", "9 顆", "10 顆", "25 顆"],
+                        explain: "17 - 8 = 9 顆。"
+                    },
+                    {
+                        tag: "糖果問題",
+                        scene: "🍭🍭🍭🍭🍭🍭🍭🍭🍭 ➕ 🍭🍭🍭🍭🍭🍭🍭🍭🍭",
+                        sceneDesc: "糖果罐",
+                        q: "罐子有 9 顆糖果，再放入 9 顆，現在有幾顆？",
+                        answer: "18 顆",
+                        options: ["17 顆", "18 顆", "19 顆", "16 顆"],
+                        explain: "9 + 9 = 18 顆。雙倍的 9！"
+                    },
+                    {
+                        tag: "蘋果問題",
+                        scene: "🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎\n              ↓ 賣掉 11 顆",
+                        sceneDesc: "水果攤",
+                        q: "水果攤有 19 顆蘋果，賣掉 11 顆，還剩幾顆？",
+                        answer: "8 顆",
+                        options: ["7 顆", "8 顆", "9 顆", "30 顆"],
+                        explain: "19 - 11 = 8 顆。"
+                    },
+                    {
+                        tag: "比較少",
+                        scene: "小明：🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬🍬\n小華：🍬🍬🍬🍬🍬🍬🍬🍬",
+                        sceneDesc: "誰的糖果少？",
+                        q: "小明有 12 顆糖，小華有 8 顆，小華比小明少幾顆？",
+                        answer: "少 4 顆",
+                        options: ["少 3 顆", "少 4 顆", "少 5 顆", "少 20 顆"],
+                        explain: "12 - 8 = 4，小華少 4 顆。"
+                    },
+                    {
+                        tag: "星星問題",
+                        scene: "⭐⭐⭐⭐⭐⭐ ➕ ⭐⭐⭐⭐⭐⭐⭐⭐⭐",
+                        sceneDesc: "收集星星",
+                        q: "小美有 6 顆星星，又得到 9 顆，現在有幾顆？",
+                        answer: "15 顆",
+                        options: ["14 顆", "15 顆", "16 顆", "13 顆"],
+                        explain: "6 + 9 = 15 顆。"
+                    },
+                    {
+                        tag: "蝴蝶問題",
+                        scene: "🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋\n              ↓ 飛走 12 隻",
+                        sceneDesc: "花園裡的蝴蝶",
+                        q: "花園有 20 隻蝴蝶，飛走 12 隻，還剩幾隻？",
+                        answer: "8 隻",
+                        options: ["7 隻", "8 隻", "9 隻", "32 隻"],
+                        explain: "20 - 12 = 8 隻。"
+                    },
+                    {
+                        tag: "玩具問題",
+                        scene: "🧸🧸🧸🧸🧸🧸🧸🧸 ➕ 🧸🧸🧸🧸🧸🧸🧸",
+                        sceneDesc: "玩具箱",
+                        q: "玩具箱有 8 個玩具，再放入 7 個，共有幾個？",
+                        answer: "15 個",
+                        options: ["14 個", "15 個", "16 個", "13 個"],
+                        explain: "8 + 7 = 15 個。"
+                    },
+                    {
+                        tag: "規律填數",
+                        scene: "3 → 5 → 7 → ❓ → 11",
+                        sceneDesc: "中間填什麼？",
+                        q: "觀察規律，問號應該填什麼數字？",
+                        answer: "9",
+                        options: ["8", "9", "10", "6"],
+                        explain: "每次 +2：3、5、7、9、11。"
+                    },
+                    {
+                        tag: "水果問題",
+                        scene: "🍇🍇🍇🍇🍇🍇🍇🍇🍇🍇🍇🍇🍇🍇\n         ↓ 吃掉 5 串",
+                        sceneDesc: "葡萄",
+                        q: "盤子有 14 串葡萄，吃了 5 串，還剩幾串？",
+                        answer: "9 串",
+                        options: ["8 串", "9 串", "10 串", "19 串"],
+                        explain: "14 - 5 = 9 串。"
+                    },
+                    {
+                        tag: "玩偶問題",
+                        scene: "🐻🐻🐻🐻🐻🐻🐻🐻🐻 ➕ 🐻🐻🐻🐻🐻🐻",
+                        sceneDesc: "玩偶收藏",
+                        q: "小花有 9 隻玩偶，又買了 6 隻，現在有幾隻？",
+                        answer: "15 隻",
+                        options: ["14 隻", "15 隻", "16 隻", "13 隻"],
+                        explain: "9 + 6 = 15 隻。"
+                    },
+                    {
+                        tag: "彩色筆",
+                        scene: "🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️\n              ↓ 借出 9 支",
+                        sceneDesc: "彩色筆盒",
+                        q: "彩色筆盒有 18 支筆，借出 9 支，還剩幾支？",
+                        answer: "9 支",
+                        options: ["8 支", "9 支", "10 支", "27 支"],
+                        explain: "18 - 9 = 9 支。18 是 9 的兩倍！"
+                    },
+                    {
+                        tag: "足球問題",
+                        scene: "⚽⚽⚽⚽⚽⚽⚽ ➕ ⚽⚽⚽⚽⚽⚽⚽⚽⚽",
+                        sceneDesc: "運動器材室",
+                        q: "器材室有 7 顆足球，又放入 9 顆，共有幾顆？",
+                        answer: "16 顆",
+                        options: ["15 顆", "16 顆", "17 顆", "14 顆"],
+                        explain: "7 + 9 = 16 顆。"
+                    },
+                    {
+                        tag: "雨傘問題",
+                        scene: "☂️☂️☂️☂️☂️☂️☂️☂️☂️☂️☂️☂️☂️\n          ↓ 拿走 6 把",
+                        sceneDesc: "雨傘架",
+                        q: "雨傘架有 13 把傘，拿走 6 把，還剩幾把？",
+                        answer: "7 把",
+                        options: ["6 把", "7 把", "8 把", "19 把"],
+                        explain: "13 - 6 = 7 把。"
+                    },
+                    {
+                        tag: "找規律",
+                        scene: "🌙 ⭐ ⭐ 🌙 ⭐ ⭐ 🌙 ❓",
+                        sceneDesc: "天空的圖案",
+                        q: "觀察規律，問號應該是什麼？",
+                        answer: "⭐",
+                        options: ["🌙", "⭐", "☀️", "🌈"],
+                        explain: "規律是「月亮、星星、星星」重複。月亮後面是星星！"
+                    },
+                    {
+                        tag: "小狗問題",
+                        scene: "🐕🐕🐕🐕🐕🐕🐕🐕🐕🐕🐕 ➕ 🐕🐕🐕🐕🐕🐕🐕🐕",
+                        sceneDesc: "寵物店",
+                        q: "寵物店有 11 隻小狗，又來了 8 隻，現在有幾隻？",
+                        answer: "19 隻",
+                        options: ["18 隻", "19 隻", "20 隻", "17 隻"],
+                        explain: "11 + 8 = 19 隻。"
+                    },
+                    {
+                        tag: "香蕉問題",
+                        scene: "🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌\n           ↓ 猴子吃了 7 根",
+                        sceneDesc: "猴子吃香蕉",
+                        q: "樹上有 16 根香蕉，猴子吃了 7 根，還剩幾根？",
+                        answer: "9 根",
+                        options: ["8 根", "9 根", "10 根", "23 根"],
+                        explain: "16 - 7 = 9 根。"
+                    },
+                    {
+                        tag: "拼圖問題",
+                        scene: "🧩🧩🧩🧩🧩🧩🧩🧩🧩🧩🧩🧩 ➕ 🧩🧩🧩🧩🧩🧩🧩🧩",
+                        sceneDesc: "拼圖遊戲",
+                        q: "盒子有 12 片拼圖，又找到 8 片，共有幾片？",
+                        answer: "20 片",
+                        options: ["19 片", "20 片", "21 片", "18 片"],
+                        explain: "12 + 8 = 20 片。剛好湊成 20！"
+                    },
+                    {
+                        tag: "杯子蛋糕",
+                        scene: "🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁🧁\n               ↓ 分給同學 13 個",
+                        sceneDesc: "分蛋糕",
+                        q: "小美做了 20 個杯子蛋糕，分給同學 13 個，還剩幾個？",
+                        answer: "7 個",
+                        options: ["6 個", "7 個", "8 個", "33 個"],
+                        explain: "20 - 13 = 7 個。"
+                    },
+                    // ===== 蟲食算題 (50題) =====
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 5 + □ = 8",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "5 加上什麼數字等於 8？",
+                        answer: "3",
+                        options: ["2", "3", "4", "5"],
+                        explain: "8 - 5 = 3，所以 □ = 3"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 4 = 7",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 4 等於 7？",
+                        answer: "3",
+                        options: ["2", "3", "4", "5"],
+                        explain: "7 - 4 = 3，所以 □ = 3"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 9 - □ = 6",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "9 減掉什麼數字等於 6？",
+                        answer: "3",
+                        options: ["2", "3", "4", "5"],
+                        explain: "9 - 6 = 3，所以 □ = 3"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 3 = 5",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 3 等於 5？",
+                        answer: "8",
+                        options: ["6", "7", "8", "9"],
+                        explain: "5 + 3 = 8，所以 □ = 8"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 7 + □ = 10",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "7 加上什麼數字等於 10？",
+                        answer: "3",
+                        options: ["2", "3", "4", "5"],
+                        explain: "10 - 7 = 3，所以 □ = 3"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 6 = 11",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 6 等於 11？",
+                        answer: "5",
+                        options: ["4", "5", "6", "7"],
+                        explain: "11 - 6 = 5，所以 □ = 5"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 12 - □ = 7",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "12 減掉什麼數字等於 7？",
+                        answer: "5",
+                        options: ["4", "5", "6", "7"],
+                        explain: "12 - 7 = 5，所以 □ = 5"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 4 = 9",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 4 等於 9？",
+                        answer: "13",
+                        options: ["11", "12", "13", "14"],
+                        explain: "9 + 4 = 13，所以 □ = 13"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 8 + □ = 15",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "8 加上什麼數字等於 15？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "15 - 8 = 7，所以 □ = 7"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 7 = 14",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 7 等於 14？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "14 - 7 = 7，所以 □ = 7"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 15 - □ = 8",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "15 減掉什麼數字等於 8？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "15 - 8 = 7，所以 □ = 7"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 6 = 8",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 6 等於 8？",
+                        answer: "14",
+                        options: ["12", "13", "14", "15"],
+                        explain: "8 + 6 = 14，所以 □ = 14"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 6 + □ = 13",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "6 加上什麼數字等於 13？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "13 - 6 = 7，所以 □ = 7"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 9 = 16",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 9 等於 16？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "16 - 9 = 7，所以 □ = 7"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 18 - □ = 9",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "18 減掉什麼數字等於 9？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "18 - 9 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 7 = 6",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 7 等於 6？",
+                        answer: "13",
+                        options: ["11", "12", "13", "14"],
+                        explain: "6 + 7 = 13，所以 □ = 13"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 4 + □ = 11",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "4 加上什麼數字等於 11？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "11 - 4 = 7，所以 □ = 7"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 5 = 12",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 5 等於 12？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "12 - 5 = 7，所以 □ = 7"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 14 - □ = 6",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "14 減掉什麼數字等於 6？",
+                        answer: "8",
+                        options: ["6", "7", "8", "9"],
+                        explain: "14 - 6 = 8，所以 □ = 8"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 5 = 10",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 5 等於 10？",
+                        answer: "15",
+                        options: ["13", "14", "15", "16"],
+                        explain: "10 + 5 = 15，所以 □ = 15"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 9 + □ = 17",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "9 加上什麼數字等於 17？",
+                        answer: "8",
+                        options: ["6", "7", "8", "9"],
+                        explain: "17 - 9 = 8，所以 □ = 8"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 8 = 13",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 8 等於 13？",
+                        answer: "5",
+                        options: ["3", "4", "5", "6"],
+                        explain: "13 - 8 = 5，所以 □ = 5"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 16 - □ = 9",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "16 減掉什麼數字等於 9？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "16 - 9 = 7，所以 □ = 7"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 8 = 7",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 8 等於 7？",
+                        answer: "15",
+                        options: ["13", "14", "15", "16"],
+                        explain: "7 + 8 = 15，所以 □ = 15"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 3 + □ = 10",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "3 加上什麼數字等於 10？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "10 - 3 = 7，所以 □ = 7"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 3 = 9",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 3 等於 9？",
+                        answer: "6",
+                        options: ["4", "5", "6", "7"],
+                        explain: "9 - 3 = 6，所以 □ = 6"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 11 - □ = 5",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "11 減掉什麼數字等於 5？",
+                        answer: "6",
+                        options: ["4", "5", "6", "7"],
+                        explain: "11 - 5 = 6，所以 □ = 6"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 2 = 7",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 2 等於 7？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "7 + 2 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 2 + □ = 8",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "2 加上什麼數字等於 8？",
+                        answer: "6",
+                        options: ["4", "5", "6", "7"],
+                        explain: "8 - 2 = 6，所以 □ = 6"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 2 = 6",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 2 等於 6？",
+                        answer: "4",
+                        options: ["2", "3", "4", "5"],
+                        explain: "6 - 2 = 4，所以 □ = 4"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 10 - □ = 4",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "10 減掉什麼數字等於 4？",
+                        answer: "6",
+                        options: ["4", "5", "6", "7"],
+                        explain: "10 - 4 = 6，所以 □ = 6"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 1 = 8",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 1 等於 8？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "8 + 1 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 6 + □ = 12",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "6 加上什麼數字等於 12？",
+                        answer: "6",
+                        options: ["4", "5", "6", "7"],
+                        explain: "12 - 6 = 6，所以 □ = 6。這是雙倍數！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 4 = 10",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 4 等於 10？",
+                        answer: "6",
+                        options: ["4", "5", "6", "7"],
+                        explain: "10 - 4 = 6，所以 □ = 6"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 13 - □ = 8",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "13 減掉什麼數字等於 8？",
+                        answer: "5",
+                        options: ["3", "4", "5", "6"],
+                        explain: "13 - 8 = 5，所以 □ = 5"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 9 = 5",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 9 等於 5？",
+                        answer: "14",
+                        options: ["12", "13", "14", "15"],
+                        explain: "5 + 9 = 14，所以 □ = 14"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 5 + □ = 14",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "5 加上什麼數字等於 14？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "14 - 5 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 6 = 15",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 6 等於 15？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "15 - 6 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 17 - □ = 8",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "17 減掉什麼數字等於 8？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "17 - 8 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 4 = 8",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 4 等於 8？",
+                        answer: "12",
+                        options: ["10", "11", "12", "13"],
+                        explain: "8 + 4 = 12，所以 □ = 12"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 7 + □ = 16",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "7 加上什麼數字等於 16？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "16 - 7 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 8 = 17",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 8 等於 17？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "17 - 8 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 19 - □ = 10",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "19 減掉什麼數字等於 10？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "19 - 10 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 3 = 8",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 3 等於 8？",
+                        answer: "11",
+                        options: ["9", "10", "11", "12"],
+                        explain: "8 + 3 = 11，所以 □ = 11"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 8 + □ = 12",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "8 加上什麼數字等於 12？",
+                        answer: "4",
+                        options: ["2", "3", "4", "5"],
+                        explain: "12 - 8 = 4，所以 □ = 4"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 7 = 15",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 7 等於 15？",
+                        answer: "8",
+                        options: ["6", "7", "8", "9"],
+                        explain: "15 - 7 = 8，所以 □ = 8"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 20 - □ = 11",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "20 減掉什麼數字等於 11？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "20 - 11 = 9，所以 □ = 9"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 6 = 7",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 6 等於 7？",
+                        answer: "13",
+                        options: ["11", "12", "13", "14"],
+                        explain: "7 + 6 = 13，所以 □ = 13"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 4 + □ = 13",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "4 加上什麼數字等於 13？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "13 - 4 = 9，所以 □ = 9"
+                    }
+                ]
+            },
+            2: {
+                name: "二年級",
+                info: ["100 以內加減法", "乘法與九九乘法", "認識錢幣與找零"],
+                timeLimit: 18,
+                questions: [
+                    // ===== 生活應用題 (50題) =====
+                    {
+                        tag: "買東西",
+                        scene: "🍫 15元\n🥤 20元\n💰 付錢囉！",
+                        sceneDesc: "便利商店購物",
+                        q: "巧克力 15 元、飲料 20 元，一起買要多少錢？",
+                        answer: "35 元",
+                        options: ["30 元", "35 元", "40 元", "25 元"],
+                        explain: "15 + 20 = 35 元。個位 5+0=5，十位 1+2=3。"
+                    },
+                    {
+                        tag: "找零錢",
+                        scene: "🍦 23元\n💵 給老闆 50元\n💰 找錢...",
+                        sceneDesc: "買冰淇淋",
+                        q: "冰淇淋 23 元，給 50 元，要找回多少？",
+                        answer: "27 元",
+                        options: ["23 元", "27 元", "33 元", "17 元"],
+                        explain: "50 - 23 = 27 元。從 23 數到 50，中間差 27。"
+                    },
+                    {
+                        tag: "乘法應用",
+                        scene: "📦📦📦📦📦\n每盒 6 顆蛋",
+                        sceneDesc: "買雞蛋",
+                        q: "一盒 6 顆蛋，買 5 盒共有幾顆？",
+                        answer: "30 顆",
+                        options: ["25 顆", "30 顆", "35 顆", "11 顆"],
+                        explain: "5 × 6 = 30 顆。五六三十！"
+                    },
+                    {
+                        tag: "座位排列",
+                        scene: "👤👤👤👤 ← 每排 4 人\n👤👤👤👤\n👤👤👤👤\n（共 7 排）",
+                        sceneDesc: "教室座位",
+                        q: "每排 4 人，共 7 排，教室有幾人？",
+                        answer: "28 人",
+                        options: ["24 人", "28 人", "32 人", "11 人"],
+                        explain: "7 × 4 = 28。七四二十八！"
+                    },
+                    {
+                        tag: "花錢記錄",
+                        scene: "🐷 存款：45元\n🍭 買糖：18元\n💰 還剩...",
+                        sceneDesc: "零用錢",
+                        q: "存了 45 元，買糖花 18 元，還剩多少？",
+                        answer: "27 元",
+                        options: ["23 元", "27 元", "33 元", "63 元"],
+                        explain: "45 - 18 = 27。借位算：15 - 8 = 7，3 - 1 = 2。"
+                    },
+                    {
+                        tag: "乘法應用",
+                        scene: "🌷🌷🌷🌷🌷🌷🌷🌷 × 3人",
+                        sceneDesc: "種花比賽",
+                        q: "3 個人各種 8 朵花，共種幾朵？",
+                        answer: "24 朵",
+                        options: ["16 朵", "24 朵", "32 朵", "11 朵"],
+                        explain: "3 × 8 = 24 朵。三八二十四！"
+                    },
+                    {
+                        tag: "平分問題",
+                        scene: "🍊🍊🍊🍊🍊🍊🍊🍊🍊\n     ÷ 3 個小朋友",
+                        sceneDesc: "分橘子",
+                        q: "9 個橘子平分給 3 人，每人幾個？",
+                        answer: "3 個",
+                        options: ["2 個", "3 個", "4 個", "6 個"],
+                        explain: "9 ÷ 3 = 3 個。把 9 個分成 3 份，每份 3 個。"
+                    },
+                    {
+                        tag: "文具購買",
+                        scene: "✏️ 8元/支\n🛒 買 7 支",
+                        sceneDesc: "買鉛筆",
+                        q: "鉛筆 8 元一支，買 7 支要多少錢？",
+                        answer: "56 元",
+                        options: ["48 元", "56 元", "64 元", "15 元"],
+                        explain: "7 × 8 = 56 元。七八五十六！"
+                    },
+                    {
+                        tag: "運動分組",
+                        scene: "👥👥👥👥👥👥\n54 人 ÷ 6 組",
+                        sceneDesc: "體育課分組",
+                        q: "54 人平分成 6 組，每組幾人？",
+                        answer: "9 人",
+                        options: ["7 人", "8 人", "9 人", "10 人"],
+                        explain: "54 ÷ 6 = 9 人。六九五十四！"
+                    },
+                    {
+                        tag: "收集數量",
+                        scene: "早上：🥚×32\n下午：🥚×28",
+                        sceneDesc: "農場收雞蛋",
+                        q: "早上收 32 顆蛋，下午收 28 顆，共收幾顆？",
+                        answer: "60 顆",
+                        options: ["50 顆", "56 顆", "60 顆", "64 顆"],
+                        explain: "32 + 28 = 60 顆。個位 2+8=10 要進位！"
+                    },
+                    {
+                        tag: "比較問題",
+                        scene: "🎈紅：36 顆\n🎈藍：48 顆",
+                        sceneDesc: "數氣球",
+                        q: "紅氣球 36 顆，藍氣球 48 顆，藍比紅多幾顆？",
+                        answer: "12 顆",
+                        options: ["10 顆", "12 顆", "14 顆", "84 顆"],
+                        explain: "48 - 36 = 12 顆。比較多少就用減法！"
+                    },
+                    {
+                        tag: "貼紙收集",
+                        scene: "📅 一週 7 天\n⭐ 每天 5 張",
+                        sceneDesc: "集貼紙",
+                        q: "每天得 5 張貼紙，一週可得幾張？",
+                        answer: "35 張",
+                        options: ["30 張", "35 張", "40 張", "12 張"],
+                        explain: "7 × 5 = 35 張。七五三十五！"
+                    },
+                    {
+                        tag: "買水果",
+                        scene: "🍎 12元/顆\n🛒 買 4 顆",
+                        sceneDesc: "水果攤",
+                        q: "蘋果 12 元一顆，買 4 顆要多少錢？",
+                        answer: "48 元",
+                        options: ["44 元", "48 元", "52 元", "16 元"],
+                        explain: "4 × 12 = 48 元。4 × 10 = 40，4 × 2 = 8，40 + 8 = 48。"
+                    },
+                    {
+                        tag: "糖果分配",
+                        scene: "🍬🍬🍬...共 24 顆\n÷ 4 個小朋友",
+                        sceneDesc: "分糖果",
+                        q: "24 顆糖果平分給 4 人，每人幾顆？",
+                        answer: "6 顆",
+                        options: ["5 顆", "6 顆", "7 顆", "8 顆"],
+                        explain: "24 ÷ 4 = 6 顆。四六二十四！"
+                    },
+                    {
+                        tag: "買飲料",
+                        scene: "🧃 18元\n💵 付 20元",
+                        sceneDesc: "便利商店",
+                        q: "飲料 18 元，付 20 元，找回多少？",
+                        answer: "2 元",
+                        options: ["1 元", "2 元", "3 元", "38 元"],
+                        explain: "20 - 18 = 2 元。"
+                    },
+                    {
+                        tag: "九九乘法",
+                        scene: "📦📦📦📦📦📦\n每盒 9 顆糖",
+                        sceneDesc: "糖果盒",
+                        q: "每盒 9 顆糖，6 盒共有幾顆？",
+                        answer: "54 顆",
+                        options: ["45 顆", "54 顆", "63 顆", "15 顆"],
+                        explain: "6 × 9 = 54 顆。六九五十四！"
+                    },
+                    {
+                        tag: "加法進位",
+                        scene: "🏠 一班：47人\n🏠 二班：35人",
+                        sceneDesc: "學校人數",
+                        q: "一班 47 人，二班 35 人，共有幾人？",
+                        answer: "82 人",
+                        options: ["72 人", "82 人", "92 人", "12 人"],
+                        explain: "47 + 35 = 82。個位 7+5=12 要進位！"
+                    },
+                    {
+                        tag: "減法借位",
+                        scene: "💰 有 63 元\n🍭 買糖 28 元",
+                        sceneDesc: "買糖果",
+                        q: "有 63 元，買糖花 28 元，還剩多少？",
+                        answer: "35 元",
+                        options: ["25 元", "35 元", "45 元", "91 元"],
+                        explain: "63 - 28 = 35。13 - 8 = 5，5 - 2 = 3。"
+                    },
+                    {
+                        tag: "乘法表",
+                        scene: "🌟🌟🌟🌟🌟🌟🌟\n× 8 排",
+                        sceneDesc: "星星排列",
+                        q: "每排 7 顆星星，共 8 排，有幾顆？",
+                        answer: "56 顆",
+                        options: ["48 顆", "56 顆", "64 顆", "15 顆"],
+                        explain: "8 × 7 = 56 顆。七八五十六！"
+                    },
+                    {
+                        tag: "除法練習",
+                        scene: "🍪🍪🍪...共 42 片\n÷ 6 人",
+                        sceneDesc: "分餅乾",
+                        q: "42 片餅乾平分給 6 人，每人幾片？",
+                        answer: "7 片",
+                        options: ["6 片", "7 片", "8 片", "9 片"],
+                        explain: "42 ÷ 6 = 7 片。六七四十二！"
+                    },
+                    {
+                        tag: "購物計算",
+                        scene: "🖊️ 25元 + 📓 38元",
+                        sceneDesc: "買文具",
+                        q: "原子筆 25 元，筆記本 38 元，共多少錢？",
+                        answer: "63 元",
+                        options: ["53 元", "63 元", "73 元", "13 元"],
+                        explain: "25 + 38 = 63 元。"
+                    },
+                    {
+                        tag: "找錢問題",
+                        scene: "🎈 35元\n💵 付 50元",
+                        sceneDesc: "買氣球",
+                        q: "氣球 35 元，付 50 元，找回多少？",
+                        answer: "15 元",
+                        options: ["10 元", "15 元", "20 元", "85 元"],
+                        explain: "50 - 35 = 15 元。"
+                    },
+                    {
+                        tag: "乘法應用",
+                        scene: "🚗🚗🚗🚗\n每輛 4 個輪子",
+                        sceneDesc: "數輪子",
+                        q: "4 輛車，每輛 4 個輪子，共幾個輪子？",
+                        answer: "16 個",
+                        options: ["12 個", "16 個", "20 個", "8 個"],
+                        explain: "4 × 4 = 16 個。四四十六！"
+                    },
+                    {
+                        tag: "除法平分",
+                        scene: "📚📚📚...共 36 本\n÷ 9 個書架",
+                        sceneDesc: "放書",
+                        q: "36 本書平分放 9 個書架，每架幾本？",
+                        answer: "4 本",
+                        options: ["3 本", "4 本", "5 本", "6 本"],
+                        explain: "36 ÷ 9 = 4 本。九四三十六！"
+                    },
+                    {
+                        tag: "連加問題",
+                        scene: "🍎 17顆 + 🍊 25顆 + 🍇 18顆",
+                        sceneDesc: "水果籃",
+                        q: "蘋果 17 顆、橘子 25 顆、葡萄 18 顆，共幾顆？",
+                        answer: "60 顆",
+                        options: ["50 顆", "60 顆", "70 顆", "55 顆"],
+                        explain: "17 + 25 + 18 = 60 顆。"
+                    },
+                    {
+                        tag: "連減問題",
+                        scene: "💰 80元\n買 🍫25元 和 🥤32元",
+                        sceneDesc: "購物找零",
+                        q: "有 80 元，買巧克力 25 元和飲料 32 元，還剩多少？",
+                        answer: "23 元",
+                        options: ["13 元", "23 元", "33 元", "43 元"],
+                        explain: "80 - 25 - 32 = 23 元。或 80 - 57 = 23。"
+                    },
+                    {
+                        tag: "九九乘法",
+                        scene: "🌺🌺🌺🌺🌺🌺🌺🌺🌺\n× 9 盆",
+                        sceneDesc: "花園",
+                        q: "每盆 9 朵花，共 9 盆，有幾朵花？",
+                        answer: "81 朵",
+                        options: ["72 朵", "81 朵", "90 朵", "18 朵"],
+                        explain: "9 × 9 = 81 朵。九九八十一！"
+                    },
+                    {
+                        tag: "除法練習",
+                        scene: "🍭🍭🍭...共 56 顆\n÷ 8 包",
+                        sceneDesc: "包裝糖果",
+                        q: "56 顆糖分裝 8 包，每包幾顆？",
+                        answer: "7 顆",
+                        options: ["6 顆", "7 顆", "8 顆", "9 顆"],
+                        explain: "56 ÷ 8 = 7 顆。八七五十六！"
+                    },
+                    {
+                        tag: "金額計算",
+                        scene: "🧁 15元/個\n🛒 買 6 個",
+                        sceneDesc: "買蛋糕",
+                        q: "杯子蛋糕 15 元一個，買 6 個要多少錢？",
+                        answer: "90 元",
+                        options: ["80 元", "90 元", "100 元", "21 元"],
+                        explain: "6 × 15 = 90 元。6 × 10 = 60，6 × 5 = 30，60 + 30 = 90。"
+                    },
+                    {
+                        tag: "比較大小",
+                        scene: "🏠 甲班：52人\n🏠 乙班：47人",
+                        sceneDesc: "班級人數",
+                        q: "甲班 52 人，乙班 47 人，甲班比乙班多幾人？",
+                        answer: "5 人",
+                        options: ["3 人", "5 人", "7 人", "99 人"],
+                        explain: "52 - 47 = 5 人。"
+                    },
+                    {
+                        tag: "乘法應用",
+                        scene: "📦📦📦📦📦📦📦📦\n每盒 3 支筆",
+                        sceneDesc: "文具店",
+                        q: "每盒 3 支筆，8 盒共有幾支？",
+                        answer: "24 支",
+                        options: ["21 支", "24 支", "27 支", "11 支"],
+                        explain: "8 × 3 = 24 支。三八二十四！"
+                    },
+                    {
+                        tag: "除法應用",
+                        scene: "👨‍👩‍👧‍👦 48 人\n÷ 8 個小組",
+                        sceneDesc: "分組活動",
+                        q: "48 人分成 8 組，每組幾人？",
+                        answer: "6 人",
+                        options: ["5 人", "6 人", "7 人", "8 人"],
+                        explain: "48 ÷ 8 = 6 人。八六四十八！"
+                    },
+                    {
+                        tag: "購物總價",
+                        scene: "🖍️ 9元/支 × 7支",
+                        sceneDesc: "買蠟筆",
+                        q: "蠟筆 9 元一支，買 7 支要多少錢？",
+                        answer: "63 元",
+                        options: ["56 元", "63 元", "72 元", "16 元"],
+                        explain: "7 × 9 = 63 元。七九六十三！"
+                    },
+                    {
+                        tag: "找錢計算",
+                        scene: "🎁 67元\n💵 付 100元",
+                        sceneDesc: "買禮物",
+                        q: "禮物 67 元，付 100 元，找回多少？",
+                        answer: "33 元",
+                        options: ["23 元", "33 元", "43 元", "167 元"],
+                        explain: "100 - 67 = 33 元。"
+                    },
+                    {
+                        tag: "加法練習",
+                        scene: "🏃 跑步 38圈\n🏃 又跑 24圈",
+                        sceneDesc: "運動會",
+                        q: "已跑 38 圈，又跑 24 圈，共跑幾圈？",
+                        answer: "62 圈",
+                        options: ["52 圈", "62 圈", "72 圈", "14 圈"],
+                        explain: "38 + 24 = 62 圈。"
+                    },
+                    {
+                        tag: "減法練習",
+                        scene: "📚 原有 73 本\n📤 借出 45 本",
+                        sceneDesc: "圖書館",
+                        q: "圖書館有 73 本書，借出 45 本，還剩幾本？",
+                        answer: "28 本",
+                        options: ["18 本", "28 本", "38 本", "118 本"],
+                        explain: "73 - 45 = 28 本。"
+                    },
+                    {
+                        tag: "乘法表",
+                        scene: "🎈🎈🎈🎈🎈🎈\n× 6 束",
+                        sceneDesc: "派對裝飾",
+                        q: "每束 6 個氣球，共 6 束，有幾個氣球？",
+                        answer: "36 個",
+                        options: ["30 個", "36 個", "42 個", "12 個"],
+                        explain: "6 × 6 = 36 個。六六三十六！"
+                    },
+                    {
+                        tag: "除法應用",
+                        scene: "🍰 45塊\n÷ 5人",
+                        sceneDesc: "分蛋糕",
+                        q: "45 塊蛋糕平分給 5 人，每人幾塊？",
+                        answer: "9 塊",
+                        options: ["7 塊", "8 塊", "9 塊", "10 塊"],
+                        explain: "45 ÷ 5 = 9 塊。五九四十五！"
+                    },
+                    {
+                        tag: "金錢計算",
+                        scene: "💵 50元 + 💵 50元\n買 🎮 78元",
+                        sceneDesc: "買玩具",
+                        q: "有兩張 50 元，買 78 元的玩具，找回多少？",
+                        answer: "22 元",
+                        options: ["12 元", "22 元", "32 元", "178 元"],
+                        explain: "50 + 50 = 100，100 - 78 = 22 元。"
+                    },
+                    {
+                        tag: "乘法計算",
+                        scene: "🥛 每天 2 杯\n📅 一週 7 天",
+                        sceneDesc: "喝牛奶",
+                        q: "每天喝 2 杯牛奶，一週共喝幾杯？",
+                        answer: "14 杯",
+                        options: ["12 杯", "14 杯", "16 杯", "9 杯"],
+                        explain: "7 × 2 = 14 杯。"
+                    },
+                    {
+                        tag: "除法平分",
+                        scene: "🎨 72 張圖畫紙\n÷ 9 組",
+                        sceneDesc: "美術課",
+                        q: "72 張圖畫紙分給 9 組，每組幾張？",
+                        answer: "8 張",
+                        options: ["6 張", "7 張", "8 張", "9 張"],
+                        explain: "72 ÷ 9 = 8 張。九八七十二！"
+                    },
+                    {
+                        tag: "買東西",
+                        scene: "🍜 55元 + 🥤 25元",
+                        sceneDesc: "午餐",
+                        q: "麵 55 元、飲料 25 元，一起買要多少錢？",
+                        answer: "80 元",
+                        options: ["70 元", "80 元", "90 元", "30 元"],
+                        explain: "55 + 25 = 80 元。"
+                    },
+                    {
+                        tag: "找零問題",
+                        scene: "🍿 46元\n💵 付 100元",
+                        sceneDesc: "電影院",
+                        q: "爆米花 46 元，付 100 元，找回多少？",
+                        answer: "54 元",
+                        options: ["44 元", "54 元", "64 元", "146 元"],
+                        explain: "100 - 46 = 54 元。"
+                    },
+                    {
+                        tag: "乘法應用",
+                        scene: "🌲🌲🌲🌲🌲🌲🌲🌲🌲\n× 5 排",
+                        sceneDesc: "種樹",
+                        q: "每排種 9 棵樹，共 5 排，種了幾棵？",
+                        answer: "45 棵",
+                        options: ["40 棵", "45 棵", "50 棵", "14 棵"],
+                        explain: "5 × 9 = 45 棵。五九四十五！"
+                    },
+                    {
+                        tag: "除法計算",
+                        scene: "🍫 63 顆巧克力\n÷ 7 盒",
+                        sceneDesc: "分裝巧克力",
+                        q: "63 顆巧克力分裝 7 盒，每盒幾顆？",
+                        answer: "9 顆",
+                        options: ["7 顆", "8 顆", "9 顆", "10 顆"],
+                        explain: "63 ÷ 7 = 9 顆。七九六十三！"
+                    },
+                    {
+                        tag: "時間計算",
+                        scene: "🕐 開始：2:00\n🕒 結束：3:30",
+                        sceneDesc: "看電影",
+                        q: "電影 2:00 開始，3:30 結束，看了多久？",
+                        answer: "1 小時 30 分",
+                        options: ["1 小時", "1 小時 30 分", "2 小時", "30 分鐘"],
+                        explain: "從 2:00 到 3:30，經過 1 小時 30 分鐘。"
+                    },
+                    {
+                        tag: "連乘問題",
+                        scene: "📦 2層 × 每層3排 × 每排4個",
+                        sceneDesc: "積木塔",
+                        q: "積木塔有 2 層，每層 3 排，每排 4 個，共幾個？",
+                        answer: "24 個",
+                        options: ["18 個", "24 個", "30 個", "9 個"],
+                        explain: "2 × 3 × 4 = 24 個。"
+                    },
+                    // ===== 蟲食算題 (50題) =====
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 23 + □ = 45",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "23 加上什麼數字等於 45？",
+                        answer: "22",
+                        options: ["20", "22", "24", "26"],
+                        explain: "45 - 23 = 22，所以 □ = 22"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 36 = 58",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 36 等於 58？",
+                        answer: "22",
+                        options: ["20", "22", "24", "26"],
+                        explain: "58 - 36 = 22，所以 □ = 22"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 54 - □ = 27",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "54 減掉什麼數字等於 27？",
+                        answer: "27",
+                        options: ["25", "27", "29", "31"],
+                        explain: "54 - 27 = 27，所以 □ = 27"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 18 = 35",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 18 等於 35？",
+                        answer: "53",
+                        options: ["51", "53", "55", "57"],
+                        explain: "35 + 18 = 53，所以 □ = 53"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 7 × □ = 42",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "7 乘以什麼數字等於 42？",
+                        answer: "6",
+                        options: ["5", "6", "7", "8"],
+                        explain: "42 ÷ 7 = 6，所以 □ = 6。七六四十二！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ × 8 = 56",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字乘以 8 等於 56？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "56 ÷ 8 = 7，所以 □ = 7。七八五十六！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 45 + □ = 72",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "45 加上什麼數字等於 72？",
+                        answer: "27",
+                        options: ["25", "27", "29", "31"],
+                        explain: "72 - 45 = 27，所以 □ = 27"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 47 = 83",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 47 等於 83？",
+                        answer: "36",
+                        options: ["34", "36", "38", "40"],
+                        explain: "83 - 47 = 36，所以 □ = 36"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 81 - □ = 36",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "81 減掉什麼數字等於 36？",
+                        answer: "45",
+                        options: ["43", "45", "47", "49"],
+                        explain: "81 - 36 = 45，所以 □ = 45"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 29 = 44",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 29 等於 44？",
+                        answer: "73",
+                        options: ["71", "73", "75", "77"],
+                        explain: "44 + 29 = 73，所以 □ = 73"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 9 × □ = 63",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "9 乘以什麼數字等於 63？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "63 ÷ 9 = 7，所以 □ = 7。九七六十三！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ × 6 = 48",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字乘以 6 等於 48？",
+                        answer: "8",
+                        options: ["6", "7", "8", "9"],
+                        explain: "48 ÷ 6 = 8，所以 □ = 8。六八四十八！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 28 + □ = 65",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "28 加上什麼數字等於 65？",
+                        answer: "37",
+                        options: ["35", "37", "39", "41"],
+                        explain: "65 - 28 = 37，所以 □ = 37"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 55 = 91",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 55 等於 91？",
+                        answer: "36",
+                        options: ["34", "36", "38", "40"],
+                        explain: "91 - 55 = 36，所以 □ = 36"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 72 - □ = 28",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "72 減掉什麼數字等於 28？",
+                        answer: "44",
+                        options: ["42", "44", "46", "48"],
+                        explain: "72 - 28 = 44，所以 □ = 44"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 38 = 27",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 38 等於 27？",
+                        answer: "65",
+                        options: ["63", "65", "67", "69"],
+                        explain: "27 + 38 = 65，所以 □ = 65"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 8 × □ = 72",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "8 乘以什麼數字等於 72？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "72 ÷ 8 = 9，所以 □ = 9。八九七十二！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ × 9 = 81",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字乘以 9 等於 81？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "81 ÷ 9 = 9，所以 □ = 9。九九八十一！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 34 + □ = 78",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "34 加上什麼數字等於 78？",
+                        answer: "44",
+                        options: ["42", "44", "46", "48"],
+                        explain: "78 - 34 = 44，所以 □ = 44"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 29 = 67",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 29 等於 67？",
+                        answer: "38",
+                        options: ["36", "38", "40", "42"],
+                        explain: "67 - 29 = 38，所以 □ = 38"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 65 - □ = 39",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "65 減掉什麼數字等於 39？",
+                        answer: "26",
+                        options: ["24", "26", "28", "30"],
+                        explain: "65 - 39 = 26，所以 □ = 26"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 45 = 28",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 45 等於 28？",
+                        answer: "73",
+                        options: ["71", "73", "75", "77"],
+                        explain: "28 + 45 = 73，所以 □ = 73"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 6 × □ = 54",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "6 乘以什麼數字等於 54？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "54 ÷ 6 = 9，所以 □ = 9。六九五十四！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ × 7 = 49",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字乘以 7 等於 49？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "49 ÷ 7 = 7，所以 □ = 7。七七四十九！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 56 + □ = 89",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "56 加上什麼數字等於 89？",
+                        answer: "33",
+                        options: ["31", "33", "35", "37"],
+                        explain: "89 - 56 = 33，所以 □ = 33"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ + 67 = 95",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字加 67 等於 95？",
+                        answer: "28",
+                        options: ["26", "28", "30", "32"],
+                        explain: "95 - 67 = 28，所以 □ = 28"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 93 - □ = 47",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "93 減掉什麼數字等於 47？",
+                        answer: "46",
+                        options: ["44", "46", "48", "50"],
+                        explain: "93 - 47 = 46，所以 □ = 46"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ - 56 = 37",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字減 56 等於 37？",
+                        answer: "93",
+                        options: ["91", "93", "95", "97"],
+                        explain: "37 + 56 = 93，所以 □ = 93"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 5 × □ = 35",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "5 乘以什麼數字等於 35？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "35 ÷ 5 = 7，所以 □ = 7。五七三十五！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ × 4 = 36",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字乘以 4 等於 36？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "36 ÷ 4 = 9，所以 □ = 9。四九三十六！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 2□ + 35 = 62",
+                        sceneDesc: "找出十位數",
+                        q: "2□ 加 35 等於 62，□ 是多少？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "62 - 35 = 27，所以十位是 2，個位是 7。"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 4□ - 18 = 25",
+                        sceneDesc: "找出十位數",
+                        q: "4□ 減 18 等於 25，□ 是多少？",
+                        answer: "3",
+                        options: ["1", "2", "3", "4"],
+                        explain: "25 + 18 = 43，所以十位是 4，個位是 3。"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □5 + 27 = 52",
+                        sceneDesc: "找出十位數",
+                        q: "□5 加 27 等於 52，□ 是多少？",
+                        answer: "2",
+                        options: ["1", "2", "3", "4"],
+                        explain: "52 - 27 = 25，所以十位是 2，個位是 5。"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □8 - 29 = 49",
+                        sceneDesc: "找出十位數",
+                        q: "□8 減 29 等於 49，□ 是多少？",
+                        answer: "7",
+                        options: ["5", "6", "7", "8"],
+                        explain: "49 + 29 = 78，所以十位是 7，個位是 8。"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 3 × □ = 27",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "3 乘以什麼數字等於 27？",
+                        answer: "9",
+                        options: ["7", "8", "9", "10"],
+                        explain: "27 ÷ 3 = 9，所以 □ = 9。三九二十七！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 □ × 5 = 40",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "什麼數字乘以 5 等於 40？",
+                        answer: "8",
+                        options: ["6", "7", "8", "9"],
+                        explain: "40 ÷ 5 = 8，所以 □ = 8。五八四十！"
+                    },
+                    {
+                        tag: "蟲食算",
+                        scene: "🐛 19 + □ = 46",
+                        sceneDesc: "找出被吃掉的數字",
+                        q: "19 加上什麼數字等於 46？",
+                        answer: "27",
+                        options: ["25", "27", "29", "31"],
+                        explain: "46 - 19 = 27
