@@ -696,6 +696,16 @@
                 </div>
             </div>
             <div class="content">
+                <div style="display:flex;justify-content:space-around;background:linear-gradient(135deg,#f0f4ff,#fff5f8);border-radius:12px;padding:12px;margin-bottom:16px;">
+                    <div style="text-align:center;">
+                        <div style="font-size:1.2rem;font-weight:bold;color:#667eea;" id="displayPoints">0</div>
+                        <div style="font-size:0.7rem;color:#888;">💰 積分</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:1.2rem;font-weight:bold;color:#e74c3c;" id="displayPower">0</div>
+                        <div style="font-size:0.7rem;color:#888;">⚔️ 戰鬥力</div>
+                    </div>
+                </div>
                 <div class="input-group">
                     <label>📖 選擇年級</label>
                     <select id="gradeSelect">
@@ -738,13 +748,17 @@
                     <div class="nav-icon">🏠</div>
                     <div>首頁</div>
                 </div>
+                <div class="nav-item" data-nav="avatar">
+                    <div class="nav-icon">👔</div>
+                    <div>裝扮</div>
+                </div>
+                <div class="nav-item" data-nav="shop">
+                    <div class="nav-icon">🛒</div>
+                    <div>商店</div>
+                </div>
                 <div class="nav-item" data-nav="leaderboard">
                     <div class="nav-icon">🏆</div>
                     <div>排行榜</div>
-                </div>
-                <div class="nav-item" data-nav="notebook">
-                    <div class="nav-icon">📝</div>
-                    <div>錯題本</div>
                 </div>
                 <div class="nav-item" data-nav="profile">
                     <div class="nav-icon">👤</div>
@@ -962,6 +976,7 @@
                 </div>
 
                 <div class="result-message" id="resultMessage"></div>
+                <div id="earnedPointsDisplay" style="text-align:center;font-size:1.2rem;font-weight:bold;color:#667eea;margin:8px 0;"></div>
 
                 <div class="btn-group">
                     <button class="btn btn-secondary" id="backToMenuBtn">🏠 回首頁</button>
@@ -1040,7 +1055,13 @@
             nickname: null,
             city: null,
             isGuest: true,
-            bestScore: 0
+            bestScore: 0,
+            points: 0,           // 積分（可消費）
+            totalEarned: 0,      // 總共賺取的積分
+            combatPower: 0,      // 戰鬥力
+            avatar: null,        // 外觀設定
+            ownedItems: [],      // 擁有的裝備
+            equippedItems: {}    // 穿戴中的裝備
         };
 
         // ========== 遊戲狀態 ==========
@@ -1491,6 +1512,14 @@
             else if (acc >= 50) msg = '💪 還可以更好，多練習！';
             else msg = '📚 別灰心，多練習就會進步！';
             $('resultMessage').textContent = msg;
+            
+            // 積分獎勵
+            const earnedPoints = gameState.score;
+            if (!currentUser.isGuest) {
+                currentUser.points += earnedPoints;
+                currentUser.totalEarned += earnedPoints;
+                $('earnedPointsDisplay').textContent = '+' + earnedPoints + ' 積分！';
+            }
 
             // 儲存分數到 Firebase
             if (db && !currentUser.isGuest) {

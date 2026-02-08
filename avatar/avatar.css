@@ -1,0 +1,209 @@
+/* ===========================================
+   🎭 數學遊戲紙娃娃系統 - Avatar CSS
+   可愛卡通風格，適合小學生
+   =========================================== */
+
+/* ===== 容器 ===== */
+.avatar-container {
+  position: relative;
+  width: 200px;
+  height: 280px;
+  margin: 0 auto;
+}
+
+.avatar-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ===== 膚色 (5種) ===== */
+.skin-1 { --skin-color: #FFE4C4; --skin-shadow: #E8C9A8; } /* 淺膚色 */
+.skin-2 { --skin-color: #F5D5B8; --skin-shadow: #D9B89A; } /* 自然膚色 */
+.skin-3 { --skin-color: #DEB887; --skin-shadow: #C49A6C; } /* 小麥色 */
+.skin-4 { --skin-color: #C68642; --skin-shadow: #A66B2F; } /* 健康膚色 */
+.skin-5 { --skin-color: #8D5524; --skin-shadow: #6B3D1A; } /* 深膚色 */
+
+/* ===== 髮色 (6種) ===== */
+.hair-color-1 { --hair-color: #2C1810; --hair-highlight: #4A2C20; } /* 黑色 */
+.hair-color-2 { --hair-color: #4A3728; --hair-highlight: #6B5344; } /* 深棕 */
+.hair-color-3 { --hair-color: #8B4513; --hair-highlight: #A0522D; } /* 棕色 */
+.hair-color-4 { --hair-color: #DAA520; --hair-highlight: #FFD700; } /* 金色 */
+.hair-color-5 { --hair-color: #CD853F; --hair-highlight: #DEB887; } /* 淺棕 */
+.hair-color-6 { --hair-color: #FF6B6B; --hair-highlight: #FF8E8E; } /* 粉紅 (特殊) */
+
+/* ===== 眼睛樣式 (4種) ===== */
+.eyes-1 { --eye-style: 'round'; }     /* 圓眼 */
+.eyes-2 { --eye-style: 'oval'; }      /* 橢圓眼 */
+.eyes-3 { --eye-style: 'happy'; }     /* 開心眼 (彎月) */
+.eyes-4 { --eye-style: 'star'; }      /* 星星眼 */
+
+/* ===== 嘴巴/表情 (4種) ===== */
+.mouth-1 { --mouth-style: 'smile'; }   /* 微笑 */
+.mouth-2 { --mouth-style: 'grin'; }    /* 大笑 */
+.mouth-3 { --mouth-style: 'o'; }       /* 驚訝 O嘴 */
+.mouth-4 { --mouth-style: 'cat'; }     /* 貓嘴 :3 */
+
+/* ===== 髮型 (8種) ===== */
+.hairstyle-1 { --hair-style: 'short'; }      /* 短髮 */
+.hairstyle-2 { --hair-style: 'medium'; }     /* 中長髮 */
+.hairstyle-3 { --hair-style: 'long'; }       /* 長髮 */
+.hairstyle-4 { --hair-style: 'ponytail'; }   /* 馬尾 */
+.hairstyle-5 { --hair-style: 'twintails'; }  /* 雙馬尾 */
+.hairstyle-6 { --hair-style: 'spiky'; }      /* 刺蝟頭 */
+.hairstyle-7 { --hair-style: 'curly'; }      /* 捲髮 */
+.hairstyle-8 { --hair-style: 'bob'; }        /* 鮑伯頭 */
+
+/* ===== 裝備層級 ===== */
+.equipment-layer {
+  position: absolute;
+  z-index: 10;
+}
+
+.equipment-headwear { z-index: 50; }
+.equipment-accessory { z-index: 45; }
+.equipment-top { z-index: 20; }
+.equipment-bottom { z-index: 15; }
+.equipment-shoes { z-index: 10; }
+
+/* ===== 動畫效果 ===== */
+@keyframes avatar-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes avatar-wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  75% { transform: rotate(-10deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.avatar-idle {
+  animation: avatar-bounce 2s ease-in-out infinite;
+}
+
+.avatar-happy {
+  animation: avatar-bounce 0.5s ease-in-out infinite;
+}
+
+/* ===== 裝備獲得動畫 ===== */
+.equipment-new {
+  animation: sparkle 0.8s ease-out;
+}
+
+/* ===== 預覽卡片 ===== */
+.avatar-preview-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.avatar-preview-card .avatar-container {
+  background: rgba(255,255,255,0.9);
+  border-radius: 15px;
+  padding: 10px;
+}
+
+/* ===== 裝備選擇器 ===== */
+.equipment-selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 15px;
+}
+
+.equipment-item {
+  width: 60px;
+  height: 60px;
+  background: white;
+  border: 3px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.equipment-item:hover {
+  border-color: #667eea;
+  transform: scale(1.1);
+}
+
+.equipment-item.selected {
+  border-color: #FF6B6B;
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+.equipment-item.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.equipment-item.locked::after {
+  content: '🔒';
+  position: absolute;
+  font-size: 20px;
+}
+
+/* ===== 價格標籤 ===== */
+.price-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #333;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.price-tag::before {
+  content: '⭐';
+}
+
+/* ===== 能力值標籤 ===== */
+.power-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #00C9FF, #92FE9D);
+  color: #333;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.power-tag::before {
+  content: '⚡';
+}
+
+/* ===== 響應式 ===== */
+@media (max-width: 480px) {
+  .avatar-container {
+    width: 150px;
+    height: 210px;
+  }
+  
+  .equipment-selector {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .equipment-item {
+    width: 50px;
+    height: 50px;
+  }
+}
