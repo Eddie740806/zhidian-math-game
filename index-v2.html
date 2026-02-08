@@ -1032,6 +1032,24 @@
             'default': '顧問'
         };
 
+        
+        // ========== 年級積分倍率 ==========
+        const GRADE_MULTIPLIER = {
+            1: 1.0,
+            2: 1.2,
+            3: 1.5,
+            4: 1.8,
+            5: 2.2,
+            6: 2.5
+        };
+
+        // ========== 難度積分倍率 ==========
+        const DIFFICULTY_MULTIPLIER = {
+            'basic': 1.0,
+            'advanced': 1.5,
+            'challenge': 2.0
+        };
+
         // ========== 業務連結對照表 ==========
         const REP_LINKS = {
             'stephen': 'https://lovable.dev/stephen',
@@ -1513,12 +1531,14 @@
             else msg = '📚 別灰心，多練習就會進步！';
             $('resultMessage').textContent = msg;
             
-            // 積分獎勵
-            const earnedPoints = gameState.score;
+            // 積分獎勵（年級 x 難度 倍率）
+            const gradeMulti = GRADE_MULTIPLIER[gameState.grade] || 1;
+            const diffMulti = DIFFICULTY_MULTIPLIER[gameState.difficulty] || 1;
+            const earnedPoints = Math.round(gameState.score * gradeMulti * diffMulti);
             if (!currentUser.isGuest) {
                 currentUser.points += earnedPoints;
                 currentUser.totalEarned += earnedPoints;
-                $('earnedPointsDisplay').textContent = '+' + earnedPoints + ' 積分！';
+                $('earnedPointsDisplay').textContent = '+' + earnedPoints + ' 積分！（' + gradeMulti + 'x' + diffMulti + ' 倍率）';
             }
 
             // 儲存分數到 Firebase
