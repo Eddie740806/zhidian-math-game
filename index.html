@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支點教育 - 計算競速</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 480px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 24px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        .header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .student-name {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        /* 開始畫面 */
+        .start-screen {
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .start-screen p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 遊戲畫面 */
+        .game-screen {
+            display: none;
+            padding: 24px;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 8px 12px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .lives {
+            font-size: 1.5rem;
+        }
+
+        .timer {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+        }
+
+        .timer.warning {
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .question-area {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .question {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 3px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #28a745;
+        }
+
+        .option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .combo {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 1rem;
+            color: #667eea;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        .combo.active {
+            animation: comboAnim 0.3s ease;
+        }
+
+        @keyframes comboAnim {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* 結果畫面 */
+        .result-screen {
+            display: none;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .result-screen h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 16px 0;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .result-stat {
+            background: #f5f5f5;
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .result-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .result-stat-label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-primary {
+            flex: 1;
+        }
+
+        /* 錯題本 */
+        .wrong-answers {
+            margin-top: 24px;
+            text-align: left;
+        }
+
+        .wrong-answers h3 {
+            color: #dc3545;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .wrong-item {
+            background: #fff5f5;
+            border-left: 4px solid #dc3545;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .wrong-item .question-text {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .wrong-item .your-answer {
+            color: #dc3545;
+            font-size: 0.9rem;
+        }
+
+        .wrong-item .correct-answer {
+            color: #28a745;
+            font-size: 0.9rem;
+        }
+
+        .wrong-item .explanation {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #ffe0e0;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .consultant-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        .consultant-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .consultant-link img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* 難度選擇樣式 */
+        .grade-info {
+            background: #f0f4ff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .grade-info h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .grade-info ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .grade-info li {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 開始畫面 -->
+        <div class="start-screen" id="startScreen">
+            <div class="header">
+                <h1>🧮 支點教育</h1>
+                <div class="subtitle">計算競速挑戰</div>
+            </div>
+            <div style="padding: 24px;">
+                <p style="margin-bottom: 24px; color: #666;">
+                    挑戰國小計算能力，速度決定一切！<br>
+                    涵蓋 108 課綱知識點，邊玩邊學習
+                </p>
+                
+                <div class="input-group">
+                    <label>👤 學員暱稱</label>
+                    <input type="text" id="studentName" placeholder="輸入你的名字（中英文皆可）">
+                </div>
+
+                <div class="input-group">
+                    <label>📚 選擇年級</label>
+                    <select id="gradeSelect">
+                        <option value="1">一年級</option>
+                        <option value="2">二年級</option>
+                        <option value="3">三年級</option>
+                        <option value="4">四年級</option>
+                        <option value="5">五年級</option>
+                        <option value="6">六年級</option>
+                    </select>
+                </div>
+
+                <div class="grade-info" id="gradeInfo">
+                    <h4>📖 一年級學習重點</h4>
+                    <ul>
+                        <li>20 以內的加減法</li>
+                        <li>認識數字 1-100</li>
+                        <li>基本數數與比較大小</li>
+                    </ul>
+                </div>
+
+                <button class="btn" id="startBtn" disabled>🚀 開始挑戰</button>
+            </div>
+        </div>
+
+        <!-- 遊戲畫面 -->
+        <div class="game-screen" id="gameScreen">
+            <div class="header">
+                <h1>🧮 支點教育</h1>
+                <div class="student-name" id="displayName">小明</div>
+            </div>
+            
+            <div style="padding: 24px;">
+                <div class="game-stats">
+                    <div class="stat timer" id="timer">
+                        <div class="stat-value" id="timeLeft">10</div>
+                        <div class="stat-label">秒</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="score">0</div>
+                        <div class="stat-label">得分</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value lives" id="lives">❤️❤️❤️</div>
+                        <div class="stat-label">生命</div>
+                    </div>
+                </div>
+
+                <div class="question-area">
+                    <div class="question-number" id="questionNumber">第 1 題 / 共 20 題</div>
+                    <div class="question" id="question">12 + 5 = ?</div>
+                </div>
+
+                <div class="options" id="options">
+                    <button class="option">15</button>
+                    <button class="option">17</button>
+                    <button class="option">16</button>
+                    <button class="option">18</button>
+                </div>
+
+                <div class="combo" id="combo"></div>
+            </div>
+        </div>
+
+        <!-- 結果畫面 -->
+        <div class="result-screen" id="resultScreen">
+            <div class="header">
+                <h1>🎉 挑戰結束！</h1>
+                <div class="student-name" id="resultName">小明</div>
+            </div>
+            
+            <div style="padding: 24px;">
+                <div class="result-score" id="finalScore">1280</div>
+                <p style="color: #666;">分</p>
+
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="correctCount">18</div>
+                        <div class="result-stat-label">答對</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="wrongCount">2</div>
+                        <div class="result-stat-label">答錯</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="accuracy">90%</div>
+                        <div class="result-stat-label">正確率</div>
+                    </div>
+                </div>
+
+                <div class="wrong-answers" id="wrongAnswers" style="display: none;">
+                    <h3>📝 錯題回顧</h3>
+                    <div id="wrongList"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="homeBtn">🏠 回首頁</button>
+                    <button class="btn btn-primary" id="retryBtn">🔄 再玩一次</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <a href="#" class="consultant-link" id="consultantLink">
+                <span>📞</span>
+                <span>想了解更多？聯繫支點教育顧問</span>
+            </a>
+            <p style="margin-top: 12px; font-size: 0.75rem; color: #aaa;">
+                © 2026 支點教育 | 108課綱數學學習系統
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // ========== 題庫 ==========
+        const questionBank = {
+            // 一年級題庫
+            1: {
+                name: "一年級",
+                info: ["20 以內的加減法", "認識數字 1-100", "基本數數與比較大小"],
+                questions: [
+                    // 加法 - 10以內
+                    { q: "3 + 2 = ?", answer: 5, options: [4, 5, 6, 7], explanation: "3 加 2 等於 5。可以用手指數：3 再數 2 下就是 5。" },
+                    { q: "4 + 3 = ?", answer: 7, options: [6, 7, 8, 5], explanation: "4 加 3 等於 7。4 再往上數 3 個數字：5, 6, 7。" },
+                    { q: "5 + 4 = ?", answer: 9, options: [8, 9, 10, 7], explanation: "5 加 4 等於 9。" },
+                    { q: "2 + 6 = ?", answer: 8, options: [7, 8, 9, 6], explanation: "2 加 6 等於 8。" },
+                    { q: "1 + 8 = ?", answer: 9, options: [8, 9, 10, 7], explanation: "1 加 8 等於 9。" },
+                    { q: "6 + 3 = ?", answer: 9, options: [8, 9, 10, 7], explanation: "6 加 3 等於 9。" },
+                    { q: "7 + 2 = ?", answer: 9, options: [8, 9, 10, 11], explanation: "7 加 2 等於 9。" },
+                    { q: "5 + 5 = ?", answer: 10, options: [9, 10, 11, 8], explanation: "5 加 5 等於 10。兩個 5 湊成 10。" },
+                    // 加法 - 進位到20
+                    { q: "8 + 5 = ?", answer: 13, options: [12, 13, 14, 11], explanation: "8 加 5 等於 13。8 + 2 = 10，還剩 3，所以是 13。" },
+                    { q: "9 + 4 = ?", answer: 13, options: [12, 13, 14, 11], explanation: "9 加 4 等於 13。9 + 1 = 10，還剩 3，所以是 13。" },
+                    { q: "7 + 6 = ?", answer: 13, options: [12, 13, 14, 11], explanation: "7 加 6 等於 13。" },
+                    { q: "8 + 8 = ?", answer: 16, options: [15, 16, 17, 14], explanation: "8 加 8 等於 16。" },
+                    { q: "9 + 7 = ?", answer: 16, options: [15, 16, 17, 14], explanation: "9 加 7 等於 16。9 + 1 = 10，還剩 6，所以是 16。" },
+                    { q: "6 + 9 = ?", answer: 15, options: [14, 15, 16, 13], explanation: "6 加 9 等於 15。" },
+                    // 減法 - 10以內
+                    { q: "7 - 3 = ?", answer: 4, options: [3, 4, 5, 6], explanation: "7 減 3 等於 4。從 7 往回數 3 個：6, 5, 4。" },
+                    { q: "9 - 4 = ?", answer: 5, options: [4, 5, 6, 3], explanation: "9 減 4 等於 5。" },
+                    { q: "8 - 5 = ?", answer: 3, options: [2, 3, 4, 5], explanation: "8 減 5 等於 3。" },
+                    { q: "10 - 6 = ?", answer: 4, options: [3, 4, 5, 6], explanation: "10 減 6 等於 4。" },
+                    { q: "6 - 2 = ?", answer: 4, options: [3, 4, 5, 2], explanation: "6 減 2 等於 4。" },
+                    // 減法 - 20以內
+                    { q: "15 - 7 = ?", answer: 8, options: [7, 8, 9, 6], explanation: "15 減 7 等於 8。15 - 5 = 10，10 - 2 = 8。" },
+                    { q: "13 - 5 = ?", answer: 8, options: [7, 8, 9, 6], explanation: "13 減 5 等於 8。" },
+                    { q: "17 - 9 = ?", answer: 8, options: [7, 8, 9, 6], explanation: "17 減 9 等於 8。17 - 7 = 10，10 - 2 = 8。" },
+                    { q: "14 - 6 = ?", answer: 8, options: [7, 8, 9, 6], explanation: "14 減 6 等於 8。" },
+                    { q: "12 - 4 = ?", answer: 8, options: [7, 8, 9, 6], explanation: "12 減 4 等於 8。" },
+                    { q: "16 - 8 = ?", answer: 8, options: [7, 8, 9, 6], explanation: "16 減 8 等於 8。" },
+                    { q: "11 - 3 = ?", answer: 8, options: [7, 8, 9, 6], explanation: "11 減 3 等於 8。" },
+                    { q: "18 - 9 = ?", answer: 9, options: [8, 9, 10, 7], explanation: "18 減 9 等於 9。" },
+                    { q: "20 - 5 = ?", answer: 15, options: [14, 15, 16, 13], explanation: "20 減 5 等於 15。" },
+                    { q: "19 - 10 = ?", answer: 9, options: [8, 9, 10, 11], explanation: "19 減 10 等於 9。" }
+                ]
+            },
+            // 二年級題庫
+            2: {
+                name: "二年級",
+                info: ["100 以內的加減法", "認識乘法概念", "基本的兩位數運算"],
+                questions: [
+                    { q: "23 + 15 = ?", answer: 38, options: [36, 37, 38, 39], explanation: "23 + 15 = 38。個位：3+5=8，十位：2+1=3，答案是 38。" },
+                    { q: "45 + 32 = ?", answer: 77, options: [75, 76, 77, 78], explanation: "45 + 32 = 77。個位：5+2=7，十位：4+3=7。" },
+                    { q: "28 + 19 = ?", answer: 47, options: [45, 46, 47, 48], explanation: "28 + 19 = 47。8+9=17，進位後十位是 2+1+1=4。" },
+                    { q: "56 + 27 = ?", answer: 83, options: [81, 82, 83, 84], explanation: "56 + 27 = 83。6+7=13，進位後十位是 5+2+1=8。" },
+                    { q: "34 + 48 = ?", answer: 82, options: [80, 81, 82, 83], explanation: "34 + 48 = 82。4+8=12，進位後十位是 3+4+1=8。" },
+                    { q: "67 - 23 = ?", answer: 44, options: [42, 43, 44, 45], explanation: "67 - 23 = 44。個位：7-3=4，十位：6-2=4。" },
+                    { q: "85 - 41 = ?", answer: 44, options: [42, 43, 44, 45], explanation: "85 - 41 = 44。" },
+                    { q: "72 - 35 = ?", answer: 37, options: [35, 36, 37, 38], explanation: "72 - 35 = 37。需要借位：12-5=7，6-3=3。" },
+                    { q: "93 - 56 = ?", answer: 37, options: [35, 36, 37, 38], explanation: "93 - 56 = 37。需要借位計算。" },
+                    { q: "64 - 28 = ?", answer: 36, options: [34, 35, 36, 37], explanation: "64 - 28 = 36。需要借位：14-8=6，5-2=3。" },
+                    { q: "2 × 3 = ?", answer: 6, options: [5, 6, 7, 8], explanation: "2 × 3 = 6。2 個 3 就是 3+3=6。" },
+                    { q: "3 × 4 = ?", answer: 12, options: [10, 11, 12, 13], explanation: "3 × 4 = 12。3 個 4 就是 4+4+4=12。" },
+                    { q: "4 × 5 = ?", answer: 20, options: [18, 19, 20, 21], explanation: "4 × 5 = 20。4 個 5 就是 5+5+5+5=20。" },
+                    { q: "5 × 3 = ?", answer: 15, options: [13, 14, 15, 16], explanation: "5 × 3 = 15。5 個 3 就是 15。" },
+                    { q: "2 × 7 = ?", answer: 14, options: [12, 13, 14, 15], explanation: "2 × 7 = 14。2 個 7 就是 7+7=14。" },
+                    { q: "6 × 2 = ?", answer: 12, options: [10, 11, 12, 13], explanation: "6 × 2 = 12。" },
+                    { q: "3 × 6 = ?", answer: 18, options: [16, 17, 18, 19], explanation: "3 × 6 = 18。" },
+                    { q: "4 × 4 = ?", answer: 16, options: [14, 15, 16, 17], explanation: "4 × 4 = 16。" },
+                    { q: "5 × 5 = ?", answer: 25, options: [23, 24, 25, 26], explanation: "5 × 5 = 25。" },
+                    { q: "2 × 9 = ?", answer: 18, options: [16, 17, 18, 19], explanation: "2 × 9 = 18。" },
+                    { q: "50 + 30 = ?", answer: 80, options: [70, 80, 90, 60], explanation: "50 + 30 = 80。5個十 + 3個十 = 8個十。" },
+                    { q: "70 - 40 = ?", answer: 30, options: [20, 30, 40, 50], explanation: "70 - 40 = 30。7個十 - 4個十 = 3個十。" },
+                    { q: "25 + 25 = ?", answer: 50, options: [45, 50, 55, 40], explanation: "25 + 25 = 50。兩個 25 湊成 50。" },
+                    { q: "100 - 45 = ?", answer: 55, options: [45, 50, 55, 60], explanation: "100 - 45 = 55。" },
+                    { q: "38 + 47 = ?", answer: 85, options: [83, 84, 85, 86], explanation: "38 + 47 = 85。" }
+                ]
+            },
+            // 三年級題庫
+            3: {
+                name: "三年級",
+                info: ["三位數加減法", "九九乘法表", "基礎除法概念"],
+                questions: [
+                    { q: "7 × 8 = ?", answer: 56, options: [54, 55, 56, 57], explanation: "7 × 8 = 56。這是九九乘法表中重要的一個！" },
+                    { q: "9 × 6 = ?", answer: 54, options: [52, 53, 54, 55], explanation: "9 × 6 = 54。" },
+                    { q: "8 × 9 = ?", answer: 72, options: [70, 71, 72, 73], explanation: "8 × 9 = 72。" },
+                    { q: "6 × 7 = ?", answer: 42, options: [40, 41, 42, 43], explanation: "6 × 7 = 42。" },
+                    { q: "9 × 9 = ?", answer: 81, options: [79, 80, 81, 82], explanation: "9 × 9 = 81。九九乘法表最大的！" },
+                    { q: "8 × 7 = ?", answer: 56, options: [54, 55, 56, 57], explanation: "8 × 7 = 56。" },
+                    { q: "6 × 8 = ?", answer: 48, options: [46, 47, 48, 49], explanation: "6 × 8 = 48。" },
+                    { q: "7 × 7 = ?", answer: 49, options: [47, 48, 49, 50], explanation: "7 × 7 = 49。" },
+                    { q: "12 ÷ 3 = ?", answer: 4, options: [3, 4, 5, 6], explanation: "12 ÷ 3 = 4。12 裡面有 4 個 3。" },
+                    { q: "24 ÷ 6 = ?", answer: 4, options: [3, 4, 5, 6], explanation: "24 ÷ 6 = 4。想想 6 × ? = 24。" },
+                    { q: "35 ÷ 7 = ?", answer: 5, options: [4, 5, 6, 7], explanation: "35 ÷ 7 = 5。7 × 5 = 35。" },
+                    { q: "48 ÷ 8 = ?", answer: 6, options: [5, 6, 7, 8], explanation: "48 ÷ 8 = 6。" },
+                    { q: "63 ÷ 9 = ?", answer: 7, options: [6, 7, 8, 9], explanation: "63 ÷ 9 = 7。" },
+                    { q: "56 ÷ 7 = ?", answer: 8, options: [7, 8, 9, 6], explanation: "56 ÷ 7 = 8。" },
+                    { q: "234 + 158 = ?", answer: 392, options: [382, 392, 402, 412], explanation: "234 + 158 = 392。記得進位！" },
+                    { q: "567 - 289 = ?", answer: 278, options: [268, 278, 288, 298], explanation: "567 - 289 = 278。需要借位計算。" },
+                    { q: "405 + 298 = ?", answer: 703, options: [693, 703, 713, 723], explanation: "405 + 298 = 703。" },
+                    { q: "800 - 356 = ?", answer: 444, options: [434, 444, 454, 464], explanation: "800 - 356 = 444。" },
+                    { q: "123 + 456 = ?", answer: 579, options: [569, 579, 589, 599], explanation: "123 + 456 = 579。" },
+                    { q: "1000 - 247 = ?", answer: 753, options: [743, 753, 763, 773], explanation: "1000 - 247 = 753。" },
+                    { q: "9 × 7 = ?", answer: 63, options: [61, 62, 63, 64], explanation: "9 × 7 = 63。" },
+                    { q: "72 ÷ 8 = ?", answer: 9, options: [7, 8, 9, 10], explanation: "72 ÷ 8 = 9。" },
+                    { q: "8 × 6 = ?", answer: 48, options: [46, 47, 48, 49], explanation: "8 × 6 = 48。" },
+                    { q: "45 ÷ 9 = ?", answer: 5, options: [4, 5, 6, 7], explanation: "45 ÷ 9 = 5。" },
+                    { q: "6 × 6 = ?", answer: 36, options: [34, 35, 36, 37], explanation: "6 × 6 = 36。" }
+                ]
+            },
+            // 四年級題庫
+            4: {
+                name: "四年級",
+                info: ["多位數乘除法", "分數初步概念", "四則混合運算"],
+                questions: [
+                    { q: "25 × 4 = ?", answer: 100, options: [90, 95, 100, 105], explanation: "25 × 4 = 100。25 的 4 倍就是 100。" },
+                    { q: "36 × 5 = ?", answer: 180, options: [170, 175, 180, 185], explanation: "36 × 5 = 180。36 × 5 = 30×5 + 6×5 = 150 + 30。" },
+                    { q: "48 ÷ 12 = ?", answer: 4, options: [3, 4, 5, 6], explanation: "48 ÷ 12 = 4。12 × 4 = 48。" },
+                    { q: "96 ÷ 8 = ?", answer: 12, options: [10, 11, 12, 13], explanation: "96 ÷ 8 = 12。" },
+                    { q: "15 × 6 = ?", answer: 90, options: [80, 85, 90, 95], explanation: "15 × 6 = 90。" },
+                    { q: "144 ÷ 12 = ?", answer: 12, options: [10, 11, 12, 13], explanation: "144 ÷ 12 = 12。" },
+                    { q: "3 + 5 × 2 = ?", answer: 13, options: [11, 13, 16, 18], explanation: "先乘除後加減：5 × 2 = 10，3 + 10 = 13。" },
+                    { q: "20 - 3 × 4 = ?", answer: 8, options: [8, 12, 68, 72], explanation: "先乘除後加減：3 × 4 = 12，20 - 12 = 8。" },
+                    { q: "24 ÷ 6 + 8 = ?", answer: 12, options: [10, 11, 12, 13], explanation: "先除後加：24 ÷ 6 = 4，4 + 8 = 12。" },
+                    { q: "18 + 12 ÷ 3 = ?", answer: 22, options: [10, 18, 22, 30], explanation: "先除後加：12 ÷ 3 = 4，18 + 4 = 22。" },
+                    { q: "5 × 8 - 15 = ?", answer: 25, options: [20, 23, 25, 27], explanation: "先乘後減：5 × 8 = 40，40 - 15 = 25。" },
+                    { q: "(6 + 4) × 3 = ?", answer: 30, options: [22, 26, 30, 34], explanation: "先算括號：6 + 4 = 10，10 × 3 = 30。" },
+                    { q: "36 ÷ (2 + 4) = ?", answer: 6, options: [4, 5, 6, 7], explanation: "先算括號：2 + 4 = 6，36 ÷ 6 = 6。" },
+                    { q: "1/2 + 1/2 = ?", answer: 1, options: ["1/4", "1/2", "1", "2"], explanation: "1/2 + 1/2 = 2/2 = 1。兩個一半等於一個整體。", isText: true },
+                    { q: "3/4 - 1/4 = ?", answer: "2/4", options: ["1/4", "2/4", "3/4", "4/4"], explanation: "同分母分數相減：3/4 - 1/4 = 2/4 = 1/2。", isText: true },
+                    { q: "42 × 3 = ?", answer: 126, options: [116, 126, 136, 146], explanation: "42 × 3 = 126。40×3=120，2×3=6，120+6=126。" },
+                    { q: "125 × 8 = ?", answer: 1000, options: [900, 950, 1000, 1050], explanation: "125 × 8 = 1000。這是一個重要的組合！" },
+                    { q: "84 ÷ 7 = ?", answer: 12, options: [11, 12, 13, 14], explanation: "84 ÷ 7 = 12。" },
+                    { q: "108 ÷ 9 = ?", answer: 12, options: [10, 11, 12, 13], explanation: "108 ÷ 9 = 12。" },
+                    { q: "16 × 5 = ?", answer: 80, options: [70, 75, 80, 85], explanation: "16 × 5 = 80。" },
+                    { q: "4 × 7 + 3 × 5 = ?", answer: 43, options: [41, 43, 45, 47], explanation: "4×7=28，3×5=15，28+15=43。" },
+                    { q: "100 - 6 × 8 = ?", answer: 52, options: [48, 50, 52, 54], explanation: "先乘後減：6×8=48，100-48=52。" },
+                    { q: "72 ÷ 9 × 3 = ?", answer: 24, options: [21, 22, 24, 27], explanation: "從左到右算：72÷9=8，8×3=24。" },
+                    { q: "50 ÷ 2 + 50 ÷ 2 = ?", answer: 50, options: [25, 50, 75, 100], explanation: "50÷2=25，25+25=50。" },
+                    { q: "(15 - 7) × 6 = ?", answer: 48, options: [42, 44, 48, 52], explanation: "先算括號：15-7=8，8×6=48。" }
+                ]
+            },
+            // 五年級題庫
+            5: {
+                name: "五年級",
+                info: ["分數四則運算", "小數計算", "因數與倍數"],
+                questions: [
+                    { q: "0.5 + 0.3 = ?", answer: 0.8, options: [0.7, 0.8, 0.9, 1.0], explanation: "0.5 + 0.3 = 0.8。小數點對齊後相加。" },
+                    { q: "1.2 - 0.7 = ?", answer: 0.5, options: [0.4, 0.5, 0.6, 0.7], explanation: "1.2 - 0.7 = 0.5。" },
+                    { q: "2.5 × 4 = ?", answer: 10, options: [8, 9, 10, 11], explanation: "2.5 × 4 = 10。2.5 的 4 倍是 10。" },
+                    { q: "3.6 ÷ 2 = ?", answer: 1.8, options: [1.6, 1.7, 1.8, 1.9], explanation: "3.6 ÷ 2 = 1.8。" },
+                    { q: "0.25 × 8 = ?", answer: 2, options: [1, 2, 3, 4], explanation: "0.25 × 8 = 2。0.25 就是 1/4，1/4 的 8 倍是 2。" },
+                    { q: "12 的因數有幾個？", answer: 6, options: [4, 5, 6, 7], explanation: "12 的因數：1, 2, 3, 4, 6, 12，共 6 個。" },
+                    { q: "18 和 24 的最大公因數是？", answer: 6, options: [4, 6, 8, 12], explanation: "18 = 2×3×3，24 = 2×2×2×3，最大公因數是 2×3 = 6。" },
+                    { q: "4 和 6 的最小公倍數是？", answer: 12, options: [8, 10, 12, 24], explanation: "4 的倍數：4,8,12...；6 的倍數：6,12...，最小公倍數是 12。" },
+                    { q: "1/3 + 1/6 = ?", answer: "1/2", options: ["1/3", "1/2", "2/3", "1/9"], explanation: "通分：2/6 + 1/6 = 3/6 = 1/2。", isText: true },
+                    { q: "3/4 - 1/2 = ?", answer: "1/4", options: ["1/8", "1/4", "1/2", "2/4"], explanation: "通分：3/4 - 2/4 = 1/4。", isText: true },
+                    { q: "2/3 × 6 = ?", answer: 4, options: [3, 4, 5, 6], explanation: "2/3 × 6 = 12/3 = 4。" },
+                    { q: "3/5 × 10 = ?", answer: 6, options: [5, 6, 7, 8], explanation: "3/5 × 10 = 30/5 = 6。" },
+                    { q: "4.8 ÷ 0.6 = ?", answer: 8, options: [6, 7, 8, 9], explanation: "4.8 ÷ 0.6 = 48 ÷ 6 = 8。" },
+                    { q: "7.2 × 5 = ?", answer: 36, options: [34, 35, 36, 37], explanation: "7.2 × 5 = 36。" },
+                    { q: "15 是質數嗎？（1是/0否）", answer: 0, options: [0, 1], explanation: "15 = 3 × 5，不是質數。質數只能被 1 和自己整除。" },
+                    { q: "1/2 + 2/3 = ?", answer: "7/6", options: ["3/5", "5/6", "7/6", "1"], explanation: "通分：3/6 + 4/6 = 7/6。", isText: true },
+                    { q: "5/6 - 1/3 = ?", answer: "1/2", options: ["1/3", "1/2", "2/3", "1/6"], explanation: "通分：5/6 - 2/6 = 3/6 = 1/2。", isText: true },
+                    { q: "2.4 × 2.5 = ?", answer: 6, options: [5, 6, 7, 8], explanation: "2.4 × 2.5 = 6。" },
+                    { q: "0.8 × 0.5 = ?", answer: 0.4, options: [0.3, 0.4, 0.5, 0.13], explanation: "0.8 × 0.5 = 0.4。" },
+                    { q: "6.3 ÷ 0.9 = ?", answer: 7, options: [6, 7, 8, 9], explanation: "6.3 ÷ 0.9 = 63 ÷ 9 = 7。" },
+                    { q: "20 和 30 的最大公因數是？", answer: 10, options: [5, 10, 15, 20], explanation: "20 = 2×2×5，30 = 2×3×5，最大公因數是 2×5 = 10。" },
+                    { q: "8 和 12 的最小公倍數是？", answer: 24, options: [16, 20, 24, 48], explanation: "8 = 2³，12 = 2²×3，最小公倍數是 2³×3 = 24。" },
+                    { q: "3.14 × 2 = ?", answer: 6.28, options: [6.14, 6.28, 6.42, 6.56], explanation: "3.14 × 2 = 6.28。這在計算圓周長時很常用！" },
+                    { q: "12.5 ÷ 2.5 = ?", answer: 5, options: [4, 5, 6, 7], explanation: "12.5 ÷ 2.5 = 125 ÷ 25 = 5。" },
+                    { q: "1/4 × 2/3 = ?", answer: "1/6", options: ["1/6", "1/7", "2/7", "3/7"], explanation: "分數相乘：(1×2)/(4×3) = 2/12 = 1/6。", isText: true }
+                ]
+            },
+            // 六年級題庫
+            6: {
+                name: "六年級",
+                info: ["分數除法", "比與比值", "圓面積與周長"],
+                questions: [
+                    { q: "2/3 ÷ 1/2 = ?", answer: "4/3", options: ["1/3", "2/3", "4/3", "3/2"], explanation: "分數除法變乘法：2/3 × 2/1 = 4/3。", isText: true },
+                    { q: "3/4 ÷ 3 = ?", answer: "1/4", options: ["1/4", "1/3", "3/4", "9/4"], explanation: "3/4 ÷ 3 = 3/4 × 1/3 = 3/12 = 1/4。", isText: true },
+                    { q: "5 ÷ 2/5 = ?", answer: "12.5", options: ["2", "10", "12.5", "25"], explanation: "5 ÷ 2/5 = 5 × 5/2 = 25/2 = 12.5。", isText: true },
+                    { q: "圓周率 π 約等於？", answer: 3.14, options: [3.12, 3.14, 3.16, 3.18], explanation: "圓周率 π ≈ 3.14159...，通常取 3.14。" },
+                    { q: "直徑 10 的圓，周長約是？", answer: 31.4, options: [28.4, 31.4, 34.4, 37.4], explanation: "圓周長 = π × 直徑 = 3.14 × 10 = 31.4。" },
+                    { q: "半徑 5 的圓，面積約是？", answer: 78.5, options: [75.5, 78.5, 81.5, 84.5], explanation: "圓面積 = π × 半徑² = 3.14 × 25 = 78.5。" },
+                    { q: "3:5 的比值是？", answer: 0.6, options: [0.5, 0.6, 0.7, 1.5], explanation: "比值 = 前項 ÷ 後項 = 3 ÷ 5 = 0.6。" },
+                    { q: "4:6 的最簡比是？", answer: "2:3", options: ["1:2", "2:3", "3:4", "4:6"], explanation: "4:6 的最大公因數是 2，約簡後是 2:3。", isText: true },
+                    { q: "1/2 ÷ 1/4 = ?", answer: 2, options: [1, 2, 3, 4], explanation: "1/2 ÷ 1/4 = 1/2 × 4/1 = 4/2 = 2。" },
+                    { q: "半徑 3 的圓，周長約是？", answer: 18.84, options: [17.84, 18.84, 19.84, 20.84], explanation: "圓周長 = 2 × π × 半徑 = 2 × 3.14 × 3 = 18.84。" },
+                    { q: "12:16 的最簡比是？", answer: "3:4", options: ["2:3", "3:4", "4:5", "6:8"], explanation: "12:16 的最大公因數是 4，約簡後是 3:4。", isText: true },
+                    { q: "4/5 ÷ 2/3 = ?", answer: "6/5", options: ["4/5", "6/5", "8/15", "2/5"], explanation: "4/5 ÷ 2/3 = 4/5 × 3/2 = 12/10 = 6/5。", isText: true },
+                    { q: "直徑 7 的圓，面積約是？", answer: 38.465, options: [35.5, 38.465, 42.5, 45.5], explanation: "圓面積 = π × 半徑² = 3.14 × 3.5² = 38.465。" },
+                    { q: "5:8 = 15:?", answer: 24, options: [20, 22, 24, 26], explanation: "5:8 = 15:x，x = 8×15÷5 = 24。" },
+                    { q: "3/8 ÷ 1/4 = ?", answer: "3/2", options: ["3/32", "3/4", "3/2", "12/8"], explanation: "3/8 ÷ 1/4 = 3/8 × 4/1 = 12/8 = 3/2。", isText: true },
+                    { q: "圓的周長是 31.4，直徑是？", answer: 10, options: [8, 10, 12, 14], explanation: "直徑 = 周長 ÷ π = 31.4 ÷ 3.14 = 10。" },
+                    { q: "2:3 = ?:12", answer: 8, options: [6, 7, 8, 9], explanation: "2:3 = x:12，x = 2×12÷3 = 8。" },
+                    { q: "9/10 ÷ 3/5 = ?", answer: "3/2", options: ["3/2", "9/50", "27/50", "1/2"], explanation: "9/10 ÷ 3/5 = 9/10 × 5/3 = 45/30 = 3/2。", isText: true },
+                    { q: "面積 50.24 的圓，半徑是？", answer: 4, options: [3, 4, 5, 6], explanation: "半徑² = 面積 ÷ π = 50.24 ÷ 3.14 = 16，半徑 = 4。" },
+                    { q: "7/8 ÷ 7/4 = ?", answer: "1/2", options: ["1/4", "1/2", "2", "4"], explanation: "7/8 ÷ 7/4 = 7/8 × 4/7 = 28/56 = 1/2。", isText: true },
+                    { q: "15:25 的最簡比是？", answer: "3:5", options: ["1:2", "3:5", "5:8", "2:3"], explanation: "15:25 的最大公因數是 5，約簡後是 3:5。", isText: true },
+                    { q: "半徑 10 的圓，周長約是？", answer: 62.8, options: [58.8, 60.8, 62.8, 64.8], explanation: "圓周長 = 2 × π × 半徑 = 2 × 3.14 × 10 = 62.8。" },
+                    { q: "5/6 ÷ 5/12 = ?", answer: 2, options: [1, 2, 3, 4], explanation: "5/6 ÷ 5/12 = 5/6 × 12/5 = 60/30 = 2。" },
+                    { q: "4:? = 12:15", answer: 5, options: [4, 5, 6, 7], explanation: "4:x = 12:15，x = 4×15÷12 = 5。" },
+                    { q: "圓的面積是 78.5，直徑是？", answer: 10, options: [8, 10, 12, 14], explanation: "半徑² = 78.5 ÷ 3.14 = 25，半徑 = 5，直徑 = 10。" }
+                ]
+            }
+        };
+
+        // ========== 遊戲狀態 ==========
+        let gameState = {
+            studentName: "",
+            grade: 1,
+            currentQuestion: 0,
+            score: 0,
+            lives: 3,
+            combo: 0,
+            maxCombo: 0,
+            correctCount: 0,
+            wrongCount: 0,
+            wrongAnswers: [],
+            questions: [],
+            timeLeft: 10,
+            timerInterval: null
+        };
+
+        // ========== DOM 元素 ==========
+        const startScreen = document.getElementById('startScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const studentNameInput = document.getElementById('studentName');
+        const gradeSelect = document.getElementById('gradeSelect');
+        const gradeInfo = document.getElementById('gradeInfo');
+        const startBtn = document.getElementById('startBtn');
+
+        // ========== 事件監聽 ==========
+        studentNameInput.addEventListener('input', checkStartCondition);
+        gradeSelect.addEventListener('change', () => {
+            updateGradeInfo();
+            checkStartCondition();
+        });
+        startBtn.addEventListener('click', startGame);
+        document.getElementById('homeBtn').addEventListener('click', goHome);
+        document.getElementById('retryBtn').addEventListener('click', retryGame);
+
+        // ========== 函數 ==========
+        function checkStartCondition() {
+            startBtn.disabled = studentNameInput.value.trim() === '';
+        }
+
+        function updateGradeInfo() {
+            const grade = parseInt(gradeSelect.value);
+            const info = questionBank[grade].info;
+            gradeInfo.innerHTML = `
+                <h4>📖 ${questionBank[grade].name}學習重點</h4>
+                <ul>
+                    ${info.map(item => `<li>${item}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function startGame() {
+            // 重置遊戲狀態
+            gameState = {
+                studentName: studentNameInput.value.trim(),
+                grade: parseInt(gradeSelect.value),
+                currentQuestion: 0,
+                score: 0,
+                lives: 3,
+                combo: 0,
+                maxCombo: 0,
+                correctCount: 0,
+                wrongCount: 0,
+                wrongAnswers: [],
+                questions: shuffleArray(questionBank[parseInt(gradeSelect.value)].questions).slice(0, 20),
+                timeLeft: 10,
+                timerInterval: null
+            };
+
+            // 顯示遊戲畫面
+            startScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            resultScreen.style.display = 'none';
+
+            // 更新顯示名稱
+            document.getElementById('displayName').textContent = gameState.studentName;
+
+            // 載入第一題
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (gameState.currentQuestion >= gameState.questions.length || gameState.lives <= 0) {
+                endGame();
+                return;
+            }
+
+            const q = gameState.questions[gameState.currentQuestion];
+            
+            // 更新題目
+            document.getElementById('questionNumber').textContent = 
+                `第 ${gameState.currentQuestion + 1} 題 / 共 ${gameState.questions.length} 題`;
+            document.getElementById('question').textContent = q.q;
+
+            // 更新選項
+            const optionsContainer = document.getElementById('options');
+            const shuffledOptions = shuffleArray([...q.options]);
+            optionsContainer.innerHTML = shuffledOptions.map(opt => 
+                `<button class="option" onclick="selectAnswer(this, '${opt}')">${opt}</button>`
+            ).join('');
+
+            // 更新統計
+            updateStats();
+
+            // 重置並啟動計時器
+            gameState.timeLeft = 10;
+            updateTimerDisplay();
+            if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+            gameState.timerInterval = setInterval(tick, 1000);
+        }
+
+        function tick() {
+            gameState.timeLeft--;
+            updateTimerDisplay();
+            
+            if (gameState.timeLeft <= 0) {
+                clearInterval(gameState.timerInterval);
+                handleTimeout();
+            }
+        }
+
+        function updateTimerDisplay() {
+            const timerEl = document.getElementById('timer');
+            document.getElementById('timeLeft').textContent = gameState.timeLeft;
+            
+            if (gameState.timeLeft <= 3) {
+                timerEl.classList.add('warning');
+            } else {
+                timerEl.classList.remove('warning');
+            }
+        }
+
+        function handleTimeout() {
+            const q = gameState.questions[gameState.currentQuestion];
+            
+            // 記錄錯題
+            gameState.wrongAnswers.push({
+                question: q.q,
+                yourAnswer: "（時間到）",
+                correctAnswer: q.answer,
+                explanation: q.explanation
+            });
+            
+            gameState.lives--;
+            gameState.wrongCount++;
+            gameState.combo = 0;
+            
+            updateStats();
+            
+            // 短暫延遲後下一題
+            setTimeout(() => {
+                gameState.currentQuestion++;
+                loadQuestion();
+            }, 1000);
+        }
+
+        function selectAnswer(element, answer) {
+            clearInterval(gameState.timerInterval);
+            
+            const q = gameState.questions[gameState.currentQuestion];
+            const isCorrect = String(answer) === String(q.answer);
+            
+            // 禁用所有選項
+            document.querySelectorAll('.option').forEach(btn => {
+                btn.style.pointerEvents = 'none';
+                if (String(btn.textContent) === String(q.answer)) {
+                    btn.classList.add('correct');
+                }
+            });
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                gameState.combo++;
+                if (gameState.combo > gameState.maxCombo) {
+                    gameState.maxCombo = gameState.combo;
+                }
+                gameState.correctCount++;
+                
+                // 計算得分（基礎分 + 時間獎勵 + 連擊獎勵）
+                const baseScore = 50;
+                const timeBonus = gameState.timeLeft * 5;
+                const comboBonus = Math.min(gameState.combo * 10, 50);
+                gameState.score += baseScore + timeBonus + comboBonus;
+                
+                // 顯示連擊
+                const comboEl = document.getElementById('combo');
+                if (gameState.combo >= 2) {
+                    comboEl.textContent = `🔥 ${gameState.combo} 連擊！+${comboBonus} 獎勵分`;
+                    comboEl.classList.add('active');
+                    setTimeout(() => comboEl.classList.remove('active'), 300);
+                } else {
+                    comboEl.textContent = '';
+                }
+            } else {
+                element.classList.add('wrong');
+                gameState.lives--;
+                gameState.wrongCount++;
+                gameState.combo = 0;
+                
+                // 記錄錯題
+                gameState.wrongAnswers.push({
+                    question: q.q,
+                    yourAnswer: answer,
+                    correctAnswer: q.answer,
+                    explanation: q.explanation
+                });
+                
+                document.getElementById('combo').textContent = '';
+            }
+            
+            updateStats();
+            
+            // 延遲後下一題
+            setTimeout(() => {
+                gameState.currentQuestion++;
+                loadQuestion();
+            }, 1000);
+        }
+
+        function updateStats() {
+            document.getElementById('score').textContent = gameState.score;
+            document.getElementById('lives').textContent = '❤️'.repeat(gameState.lives) + '🖤'.repeat(3 - gameState.lives);
+        }
+
+        function endGame() {
+            clearInterval(gameState.timerInterval);
+            
+            gameScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+            
+            document.getElementById('resultName').textContent = gameState.studentName;
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('correctCount').textContent = gameState.correctCount;
+            document.getElementById('wrongCount').textContent = gameState.wrongCount;
+            
+            const total = gameState.correctCount + gameState.wrongCount;
+            const accuracy = total > 0 ? Math.round((gameState.correctCount / total) * 100) : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            
+            // 顯示錯題
+            const wrongAnswersDiv = document.getElementById('wrongAnswers');
+            const wrongListDiv = document.getElementById('wrongList');
+            
+            if (gameState.wrongAnswers.length > 0) {
+                wrongAnswersDiv.style.display = 'block';
+                wrongListDiv.innerHTML = gameState.wrongAnswers.map(w => `
+                    <div class="wrong-item">
+                        <div class="question-text">${w.question}</div>
+                        <div class="your-answer">❌ 你的答案：${w.yourAnswer}</div>
+                        <div class="correct-answer">✅ 正確答案：${w.correctAnswer}</div>
+                        <div class="explanation">💡 ${w.explanation}</div>
+                    </div>
+                `).join('');
+            } else {
+                wrongAnswersDiv.style.display = 'none';
+            }
+        }
+
+        function goHome() {
+            resultScreen.style.display = 'none';
+            startScreen.style.display = 'block';
+        }
+
+        function retryGame() {
+            resultScreen.style.display = 'none';
+            startGame();
+        }
+
+        // 初始化
+        updateGradeInfo();
+    </script>
+</body>
+</html>
