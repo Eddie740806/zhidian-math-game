@@ -444,7 +444,7 @@ module.exports = {
         // --- 加減法蟲食算（50 題）---
         {
             tag: "蟲食算",
-            scene: "🐛 3 + □ = 5",
+            scene: "3 + □ = 5",
             sceneDesc: "找出被吃掉的數字",
             q: "3 加上什麼數字等於 5？",
             answer: "2",
@@ -453,7 +453,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 4 = 7",
+            scene: "□ + 4 = 7",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 4 等於 7？",
             answer: "3",
@@ -462,7 +462,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 5 + □ = 8",
+            scene: "5 + □ = 8",
             sceneDesc: "找出被吃掉的數字",
             q: "5 加上什麼數字等於 8？",
             answer: "3",
@@ -471,7 +471,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 2 = 6",
+            scene: "□ + 2 = 6",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 2 等於 6？",
             answer: "4",
@@ -480,7 +480,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 8 - □ = 5",
+            scene: "8 - □ = 5",
             sceneDesc: "找出被吃掉的數字",
             q: "8 減去什麼數字等於 5？",
             answer: "3",
@@ -489,7 +489,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 3 = 4",
+            scene: "□ - 3 = 4",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 3 等於 4？",
             answer: "7",
@@ -498,7 +498,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 6 + □ = 10",
+            scene: "6 + □ = 10",
             sceneDesc: "找出被吃掉的數字",
             q: "6 加上什麼數字等於 10？",
             answer: "4",
@@ -507,7 +507,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 7 = 10",
+            scene: "□ + 7 = 10",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 7 等於 10？",
             answer: "3",
@@ -516,7 +516,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 9 - □ = 6",
+            scene: "9 - □ = 6",
             sceneDesc: "找出被吃掉的數字",
             q: "9 減去什麼數字等於 6？",
             answer: "3",
@@ -525,7 +525,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 5 = 5",
+            scene: "□ - 5 = 5",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 5 等於 5？",
             answer: "10",
@@ -534,7 +534,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 4 + □ = 9",
+            scene: "4 + □ = 9",
             sceneDesc: "找出被吃掉的數字",
             q: "4 加上什麼數字等於 9？",
             answer: "5",
@@ -543,7 +543,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 8 = 12",
+            scene: "□ + 8 = 12",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 8 等於 12？",
             answer: "4",
@@ -552,7 +552,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 10 - □ = 7",
+            scene: "10 - □ = 7",
             sceneDesc: "找出被吃掉的數字",
             q: "10 減去什麼數字等於 7？",
             answer: "3",
@@ -561,7 +561,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 4 = 8",
+            scene: "□ - 4 = 8",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 4 等於 8？",
             answer: "12",
@@ -570,7 +570,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 7 + □ = 13",
+            scene: "7 + □ = 13",
             sceneDesc: "找出被吃掉的數字",
             q: "7 加上什麼數字等於 13？",
             answer: "6",
@@ -579,7 +579,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 5 = 11",
+            scene: "□ + 5 = 11",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 5 等於 11？",
             answer: "6",
@@ -588,7 +588,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 14 - □ = 9",
+            scene: "14 - □ = 9",
             sceneDesc: "找出被吃掉的數字",
             q: "14 減去什麼數字等於 9？",
             answer: "5",
@@ -597,7 +597,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 6 = 7",
+            scene: "□ - 6 = 7",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 6 等於 7？",
             answer: "13",
@@ -606,7 +606,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 8 + □ = 15",
+            scene: "8 + □ = 15",
             sceneDesc: "找出被吃掉的數字",
             q: "8 加上什麼數字等於 15？",
             answer: "7",
@@ -615,7 +615,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 9 = 16",
+            scene: "□ + 9 = 16",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 9 等於 16？",
             answer: "7",
@@ -624,7 +624,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 11 - □ = 5",
+            scene: "11 - □ = 5",
             sceneDesc: "找出被吃掉的數字",
             q: "11 減去什麼數字等於 5？",
             answer: "6",
@@ -633,7 +633,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 7 = 6",
+            scene: "□ - 7 = 6",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 7 等於 6？",
             answer: "13",
@@ -642,7 +642,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 5 + □ = 12",
+            scene: "5 + □ = 12",
             sceneDesc: "找出被吃掉的數字",
             q: "5 加上什麼數字等於 12？",
             answer: "7",
@@ -651,7 +651,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 6 = 14",
+            scene: "□ + 6 = 14",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 6 等於 14？",
             answer: "8",
@@ -660,7 +660,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 15 - □ = 8",
+            scene: "15 - □ = 8",
             sceneDesc: "找出被吃掉的數字",
             q: "15 減去什麼數字等於 8？",
             answer: "7",
@@ -669,7 +669,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 8 = 9",
+            scene: "□ - 8 = 9",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 8 等於 9？",
             answer: "17",
@@ -678,7 +678,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 9 + □ = 17",
+            scene: "9 + □ = 17",
             sceneDesc: "找出被吃掉的數字",
             q: "9 加上什麼數字等於 17？",
             answer: "8",
@@ -687,7 +687,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 3 = 11",
+            scene: "□ + 3 = 11",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 3 等於 11？",
             answer: "8",
@@ -696,7 +696,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 12 - □ = 4",
+            scene: "12 - □ = 4",
             sceneDesc: "找出被吃掉的數字",
             q: "12 減去什麼數字等於 4？",
             answer: "8",
@@ -705,7 +705,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 9 = 8",
+            scene: "□ - 9 = 8",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 9 等於 8？",
             answer: "17",
@@ -714,7 +714,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 6 + □ = 15",
+            scene: "6 + □ = 15",
             sceneDesc: "找出被吃掉的數字",
             q: "6 加上什麼數字等於 15？",
             answer: "9",
@@ -723,7 +723,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 4 = 13",
+            scene: "□ + 4 = 13",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 4 等於 13？",
             answer: "9",
@@ -732,7 +732,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 18 - □ = 9",
+            scene: "18 - □ = 9",
             sceneDesc: "找出被吃掉的數字",
             q: "18 減去什麼數字等於 9？",
             answer: "9",
@@ -741,7 +741,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 2 = 9",
+            scene: "□ - 2 = 9",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 2 等於 9？",
             answer: "11",
@@ -750,7 +750,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 7 + □ = 16",
+            scene: "7 + □ = 16",
             sceneDesc: "找出被吃掉的數字",
             q: "7 加上什麼數字等於 16？",
             answer: "9",
@@ -759,7 +759,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 8 = 17",
+            scene: "□ + 8 = 17",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 8 等於 17？",
             answer: "9",
@@ -768,7 +768,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 13 - □ = 6",
+            scene: "13 - □ = 6",
             sceneDesc: "找出被吃掉的數字",
             q: "13 減去什麼數字等於 6？",
             answer: "7",
@@ -777,7 +777,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 5 = 10",
+            scene: "□ - 5 = 10",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 5 等於 10？",
             answer: "15",
@@ -786,7 +786,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 4 + □ = 11",
+            scene: "4 + □ = 11",
             sceneDesc: "找出被吃掉的數字",
             q: "4 加上什麼數字等於 11？",
             answer: "7",
@@ -795,7 +795,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 7 = 15",
+            scene: "□ + 7 = 15",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 7 等於 15？",
             answer: "8",
@@ -804,7 +804,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 16 - □ = 7",
+            scene: "16 - □ = 7",
             sceneDesc: "找出被吃掉的數字",
             q: "16 減去什麼數字等於 7？",
             answer: "9",
@@ -813,7 +813,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 6 = 11",
+            scene: "□ - 6 = 11",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 6 等於 11？",
             answer: "17",
@@ -822,7 +822,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 3 + □ = 12",
+            scene: "3 + □ = 12",
             sceneDesc: "找出被吃掉的數字",
             q: "3 加上什麼數字等於 12？",
             answer: "9",
@@ -831,7 +831,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 5 = 14",
+            scene: "□ + 5 = 14",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 5 等於 14？",
             answer: "9",
@@ -840,7 +840,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 17 - □ = 8",
+            scene: "17 - □ = 8",
             sceneDesc: "找出被吃掉的數字",
             q: "17 減去什麼數字等於 8？",
             answer: "9",
@@ -849,7 +849,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ - 4 = 12",
+            scene: "□ - 4 = 12",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字減去 4 等於 12？",
             answer: "16",
@@ -858,7 +858,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 2 + □ = 10",
+            scene: "2 + □ = 10",
             sceneDesc: "找出被吃掉的數字",
             q: "2 加上什麼數字等於 10？",
             answer: "8",
@@ -867,7 +867,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 6 = 11",
+            scene: "□ + 6 = 11",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加上 6 等於 11？",
             answer: "5",
@@ -876,7 +876,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 19 - □ = 10",
+            scene: "19 - □ = 10",
             sceneDesc: "找出被吃掉的數字",
             q: "19 減去什麼數字等於 10？",
             answer: "9",
@@ -1343,7 +1343,7 @@ module.exports = {
         // --- 數量比較蟲食算（50 題）---
         {
             tag: "蟲食算",
-            scene: "🐛 5 + □ = 8，求比較",
+            scene: "5 + □ = 8，求比較",
             sceneDesc: "補數比較",
             q: "小明有 5 顆糖，想要有 8 顆，還差幾顆？",
             answer: "3",
@@ -1352,7 +1352,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 4 多 3",
+            scene: "□ 比 4 多 3",
             sceneDesc: "多幾個",
             q: "什麼數字比 4 多 3？",
             answer: "7",
@@ -1361,7 +1361,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 9 少 2",
+            scene: "□ 比 9 少 2",
             sceneDesc: "少幾個",
             q: "什麼數字比 9 少 2？",
             answer: "7",
@@ -1370,7 +1370,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 6 + □ = 10",
+            scene: "6 + □ = 10",
             sceneDesc: "補到10",
             q: "6 再加幾個就變成 10？",
             answer: "4",
@@ -1379,7 +1379,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 3 多 5",
+            scene: "□ 比 3 多 5",
             sceneDesc: "多幾個",
             q: "什麼數字比 3 多 5？",
             answer: "8",
@@ -1388,7 +1388,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 10 少 4",
+            scene: "□ 比 10 少 4",
             sceneDesc: "少幾個",
             q: "什麼數字比 10 少 4？",
             answer: "6",
@@ -1397,7 +1397,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 8 + □ = 12",
+            scene: "8 + □ = 12",
             sceneDesc: "補數",
             q: "8 再加幾個就變成 12？",
             answer: "4",
@@ -1406,7 +1406,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 7 多 6",
+            scene: "□ 比 7 多 6",
             sceneDesc: "多幾個",
             q: "什麼數字比 7 多 6？",
             answer: "13",
@@ -1415,7 +1415,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 15 少 7",
+            scene: "□ 比 15 少 7",
             sceneDesc: "少幾個",
             q: "什麼數字比 15 少 7？",
             answer: "8",
@@ -1424,7 +1424,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 7 + □ = 15",
+            scene: "7 + □ = 15",
             sceneDesc: "補數",
             q: "7 再加幾個就變成 15？",
             answer: "8",
@@ -1433,7 +1433,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 5 多 9",
+            scene: "□ 比 5 多 9",
             sceneDesc: "多幾個",
             q: "什麼數字比 5 多 9？",
             answer: "14",
@@ -1442,7 +1442,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 12 少 5",
+            scene: "□ 比 12 少 5",
             sceneDesc: "少幾個",
             q: "什麼數字比 12 少 5？",
             answer: "7",
@@ -1451,7 +1451,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 9 + □ = 17",
+            scene: "9 + □ = 17",
             sceneDesc: "補數",
             q: "9 再加幾個就變成 17？",
             answer: "8",
@@ -1460,7 +1460,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 8 多 8",
+            scene: "□ 比 8 多 8",
             sceneDesc: "多幾個",
             q: "什麼數字比 8 多 8？",
             answer: "16",
@@ -1469,7 +1469,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 18 少 9",
+            scene: "□ 比 18 少 9",
             sceneDesc: "少幾個",
             q: "什麼數字比 18 少 9？",
             answer: "9",
@@ -1478,7 +1478,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 4 + □ = 13",
+            scene: "4 + □ = 13",
             sceneDesc: "補數",
             q: "4 再加幾個就變成 13？",
             answer: "9",
@@ -1487,7 +1487,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 6 多 7",
+            scene: "□ 比 6 多 7",
             sceneDesc: "多幾個",
             q: "什麼數字比 6 多 7？",
             answer: "13",
@@ -1496,7 +1496,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 14 少 6",
+            scene: "□ 比 14 少 6",
             sceneDesc: "少幾個",
             q: "什麼數字比 14 少 6？",
             answer: "8",
@@ -1505,7 +1505,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 5 + □ = 14",
+            scene: "5 + □ = 14",
             sceneDesc: "補數",
             q: "5 再加幾個就變成 14？",
             answer: "9",
@@ -1514,7 +1514,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 11 多 5",
+            scene: "□ 比 11 多 5",
             sceneDesc: "多幾個",
             q: "什麼數字比 11 多 5？",
             answer: "16",
@@ -1523,7 +1523,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 16 少 8",
+            scene: "□ 比 16 少 8",
             sceneDesc: "少幾個",
             q: "什麼數字比 16 少 8？",
             answer: "8",
@@ -1532,7 +1532,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 3 + □ = 11",
+            scene: "3 + □ = 11",
             sceneDesc: "補數",
             q: "3 再加幾個就變成 11？",
             answer: "8",
@@ -1541,7 +1541,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 9 多 9",
+            scene: "□ 比 9 多 9",
             sceneDesc: "多幾個",
             q: "什麼數字比 9 多 9？",
             answer: "18",
@@ -1550,7 +1550,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 20 少 3",
+            scene: "□ 比 20 少 3",
             sceneDesc: "少幾個",
             q: "什麼數字比 20 少 3？",
             answer: "17",
@@ -1559,7 +1559,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 6 + □ = 16",
+            scene: "6 + □ = 16",
             sceneDesc: "補數",
             q: "6 再加幾個就變成 16？",
             answer: "10",
@@ -1568,7 +1568,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 4 多 8",
+            scene: "□ 比 4 多 8",
             sceneDesc: "多幾個",
             q: "什麼數字比 4 多 8？",
             answer: "12",
@@ -1577,7 +1577,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 13 少 4",
+            scene: "□ 比 13 少 4",
             sceneDesc: "少幾個",
             q: "什麼數字比 13 少 4？",
             answer: "9",
@@ -1586,7 +1586,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 2 + □ = 10",
+            scene: "2 + □ = 10",
             sceneDesc: "補數",
             q: "2 再加幾個就變成 10？",
             answer: "8",
@@ -1595,7 +1595,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 10 多 7",
+            scene: "□ 比 10 多 7",
             sceneDesc: "多幾個",
             q: "什麼數字比 10 多 7？",
             answer: "17",
@@ -1604,7 +1604,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 17 少 8",
+            scene: "□ 比 17 少 8",
             sceneDesc: "少幾個",
             q: "什麼數字比 17 少 8？",
             answer: "9",
@@ -1613,7 +1613,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 8 + □ = 18",
+            scene: "8 + □ = 18",
             sceneDesc: "補數",
             q: "8 再加幾個就變成 18？",
             answer: "10",
@@ -1622,7 +1622,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 2 多 9",
+            scene: "□ 比 2 多 9",
             sceneDesc: "多幾個",
             q: "什麼數字比 2 多 9？",
             answer: "11",
@@ -1631,7 +1631,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 11 少 3",
+            scene: "□ 比 11 少 3",
             sceneDesc: "少幾個",
             q: "什麼數字比 11 少 3？",
             answer: "8",
@@ -1640,7 +1640,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 1 + □ = 10",
+            scene: "1 + □ = 10",
             sceneDesc: "補數",
             q: "1 再加幾個就變成 10？",
             answer: "9",
@@ -1649,7 +1649,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 12 多 6",
+            scene: "□ 比 12 多 6",
             sceneDesc: "多幾個",
             q: "什麼數字比 12 多 6？",
             answer: "18",
@@ -1658,7 +1658,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 19 少 5",
+            scene: "□ 比 19 少 5",
             sceneDesc: "少幾個",
             q: "什麼數字比 19 少 5？",
             answer: "14",
@@ -1667,7 +1667,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 7 + □ = 17",
+            scene: "7 + □ = 17",
             sceneDesc: "補數",
             q: "7 再加幾個就變成 17？",
             answer: "10",
@@ -1676,7 +1676,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 1 多 10",
+            scene: "□ 比 1 多 10",
             sceneDesc: "多幾個",
             q: "什麼數字比 1 多 10？",
             answer: "11",
@@ -1685,7 +1685,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 20 少 6",
+            scene: "□ 比 20 少 6",
             sceneDesc: "少幾個",
             q: "什麼數字比 20 少 6？",
             answer: "14",
@@ -1694,7 +1694,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 4 + □ = 12",
+            scene: "4 + □ = 12",
             sceneDesc: "補數",
             q: "4 再加幾個就變成 12？",
             answer: "8",
@@ -1703,7 +1703,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 8 多 10",
+            scene: "□ 比 8 多 10",
             sceneDesc: "多幾個",
             q: "什麼數字比 8 多 10？",
             answer: "18",
@@ -1712,7 +1712,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 15 少 3",
+            scene: "□ 比 15 少 3",
             sceneDesc: "少幾個",
             q: "什麼數字比 15 少 3？",
             answer: "12",
@@ -1721,7 +1721,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 5 + □ = 15",
+            scene: "5 + □ = 15",
             sceneDesc: "補數",
             q: "5 再加幾個就變成 15？",
             answer: "10",
@@ -1730,7 +1730,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 3 多 11",
+            scene: "□ 比 3 多 11",
             sceneDesc: "多幾個",
             q: "什麼數字比 3 多 11？",
             answer: "14",
@@ -1739,7 +1739,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 16 少 7",
+            scene: "□ 比 16 少 7",
             sceneDesc: "少幾個",
             q: "什麼數字比 16 少 7？",
             answer: "9",
@@ -1748,7 +1748,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 6 + □ = 13",
+            scene: "6 + □ = 13",
             sceneDesc: "補數",
             q: "6 再加幾個就變成 13？",
             answer: "7",
@@ -1757,7 +1757,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 7 多 12",
+            scene: "□ 比 7 多 12",
             sceneDesc: "多幾個",
             q: "什麼數字比 7 多 12？",
             answer: "19",
@@ -1766,7 +1766,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 18 少 10",
+            scene: "□ 比 18 少 10",
             sceneDesc: "少幾個",
             q: "什麼數字比 18 少 10？",
             answer: "8",
@@ -1775,7 +1775,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 3 + □ = 10",
+            scene: "3 + □ = 10",
             sceneDesc: "補數",
             q: "3 再加幾個就變成 10？",
             answer: "7",
@@ -2019,7 +2019,7 @@ module.exports = {
             sceneDesc: "找出規律",
             q: "蜜蜂蜜蜂蝴蝶重複，下一個是？",
             answer: "🦋",
-            options: ["🐝", "🦋", "🐛", "🐞"],
+            options: ["🐝", "🦋", "", "🐞"],
             explain: "兩隻蜜蜂後面是蝴蝶！"
         },
         {
@@ -2242,7 +2242,7 @@ module.exports = {
         // --- 圖形規律蟲食算（50 題）---
         {
             tag: "蟲食算",
-            scene: "🐛 🍭🍭□🍭🍭🍫",
+            scene: "🍭🍭□🍭🍭🍫",
             sceneDesc: "找出被吃掉的圖案",
             q: "棒棒糖棒棒糖巧克力重複，□是什麼？",
             answer: "🍫",
@@ -2251,7 +2251,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 🐳🐙🐳□🐳🐙",
+            scene: "🐳🐙🐳□🐳🐙",
             sceneDesc: "找出被吃掉的圖案",
             q: "鯨魚章魚鯨魚□鯨魚章魚，□是什麼？",
             answer: "🐙",
@@ -2260,7 +2260,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 2, 4, □, 8, 10",
+            scene: "2, 4, □, 8, 10",
             sceneDesc: "填入中間的數",
             q: "規律是偶數，空格應填什麼？",
             answer: "6",
@@ -2269,7 +2269,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 3, 6, 9, □, 15",
+            scene: "3, 6, 9, □, 15",
             sceneDesc: "3的倍數",
             q: "規律是 3 的倍數，空格應填什麼？",
             answer: "12",
@@ -2278,7 +2278,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 10, 8, 6, □, 2",
+            scene: "10, 8, 6, □, 2",
             sceneDesc: "遞減規律",
             q: "數字往下數，空格應填什麼？",
             answer: "4",
@@ -2287,7 +2287,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 4, 6, 8, 10",
+            scene: "□, 4, 6, 8, 10",
             sceneDesc: "找第一個數",
             q: "規律是偶數，第一格應填什麼？",
             answer: "2",
@@ -2296,7 +2296,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 5, 10, □, 20",
+            scene: "5, 10, □, 20",
             sceneDesc: "5的倍數",
             q: "規律是 5 的倍數，空格應填什麼？",
             answer: "15",
@@ -2305,7 +2305,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 20, 18, □, 14, 12",
+            scene: "20, 18, □, 14, 12",
             sceneDesc: "遞減填空",
             q: "數字逐漸變小，空格應填什麼？",
             answer: "16",
@@ -2314,7 +2314,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 1, □, 5, 7, 9",
+            scene: "1, □, 5, 7, 9",
             sceneDesc: "奇數填空",
             q: "規律是奇數，空格應填什麼？",
             answer: "3",
@@ -2323,7 +2323,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 4, 8, 12, □, 20",
+            scene: "4, 8, 12, □, 20",
             sceneDesc: "4的倍數",
             q: "規律是 4 的倍數，空格應填什麼？",
             answer: "16",
@@ -2332,7 +2332,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 15, 12, 9, □, 3",
+            scene: "15, 12, 9, □, 3",
             sceneDesc: "減3規律",
             q: "數字每次減 3，空格應填什麼？",
             answer: "6",
@@ -2341,7 +2341,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 3, 5, 7, 9",
+            scene: "□, 3, 5, 7, 9",
             sceneDesc: "找第一個奇數",
             q: "規律是奇數，第一格應填什麼？",
             answer: "1",
@@ -2350,7 +2350,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 2, 5, 8, □, 14",
+            scene: "2, 5, 8, □, 14",
             sceneDesc: "加3規律",
             q: "數字每次加 3，空格應填什麼？",
             answer: "11",
@@ -2359,7 +2359,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 18, 16, 14, □, 10",
+            scene: "18, 16, 14, □, 10",
             sceneDesc: "減2規律",
             q: "數字每次減 2，空格應填什麼？",
             answer: "12",
@@ -2368,7 +2368,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 1, 4, 7, □, 13",
+            scene: "1, 4, 7, □, 13",
             sceneDesc: "加3規律",
             q: "數字每次加 3，空格應填什麼？",
             answer: "10",
@@ -2377,7 +2377,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 6, 8, 10, 12",
+            scene: "□, 6, 8, 10, 12",
             sceneDesc: "找第一個偶數",
             q: "規律是偶數，第一格應填什麼？",
             answer: "4",
@@ -2386,7 +2386,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 6, 9, 12, 15, □",
+            scene: "6, 9, 12, 15, □",
             sceneDesc: "加3找結尾",
             q: "數字每次加 3，最後應填什麼？",
             answer: "18",
@@ -2395,7 +2395,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 19, 17, 15, □, 11",
+            scene: "19, 17, 15, □, 11",
             sceneDesc: "減2規律",
             q: "數字每次減 2，空格應填什麼？",
             answer: "13",
@@ -2404,7 +2404,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 0, 2, 4, 6, □",
+            scene: "0, 2, 4, 6, □",
             sceneDesc: "偶數接龍",
             q: "規律是偶數，最後應填什麼？",
             answer: "8",
@@ -2413,7 +2413,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 8, 12, 16, 20",
+            scene: "□, 8, 12, 16, 20",
             sceneDesc: "4的倍數開頭",
             q: "規律是 4 的倍數，第一格應填什麼？",
             answer: "4",
@@ -2422,7 +2422,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 11, 9, 7, 5, □",
+            scene: "11, 9, 7, 5, □",
             sceneDesc: "奇數遞減",
             q: "規律是奇數遞減，最後應填什麼？",
             answer: "3",
@@ -2431,7 +2431,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 5, □, 15, 20, 25",
+            scene: "5, □, 15, 20, 25",
             sceneDesc: "5的倍數填空",
             q: "規律是 5 的倍數，空格應填什麼？",
             answer: "10",
@@ -2440,7 +2440,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 14, 12, 10, 8, □",
+            scene: "14, 12, 10, 8, □",
             sceneDesc: "偶數遞減",
             q: "規律是偶數遞減，最後應填什麼？",
             answer: "6",
@@ -2449,7 +2449,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 3, 6, □, 12, 15",
+            scene: "3, 6, □, 12, 15",
             sceneDesc: "3的倍數填空",
             q: "規律是 3 的倍數，空格應填什麼？",
             answer: "9",
@@ -2458,7 +2458,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 5, 7, 9, 11",
+            scene: "□, 5, 7, 9, 11",
             sceneDesc: "奇數開頭",
             q: "規律是奇數，第一格應填什麼？",
             answer: "3",
@@ -2467,7 +2467,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 7, 10, 13, □, 19",
+            scene: "7, 10, 13, □, 19",
             sceneDesc: "加3規律",
             q: "數字每次加 3，空格應填什麼？",
             answer: "16",
@@ -2476,7 +2476,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 17, 15, □, 11, 9",
+            scene: "17, 15, □, 11, 9",
             sceneDesc: "減2規律",
             q: "數字每次減 2，空格應填什麼？",
             answer: "13",
@@ -2485,7 +2485,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 4, 7, 10, 13, □",
+            scene: "4, 7, 10, 13, □",
             sceneDesc: "加3找結尾",
             q: "數字每次加 3，最後應填什麼？",
             answer: "16",
@@ -2494,7 +2494,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 12, 10, 8, 6",
+            scene: "□, 12, 10, 8, 6",
             sceneDesc: "偶數遞減開頭",
             q: "規律是偶數遞減，第一格應填什麼？",
             answer: "14",
@@ -2503,7 +2503,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 8, 11, □, 17, 20",
+            scene: "8, 11, □, 17, 20",
             sceneDesc: "加3規律",
             q: "數字每次加 3，空格應填什麼？",
             answer: "14",
@@ -2512,7 +2512,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 16, 13, 10, □, 4",
+            scene: "16, 13, 10, □, 4",
             sceneDesc: "減3規律",
             q: "數字每次減 3，空格應填什麼？",
             answer: "7",
@@ -2521,7 +2521,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 1, 3, □, 7, 9",
+            scene: "1, 3, □, 7, 9",
             sceneDesc: "奇數填空",
             q: "規律是奇數，空格應填什麼？",
             answer: "5",
@@ -2530,7 +2530,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 6, 10, 14, □, 22",
+            scene: "6, 10, 14, □, 22",
             sceneDesc: "加4規律",
             q: "數字每次加 4，空格應填什麼？",
             answer: "18",
@@ -2539,7 +2539,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 7, 9, 11, 13",
+            scene: "□, 7, 9, 11, 13",
             sceneDesc: "奇數開頭",
             q: "規律是奇數，第一格應填什麼？",
             answer: "5",
@@ -2548,7 +2548,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 9, 12, 15, 18, □",
+            scene: "9, 12, 15, 18, □",
             sceneDesc: "3的倍數結尾",
             q: "規律是 3 的倍數，最後應填什麼？",
             answer: "21",
@@ -2557,7 +2557,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 13, 11, 9, □, 5",
+            scene: "13, 11, 9, □, 5",
             sceneDesc: "奇數遞減",
             q: "規律是奇數遞減，空格應填什麼？",
             answer: "7",
@@ -2566,7 +2566,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 10, 15, 20, 25",
+            scene: "□, 10, 15, 20, 25",
             sceneDesc: "5的倍數開頭",
             q: "規律是 5 的倍數，第一格應填什麼？",
             answer: "5",
@@ -2575,7 +2575,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 2, 6, 10, □, 18",
+            scene: "2, 6, 10, □, 18",
             sceneDesc: "加4規律",
             q: "數字每次加 4，空格應填什麼？",
             answer: "14",
@@ -2584,7 +2584,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 20, 16, 12, □, 4",
+            scene: "20, 16, 12, □, 4",
             sceneDesc: "減4規律",
             q: "數字每次減 4，空格應填什麼？",
             answer: "8",
@@ -2593,7 +2593,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 5, 8, 11, 14, □",
+            scene: "5, 8, 11, 14, □",
             sceneDesc: "加3規律結尾",
             q: "數字每次加 3，最後應填什麼？",
             answer: "17",
@@ -2602,7 +2602,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 9, 12, 15, 18",
+            scene: "□, 9, 12, 15, 18",
             sceneDesc: "3的倍數開頭",
             q: "規律是 3 的倍數，第一格應填什麼？",
             answer: "6",
@@ -2611,7 +2611,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 15, 13, 11, 9, □",
+            scene: "15, 13, 11, 9, □",
             sceneDesc: "奇數遞減結尾",
             q: "規律是奇數遞減，最後應填什麼？",
             answer: "7",
@@ -2620,7 +2620,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 4, □, 12, 16, 20",
+            scene: "4, □, 12, 16, 20",
             sceneDesc: "4的倍數填空",
             q: "規律是 4 的倍數，空格應填什麼？",
             answer: "8",
@@ -2629,7 +2629,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 19, 16, 13, 10, □",
+            scene: "19, 16, 13, 10, □",
             sceneDesc: "減3規律結尾",
             q: "數字每次減 3，最後應填什麼？",
             answer: "7",
@@ -2638,7 +2638,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 3, □, 9, 12, 15",
+            scene: "3, □, 9, 12, 15",
             sceneDesc: "3的倍數填空",
             q: "規律是 3 的倍數，空格應填什麼？",
             answer: "6",
@@ -2647,7 +2647,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 14, 12, 10, 8",
+            scene: "□, 14, 12, 10, 8",
             sceneDesc: "偶數遞減開頭",
             q: "規律是偶數遞減，第一格應填什麼？",
             answer: "16",
@@ -2656,7 +2656,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 18, 15, □, 9, 6",
+            scene: "18, 15, □, 9, 6",
             sceneDesc: "減3規律填空",
             q: "數字每次減 3，空格應填什麼？",
             answer: "12",
@@ -2665,7 +2665,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 2, 4, 6, 8, □",
+            scene: "2, 4, 6, 8, □",
             sceneDesc: "偶數結尾",
             q: "規律是偶數，最後應填什麼？",
             answer: "10",
@@ -2730,7 +2730,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ + 6 = 14",
+            scene: "□ + 6 = 14",
             sceneDesc: "找出被吃掉的數字",
             q: "什麼數字加 6 等於 14？",
             answer: "8",
@@ -2739,7 +2739,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 18 - □ = 11",
+            scene: "18 - □ = 11",
             sceneDesc: "找出被吃掉的數字",
             q: "18 減掉什麼數字等於 11？",
             answer: "7",
@@ -2748,7 +2748,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □ 比 11 多 6",
+            scene: "□ 比 11 多 6",
             sceneDesc: "找出原數",
             q: "什麼數字比 11 多 6？",
             answer: "17",
@@ -2757,7 +2757,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 7, 11, 15, □, 23",
+            scene: "7, 11, 15, □, 23",
             sceneDesc: "加4規律",
             q: "數字每次加 4，空格應填什麼？",
             answer: "19",
@@ -2766,7 +2766,7 @@ module.exports = {
         },
         {
             tag: "蟲食算",
-            scene: "🐛 □, 6, 9, 12, 15",
+            scene: "□, 6, 9, 12, 15",
             sceneDesc: "3的倍數開頭",
             q: "規律是 3 的倍數，第一格應填什麼？",
             answer: "3",
